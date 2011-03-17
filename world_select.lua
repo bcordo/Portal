@@ -79,7 +79,7 @@ function new()
 		local slide_sprt = display.newGroup()
 
 		-- bck_sprt
-		local bck_sprt = display.newImage("images/BlackHole.png")
+		local bck_sprt = display.newImage("images/blackhole.png")
 		bck_sprt:scale(.8,.8)
 		bck_sprt.alpha = 0.01
 		slide_sprt:insert( bck_sprt )

@@ -17,6 +17,33 @@ function getData()
 		"images/background2.png"
 	}
 	
+	leveldata.interactions = 
+	{
+		BlackHole1 = 
+		 { 
+			id =  "BlackHole1",
+			src = "images/blackhole.png",
+			width = 25,
+			height = 25,
+			x = 50,
+			y = 100,
+			myName = "blackhole",
+			forceFactor = 10
+		},
+		
+		BlackHole2 = 
+		 { 
+			id =  "BlackHole2",
+			src = "images/blackhole.png",
+			width = 25,
+			height = 25,
+			x = 200,
+			y = 200,
+			myName = "blackhole",
+			forceFactor = 10
+		},
+	}
+	
 	leveldata.objects = 
 	{
 		vSlab1 = 

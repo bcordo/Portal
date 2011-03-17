@@ -1,8 +1,3 @@
--- 
--- Abstract: Ghosts Vs Monsters sample project 
--- Designed and created by Jonathan and Biffy Beebe of Beebe Games exclusively for Ansca, Inc.
--- http://beebegamesonline.appspot.com/
-
 -- (This is easiest to play on iPad or other large devices, but should work on all iOS and Android devices)
 -- 
 -- Version: 1.0
@@ -30,8 +25,10 @@ function new()
 
 			_G.currentLevel = _G.loadLevel
 			_G.loadLevel = nil
+			
+			level_string = "level" 
 
-			director:changeScene( "level" )
+			director:changeScene( level_string )
 		end
 		
 		theTimer = timer.performWithDelay( 1000, goToLevel, 1 )

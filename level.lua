@@ -32,7 +32,6 @@ module(..., package.seeall)
 function new()
 
 
-
 	local levelsetup = require("level".._G.currentLevel.."setup")
 	local leveldata = levelsetup.getData()
 
@@ -121,6 +120,7 @@ function new()
 	-- MODULE-SPECIFIC VARIABLES
 	local backgroundFilename1 = leveldata.backgrounds[1]
 	local backgroundFilename2 = leveldata.backgrounds[2]
+
 	
 	
 	-- LEVEL SETTINGS
@@ -1361,15 +1361,25 @@ function new()
 	local gameLoop = function()
 		if gameIsActive then
 			
-			--Black Hole
-			local forceFactor = 10
-			local magnet = display.newCircle( 100, 100, 20 )
-			magnet:setFillColor(0,255,00)
-			vx = magnet.x - ghostObject.x
-			vy = magnet.y - ghostObject.y
-			d12 = math.sqrt(vx^2 + vy^2)
-			f1x = forceFactor*vx/d12; f1y = forceFactor*vy/d12
-			ghostObject:applyForce( f1x, f1y, ghostObject.x, ghostObject.y )
+			
+			
+			for key,data in pairs(leveldata.interactions) do 
+				if(data.myName=="blackhole") then
+
+					dx = data.x - ghostObject.x
+					dy = data.y - ghostObject.y
+					r = math.sqrt(dx^2 + dy^2)
+					forceFactor = data.forceFactor
+					fx = forceFactor*dx/r; fy = forceFactor*dy/r
+					ghostObject:applyForce( fx, fy, ghostObject.x, ghostObject.y )
+
+				end
+				
+			end
+			
+			
+			
+			
 			
 			-- CAMERA CONTROL
 			if ghostObject.x > 240 and ghostObject.x < 720 and not waitingForNewRound then
@@ -1437,6 +1447,7 @@ function new()
 	
 	local reorderLayers = function()
 		
+		
 		gameGroup:insert( levelGroup )
 		groundObject1:toFront()
 		groundObject2:toFront()
@@ -1481,7 +1492,16 @@ function new()
 				monsterCount = monsterCount + 1
 			
 			end
-				
+		
+		end
+		
+		for key,data in pairs(leveldata.interactions) do 
+		
+			local obj = display.newImageRect(data.src, data.width, data.height)
+			obj.x = data.x
+			obj.y = data.y
+			obj.myName = data.myName
+			levelGroup:insert(obj)
 		
 		end
 		
