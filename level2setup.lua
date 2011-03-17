@@ -236,7 +236,7 @@ function getData()
 			x = 772,
 			y = 235,
 			myName = "monster",
-			bodyType = "dynamic",
+			bodyType = "static",
 			density = "monsterDensity",
 			bounce=0,
 			friction=0.5,

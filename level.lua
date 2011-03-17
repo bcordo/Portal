@@ -39,7 +39,7 @@ function new()
 	local hudGroup = display.newGroup()
 	
 	local gameGroup = display.newGroup()
-	gameGroup.x = -480
+	gameGroup.x = 0
 	
 	local trailGroup = display.newGroup()
 	local dotTimer
@@ -109,7 +109,7 @@ function new()
 	local screenPosition = "left"	--> "left" or "right"
 	local canSwipe = true
 	local swipeTween
-	local gameLives = 3
+	local gameLives = 4
 	local gameScore = 0
 	local bestScore
 	local monsterCount
@@ -661,9 +661,9 @@ function new()
 				transition.to( poofObject, { time=10, alpha=1.0, onComplete=fadePoof } )
 				
 				-- Move camera to far right to see effect
-				if gameGroup.x > -480 then
-					local camTween = transition.to( gameGroup, { time=500, x=-480 } )
-				end
+				-- if gameGroup.x > -480 then
+				-- 					local camTween = transition.to( gameGroup, { time=500, x=-480 } )
+				-- 				end
 				
 				local continueBlink = function()
 					 local startBlinking = function()
@@ -696,7 +696,7 @@ function new()
 			end
 			
 			if instantPoof == "yes" then
-				local poofTimer = timer.performWithDelay( 30, poofTheGhost, 1 )
+				local poofTimer = timer.performWithDelay( 70, poofTheGhost, 1 ) --makes the ghost last longer 
 			else
 				local poofTimer = timer.performWithDelay( 1700, poofTheGhost, 1 )
 			end
@@ -1094,7 +1094,7 @@ function new()
 	
 	
 	local onMonsterPostCollision = function( self, event )
-		if event.force > 1.5 and self.isHit == false then
+		if event.force > 10.5 and self.isHit == false then
 			audio.play( monsterPoofSound )
 			
 			self.isHit = true
@@ -1359,20 +1359,9 @@ function new()
 	
 	-- Main enterFrame Listener
 	local gameLoop = function()
-		local forceFactor = 10
-		local magnet = display.newCircle( 100, 100, 20 )
-		magnet:setFillColor(0,255,00)
-		vx = magnet.x - ghostObject.x
-		vy = magnet.y - ghostObject.y
-		d12 = math.sqrt(vx^2 + vy^2)
-		f1x = forceFactor*vx/d12; f1y = forceFactor*vy/d12
-		ghostObject:applyForce( f1x, f1y, ghostObject.x, ghostObject.y )
 		if gameIsActive then
-			-- CAMERA CONTROL
-			if ghostObject.x > 240 and ghostObject.x < 720 and not waitingForNewRound then
-				gameGroup.x = -ghostObject.x + 240
-			end
 			
+			--Black Hole
 			local forceFactor = 10
 			local magnet = display.newCircle( 100, 100, 20 )
 			magnet:setFillColor(0,255,00)
@@ -1381,6 +1370,12 @@ function new()
 			d12 = math.sqrt(vx^2 + vy^2)
 			f1x = forceFactor*vx/d12; f1y = forceFactor*vy/d12
 			ghostObject:applyForce( f1x, f1y, ghostObject.x, ghostObject.y )
+			
+			-- CAMERA CONTROL
+			if ghostObject.x > 240 and ghostObject.x < 720 and not waitingForNewRound then
+				gameGroup.x = -ghostObject.x + 240
+			end
+			
 			
 			-- MAKE SURE GHOST's Rotation Doesn't Go Past Limits
 			if ghostObject.inAir then
