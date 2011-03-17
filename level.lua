@@ -1,5 +1,5 @@
 -- 
--- Abstract: Ghosts Vs Monsters sample project 
+-- Abstract: characters Vs Monsters sample project 
 -- Designed and created by Jonathan and Biffy Beebe of Beebe Games exclusively for Ansca, Inc.
 -- http://beebegamesonline.appspot.com/
 
@@ -78,7 +78,7 @@ function new()
 	local shotOrb
 	local shotArrow
 	local blastGlow
-	local ghostObject
+	local characterObject
 	local poofObject
 	local greenPoof; local poofTween
 
@@ -104,14 +104,14 @@ function new()
 	local gameIsActive = false
 	local waitingForNewRound
 	local restartTimer
-	local ghostTween
+	local characterTween
 	local screenPosition = "left"	--> "left" or "right"
 	local canSwipe = true
 	local swipeTween
 	local gameLives = 4
 	local gameScore = 0
 	local bestScore
-	local monsterCount
+	local ThroughExitPortal = false
 	
 
 	
@@ -137,15 +137,15 @@ function new()
 	properties.vSlabShape = { -12,-26, 12,-26, 12,26, -12,26 }
 	properties.tombDensity = 1.4
 	properties.tombShape = { -18,-21, 18,-21, 18,21, -18,21 }
-	properties.monsterDensity = 1.0
-	properties.monsterShape = { -12,-13, 12,-13, 12,13, -12,13 }
+	properties.portalDensity = 1.0
+	properties.portalShape = { -12,-13, 12,-13, 12,13, -12,13 }
 	
 	
 	-- AUDIO
 	
 	local tapSound = audio.loadSound( "soundfx/tapsound.wav" )
 	local blastOffSound = audio.loadSound( "soundfx/blastoff.wav" )
-	local ghostPoofSound = audio.loadSound( "soundfx/ghostpoof.wav" )
+	local characterPoofSound = audio.loadSound( "soundfx/characterpoof.wav" )
 	local monsterPoofSound = audio.loadSound( "soundfx/monsterpoof.wav" )
 	local impactSound = audio.loadSound( "soundfx/impact.wav" )
 	local weeSound = audio.loadSound( "soundfx/wee.wav" )
@@ -203,7 +203,7 @@ function new()
 	end
 	
 	local startNewRound = function()
-		if ghostObject then
+		if characterObject then
 			
 			local activateRound = function()
 				
@@ -217,56 +217,56 @@ function new()
 				groundLight1:toFront()
 				groundObject1:toFront()
 				groundObject2:toFront()
-				ghostObject.x = 52; --ghostObject.y = 195
-				ghostObject.y = 320;
-				ghostObject:stopAtFrame( 1 )
-				ghostObject.rotation = 0
-				ghostObject.isVisible = true
-				ghostObject.isBodyActive = true
-				ghostObject.isBullet = true
+				characterObject.x = 52; --characterObject.y = 195
+				characterObject.y = 320;
+				characterObject:stopAtFrame( 1 )
+				characterObject.rotation = 0
+				characterObject.isVisible = true
+				characterObject.isBodyActive = true
+				characterObject.isBullet = true
 				
 				audio.play( newRoundSound )
 				
-				local ghostLoaded = function()
+				local characterLoaded = function()
 					
 					gameIsActive = true
-					ghostObject.inAir = false
-					ghostObject.isHit = false
-					ghostObject:toFront()
+					characterObject.inAir = false
+					characterObject.isHit = false
+					characterObject:toFront()
 					
-					ghostObject.bodyType = "static"
+					characterObject.bodyType = "static"
 					
 					-- Show the pause button
 					pauseBtn.isVisible = true
 					pauseBtn.isActive = true
 					
 					-- START up and down animation
-					if ghostTween then
-						transition.cancel( ghostTween )
+					if characterTween then
+						transition.cancel( characterTween )
 					end
 					
-					local function ghostAnimation()
+					local function characterAnimation()
 						local animUp = function()
-							if ghostObject.inAir or shotOrb.isVisible then
-								transition.cancel( ghostTween )
+							if characterObject.inAir or shotOrb.isVisible then
+								transition.cancel( characterTween )
 							else
-								ghostTween = transition.to( ghostObject, { time=375, y=250, onComplete=ghostAnimation })
+								characterTween = transition.to( characterObject, { time=375, y=250, onComplete=characterAnimation })
 							end
 						end
 						
-						if ghostObject.inAir or shotOrb.isVisible then
-							transition.cancel( ghostTween )
+						if characterObject.inAir or shotOrb.isVisible then
+							transition.cancel( characterTween )
 						else
-							ghostTween = transition.to( ghostObject, { time=375, y=260, onComplete=animUp })
+							characterTween = transition.to( characterObject, { time=375, y=260, onComplete=animUp })
 						end
 					end
 					
-					ghostTween = transition.to( ghostObject, { time=375, y=250, onComplete=ghostAnimation })
+					characterTween = transition.to( characterObject, { time=375, y=250, onComplete=characterAnimation })
 					
 					-- END up and down animation
 				end
 				
-				transition.to( ghostObject, { time=1000, y=255, onComplete=ghostLoaded } )
+				transition.to( characterObject, { time=1000, y=255, onComplete=characterLoaded } )
 			end
 			
 			-- reset camera
@@ -338,9 +338,9 @@ function new()
 		if isWin == "yes" then
 			gameOverDisplay = display.newImageRect( "images/youwin.png", 390, 154 )
 			
-			-- Give score bonus depending on how many ghosts left
-			local ghostBonus = gameLives * 20000
-			local newScore = gameScore + ghostBonus
+			-- Give score bonus depending on how many characters left
+			local characterBonus = gameLives * 20000
+			local newScore = gameScore + characterBonus
 			setScore( newScore )
 			
 		else
@@ -494,12 +494,12 @@ function new()
 		-- 							
 		-- 							local scoreToPost = comma_value(gameScore)
 		-- 							
-		-- 							local statusUpdate = "just scored a " .. gameScore .. " on Ghosts v.s Monsters!"
+		-- 							local statusUpdate = "just scored a " .. gameScore .. " on characters v.s Monsters!"
 		-- 							
 		-- 							facebook.request( "me/feed", "POST", {
 		-- 								message=statusUpdate,
-		-- 								name="Download Ghosts vs. Monsters to Compete with Me!",
-		-- 								caption="Ghosts vs. Monsters - Sample app created with the Corona SDK by Ansca Mobile.",
+		-- 								name="Download characters vs. Monsters to Compete with Me!",
+		-- 								caption="characters vs. Monsters - Sample app created with the Corona SDK by Ansca Mobile.",
 		-- 								link="http://itunes.apple.com/us/app/your-app-name/id382456881?mt=8",
 		-- 								picture="http://www.yoursite.com/link-to-90x90-image.png" } )
 		-- 						end
@@ -603,16 +603,16 @@ function new()
 			
 			if gameLives == 3 then
 				life4.alpha = 0.3
-				if monsterCount < 1 then isGameOver = true; end
+				if ThroughExitPortal == true then isGameOver = true; end
 			elseif gameLives == 2 then
 				life4.alpha = 0.3
 				life3.alpha = 0.3
-				if monsterCount < 1 then isGameOver = true; end
+				if ThroughExitPortal == true then isGameOver = true; end
 			elseif gameLives == 1 then
 				life4.alpha = 0.3
 				life3.alpha = 0.3
 				life2.alpha = 0.3
-				if monsterCount < 1 then isGameOver = true; end
+				if ThroughExitPortal == true then isGameOver = true; end
 			elseif gameLives == 0 then
 				life4.alpha = 0.3
 				life3.alpha = 0.3
@@ -638,20 +638,20 @@ function new()
 		
 		if shouldPoof then
 				
-			local poofTheGhost = function()
+			local poofThecharacter = function()
 				local theDelay = 300
 				
-				-- Make ghost disappear and show "poof" animation
-				ghostObject:setLinearVelocity( 0, 0 )
-				ghostObject.bodyType = "static"
-				ghostObject.isVisible = false
-				ghostObject.isBodyActive = false
-				ghostObject.isBullet = false
-				ghostObject.rotation = 0
+				-- Make character disappear and show "poof" animation
+				characterObject:setLinearVelocity( 0, 0 )
+				characterObject.bodyType = "static"
+				characterObject.isVisible = false
+				characterObject.isBodyActive = false
+				characterObject.isBullet = false
+				characterObject.rotation = 0
 				
 				-- Poof code below --
-				audio.play( ghostPoofSound )
-				poofObject.x = ghostObject.x; poofObject.y = ghostObject.y
+				audio.play( characterPoofSound )
+				poofObject.x = characterObject.x; poofObject.y = characterObject.y
 				poofObject.alpha = 0
 				poofObject.isVisible = true
 				
@@ -696,25 +696,25 @@ function new()
 			end
 			
 			if instantPoof == "yes" then
-				local poofTimer = timer.performWithDelay( 70, poofTheGhost, 1 ) --makes the ghost last longer 
+				local poofTimer = timer.performWithDelay( 5, poofThecharacter, 1 ) --makes the character last longer 
 			else
-				local poofTimer = timer.performWithDelay( 1700, poofTheGhost, 1 )
+				local poofTimer = timer.performWithDelay( 1700, poofThecharacter, 1 )
 			end
 		else
 			
-			ghostObject:setLinearVelocity( 0, 0 )
-			ghostObject.bodyType = "static"
-			ghostObject.isVisible = false
-			ghostObject.isBodyActive = false
-			ghostObject.isBullet = false
-			ghostObject.rotation = 0
+			characterObject:setLinearVelocity( 0, 0 )
+			characterObject.bodyType = "static"
+			characterObject.isVisible = false
+			characterObject.isBodyActive = false
+			characterObject.isBullet = false
+			characterObject.rotation = 0
 			
 			--restartTimer = timer.performWithDelay( 300, startNewRound, 1 )
 			
 			if not isGameOver then
 				restartTimer = timer.performWithDelay( 300, startNewRound, 1 )
 			else
-				if monsterCount > 0 then
+				if ThroughExitPortal == false then
 					restartTimer = timer.performWithDelay( 300, function() callGameOver( "no" ); end, 1 )
 				else
 					restartTimer = timer.performWithDelay( 300, function() callGameOver( "yes" ); end, 1 )
@@ -853,9 +853,9 @@ function new()
 					
 					pauseBtn:toFront()
 					
-					-- STOP GHOST ANIMATION
-					if ghostTween then
-						transition.cancel( ghostTween )
+					-- STOP character ANIMATION
+					if characterTween then
+						transition.cancel( characterTween )
 					end
 				else
 					
@@ -872,28 +872,28 @@ function new()
 					gameIsActive = true
 					physics.start()
 					
-					-- START Ghost animation back up
-					if ghostTween then
-						transition.cancel( ghostTween )
+					-- START character animation back up
+					if characterTween then
+						transition.cancel( characterTween )
 					end
 					
-					local function ghostAnimation()
+					local function characterAnimation()
 						local animUp = function()
-							if ghostObject.inAir or shotOrb.isVisible then
-								transition.cancel( ghostTween )
+							if characterObject.inAir or shotOrb.isVisible then
+								transition.cancel( characterTween )
 							else
-								ghostTween = transition.to( ghostObject, { time=375, y=190, onComplete=ghostAnimation })
+								characterTween = transition.to( characterObject, { time=375, y=190, onComplete=characterAnimation })
 							end
 						end
 						
-						if ghostObject.inAir or shotOrb.isVisible then
-							transition.cancel( ghostTween )
+						if characterObject.inAir or shotOrb.isVisible then
+							transition.cancel( characterTween )
 						else
-							ghostTween = transition.to( ghostObject, { time=375, y=200, onComplete=animUp })
+							characterTween = transition.to( characterObject, { time=375, y=200, onComplete=animUp })
 						end
 					end
 					
-					ghostTween = transition.to( ghostObject, { time=375, y=190, onComplete=ghostAnimation })
+					characterTween = transition.to( characterObject, { time=375, y=190, onComplete=characterAnimation })
 				end
 			end
 		end
@@ -1002,14 +1002,18 @@ function new()
 		gameGroup:insert( shotOrb )
 	end
 	
-	local createGhost = function()
+	local createcharacter = function()
 		
-		local onGhostCollision = function( self, event )
+		local oncharacterCollision = function( self, event )
 			if event.phase == "began" then
 				
 				audio.play( impactSound )
 				
-				if ghostObject.isHit == false then
+				-- if event.other.myName == "portal"
+				-- 	
+				-- end
+				
+				if characterObject.isHit == false then
 				
 					if blastGlow.isVisible then
 						blastGlow.isVisible = false
@@ -1017,9 +1021,10 @@ function new()
 					
 					
 					if dotTimer then timer.cancel( dotTimer ); end
-					ghostObject.isHit = true
+					characterObject.isHit = true
+
 					
-					if event.other.myName == "wood" or event.other.myName == "stone" or event.other.myName == "tomb" or event.other.myName == "monster" then
+					if event.other.myName == "wood" or event.other.myName == "stone" or event.other.myName == "tomb" or event.other.myName == "portal" then
 						callNewRound( true, "yes" )
 					else
 						callNewRound( true, "no" )
@@ -1028,7 +1033,7 @@ function new()
 					local newScore = gameScore + 500
 					setScore( newScore )
 				
-				elseif ghostObject.isHit then
+				elseif characterObject.isHit then
 					return true
 				end
 			end
@@ -1042,36 +1047,37 @@ function new()
 		
 		gameGroup:insert( shotArrow )
 		
-		ghostObject = movieclip.newAnim({ "images/ghost1-waiting.png", "images/ghost1.png" }, 26, 26 )
-		ghostObject.x = 150; ghostObject.y = 195
-		ghostObject.isVisible = false
+		characterObject = movieclip.newAnim({ "images/character1-waiting.png", "images/character1.png" }, 26, 26 )
+		characterObject.x = 150; characterObject.y = 195
+		characterObject.isVisible = false
 		
-		ghostObject.isReady = false	--> Not "flingable" until touched.
-		ghostObject.inAir = false
-		ghostObject.isHit = false
-		ghostObject.isBullet = true
-		ghostObject.trailNum = 0
+		characterObject.isReady = false	--> Not "flingable" until touched.
+		characterObject.inAir = false
+		characterObject.isHit = false
+		characterObject.isBullet = true
+		characterObject.trailNum = 0
 		
-		ghostObject.radius = 12
-		physics.addBody( ghostObject, "static", { density=1.0, bounce=0.1, friction=0.15, radius=ghostObject.radius } )
-		ghostObject.rotation = 0
-		ghostObject:stopAtFrame( 1 )
+		characterObject.radius = 12
+		characterObject.myName = "character"
+		physics.addBody( characterObject, "static", { density=1.0, bounce=0.1, friction=0.15, radius=characterObject.radius } )
+		characterObject.rotation = 0
+		characterObject:stopAtFrame( 1 )
 		
 		-- START up and down animation
 		
-		--ghostTween = transition.to( ghostObject, { time=200, y=192, onComplete=ghostAnimation })
+		--characterTween = transition.to( characterObject, { time=200, y=192, onComplete=characterAnimation })
 		
 		-- END up and down animation
 		
 		-- Set up collisions
-		ghostObject.collision = onGhostCollision
-		ghostObject:addEventListener( "collision", ghostObject )
+		characterObject.collision = oncharacterCollision
+		characterObject:addEventListener( "collision", characterObject )
 		
 		
 		
 		-- Create the Blast Glow
 		blastGlow = display.newImageRect( "images/blastglow.png", 54, 54 )
-		blastGlow.x = ghostObject.x; blastGlow.y = ghostObject.y
+		blastGlow.x = characterObject.x; blastGlow.y = characterObject.y
 		blastGlow.isVisible = false
 		
 		-- Create Poof Objects
@@ -1086,19 +1092,19 @@ function new()
 		-- Insert objects into main group
 		gameGroup:insert( trailGroup )
 		gameGroup:insert( blastGlow )
-		gameGroup:insert( ghostObject )
+		gameGroup:insert( characterObject )
 		gameGroup:insert( poofObject )
 		gameGroup:insert( greenPoof )
 		
 	end
 	
 	
-	local onMonsterPostCollision = function( self, event )
-		if event.force > 10.5 and self.isHit == false then
+	local onExitPortalTouch = function( self, event )
+		if self.isHit == false and event.other.myName == "character" then
 			audio.play( monsterPoofSound )
 			
 			self.isHit = true
-			print( "Monster destroyed! Force: " .. event.force )
+			print( "Exited Portal!! " )
 			self.isVisible = false
 			self.isBodyActive = false
 			self.isBullet = false
@@ -1115,31 +1121,30 @@ function new()
 			end
 			poofTween = transition.to( greenPoof, { time=50, alpha=1.0, onComplete=fadePoof } )
 			
-			monsterCount = monsterCount - 1
-			if monsterCount < 0 then monsterCount = 0; end
+			ThroughExitPortal = true
 			
 			self.parent:remove( self )
 			self = nil
 			
-			local newScore = gameScore + mCeil(5000 * event.force)
+			local newScore = gameScore + mCeil(5000)
 			setScore( newScore )
 		end
 	end
 	
 	local onScreenTouch = function( event )
 		if gameIsActive then
-			if event.phase == "began" and ghostObject.inAir == false and event.xStart > 50 and event.xStart < 60 and event.yStart > 245 and event.yStart < 265 and screenPosition == "left" then
+			if event.phase == "began" and characterObject.inAir == false and event.xStart > 50 and event.xStart < 60 and event.yStart > 245 and event.yStart < 265 and screenPosition == "left" then
 				--
 				--
 				--
 				--
 				--
-				transition.cancel( ghostTween )
-				ghostObject.y = 255
-				ghostObject.isReady = true
+				transition.cancel( characterTween )
+				characterObject.y = 255
+				characterObject.isReady = true
 				shotOrb.isVisible = true
 				shotOrb.alpha = 0.75
-				shotOrb.x = ghostObject.x; shotOrb.y = ghostObject.y
+				shotOrb.x = characterObject.x; shotOrb.y = characterObject.y
 				shotOrb.xScale = 0.1; shotOrb.yScale = 0.1
 				
 				shotArrow.isVisible = true
@@ -1152,12 +1157,12 @@ function new()
 				
 				if gameLives < 1 then
 					-- GAME OVER
-					if monsterCount < 1 then
+					if ThroughExitPortal == true then
 						callGameOver( "yes" )
 					else
 						callGameOver( "no" )
 					end
-				elseif monsterCount < 1 and gameLives >= 1 then
+				elseif ThroughExitPortal == true and gameLives >= 1 then
 					
 					callGameOver( "yes" )
 				else
@@ -1171,17 +1176,17 @@ function new()
 				
 				if gameLives < 1 then
 					-- GAME OVER
-					if monsterCount < 1 then
+					if ThroughExitPortal == true then
 						callGameOver( "yes" )
 					else
 						callGameOver( "no" )
 					end
-				elseif monsterCount < 1 and gameLives >= 1 then
+				elseif ThroughExitPortal == true and gameLives >= 1 then
 					
 					callGameOver( "yes" )
 				end
 				
-			elseif event.phase == "ended" and ghostObject.isReady == false and ghostObject.inAir == false and canSwipe == true then
+			elseif event.phase == "ended" and characterObject.isReady == false and characterObject.inAir == false and canSwipe == true then
 				
 				local leftRight
 				
@@ -1234,28 +1239,28 @@ function new()
 					
 				end
 				
-			elseif event.phase == "ended" and ghostObject.isReady then
+			elseif event.phase == "ended" and characterObject.isReady then
 				-- Finger lifted from screen; fling the Roly Poly!
 				
 				local flingNow = function()
 					-- handle the shot orb and disable screen swiping
-					transition.cancel( ghostTween )
+					transition.cancel( characterTween )
 					shotOrb.isVisible = false
 					shotArrow.isVisible = false
 					canSwipe = false
 					
 					local x = event.x
 					local y = event.y
-					local xForce = (1 * (x - ghostObject.x)) * 3.5	--> 2.75
-					local yForce = (1 * (y - ghostObject.y)) * 3.5	--> 2.75
+					local xForce = (1 * (x - characterObject.x)) * 3.5	--> 2.75
+					local yForce = (1 * (y - characterObject.y)) * 3.5	--> 2.75
 					
 					audio.play( weeSound )
 					
-					ghostObject:stopAtFrame( 2 )
-					ghostObject.bodyType = "dynamic"
-					ghostObject:applyForce( xForce, yForce, ghostObject.x, ghostObject.y )
-					ghostObject.isReady = false
-					ghostObject.inAir = true
+					characterObject:stopAtFrame( 2 )
+					characterObject.bodyType = "dynamic"
+					characterObject:applyForce( xForce, yForce, characterObject.x, characterObject.y )
+					characterObject.isReady = false
+					characterObject.inAir = true
 					
 					
 					-- START TRAILING DOTS BLOCK
@@ -1272,10 +1277,10 @@ function new()
 						local createDot = function()
 							local trailDot
 							
-							if ghostObject.trailNum == 0 then
-								trailDot = display.newCircle( gameGroup, ghostObject.x, ghostObject.y, 2.5 )
+							if characterObject.trailNum == 0 then
+								trailDot = display.newCircle( gameGroup, characterObject.x, characterObject.y, 2.5 )
 							else
-								trailDot = display.newCircle( gameGroup, ghostObject.x, ghostObject.y, 1.5 )
+								trailDot = display.newCircle( gameGroup, characterObject.x, characterObject.y, 1.5 )
 							end
 							trailDot:setFillColor( 255, 255, 255, 255 )
 							trailDot.alpha = 1.0
@@ -1284,10 +1289,10 @@ function new()
 							--gameGroup:insert( trailGroup )
 							
 							
-							if ghostObject.trailNum == 0 then
-								ghostObject.trailNum = 1
+							if characterObject.trailNum == 0 then
+								characterObject.trailNum = 1
 							else
-								ghostObject.trailNum = 0
+								characterObject.trailNum = 0
 							end
 						end
 						
@@ -1298,8 +1303,8 @@ function new()
 					-- END TRAILING DOTS BLOCK
 					
 					-- Show the blast glow
-					blastGlow.x = ghostObject.x
-					blastGlow.y = ghostObject.y
+					blastGlow.x = characterObject.x
+					blastGlow.y = characterObject.y
 					blastGlow.isVisible = true
 				end
 				
@@ -1308,15 +1313,15 @@ function new()
 				audio.play( blastOffSound )
 				
 				
-				-- Make sure pause button is hidden/inactive
-				pauseBtn.isVisible = false
-				pauseBtn.isActive = false
+				-- -- Make sure pause button is hidden/inactive
+				-- pauseBtn.isVisible = false
+				-- pauseBtn.isActive = false
 			end
 			
 			if shotOrb.isVisible == true then
 				
-				local xOffset = ghostObject.x
-				local yOffset = ghostObject.y
+				local xOffset = characterObject.x
+				local yOffset = characterObject.y
 				
 				-- Formula math.sqrt( ((event.y - yOffset) ^ 2) + ((event.x - xOffset) ^ 2) )
 				local distanceBetween = mCeil(mSqrt( ((event.y - yOffset) ^ 2) + ((event.x - xOffset) ^ 2) ))
@@ -1327,8 +1332,8 @@ function new()
 				-- Formula: 90 + (math.atan2(y2 - y1, x2 - x1) * 180 / PI)
 				local angleBetween = mCeil(mAtan2( (event.y - yOffset), (event.x - xOffset) ) * 180 / mPi) + 90
 				
-				ghostObject.rotation = angleBetween --+ 180
-				shotArrow.rotation = ghostObject.rotation
+				characterObject.rotation = angleBetween --+ 180
+				shotArrow.rotation = characterObject.rotation
 			end
 			
 			if canSwipe == true then
@@ -1362,45 +1367,43 @@ function new()
 		if gameIsActive then
 			
 			
-			
+			-- Create Interactions
 			for key,data in pairs(leveldata.interactions) do 
 				if(data.myName=="blackhole") then
 
-					dx = data.x - ghostObject.x
-					dy = data.y - ghostObject.y
+					dx = data.x - characterObject.x
+					dy = data.y - characterObject.y
 					r = math.sqrt(dx^2 + dy^2)
 					forceFactor = data.forceFactor
 					fx = forceFactor*dx/r; fy = forceFactor*dy/r
-					ghostObject:applyForce( fx, fy, ghostObject.x, ghostObject.y )
+					characterObject:applyForce( fx, fy, characterObject.x, characterObject.y )
 
 				end
 				
 			end
 			
 			
-			
-			
-			
+		
 			-- CAMERA CONTROL
-			if ghostObject.x > 240 and ghostObject.x < 720 and not waitingForNewRound then
-				gameGroup.x = -ghostObject.x + 240
+			if characterObject.x > 240 and characterObject.x < 720 and not waitingForNewRound then
+				gameGroup.x = -characterObject.x + 240
 			end
 			
 			
-			-- MAKE SURE GHOST's Rotation Doesn't Go Past Limits
-			if ghostObject.inAir then
-				if ghostObject.rotation < -45 then
-					ghostObject.rotation = -45
-				elseif ghostObject.rotation > 30 then
-					ghostObject.rotation = 30
+			-- MAKE SURE character's Rotation Doesn't Go Past Limits
+			if characterObject.inAir then
+				if characterObject.rotation < -45 then
+					characterObject.rotation = -45
+				elseif characterObject.rotation > 30 then
+					characterObject.rotation = 30
 				end
 			end
 			
-			-- Make sure Blast Glow's Rotation is Equal to the Ghost's
+			-- Make sure Blast Glow's Rotation is Equal to the character's
 			if blastGlow.isVisible then
-				blastGlow.rotation = ghostObject.rotation
-				blastGlow.x = ghostObject.x - 10
-				blastGlow.y = ghostObject.y + 3
+				blastGlow.rotation = characterObject.rotation
+				blastGlow.x = characterObject.x - 10
+				blastGlow.y = characterObject.y + 3
 			end
 			
 			
@@ -1429,16 +1432,16 @@ function new()
 			end
 			-- END CLOUD MOVEMENT
 			
-			-- CHECK IF GHOST GOES PAST SCREEN
-			if ghostObject.isHit == false and ghostObject.x >= 960 then
-				ghostObject.isHit = true
+			-- CHECK IF character GOES PAST SCREEN
+			if characterObject.isHit == false and characterObject.x >= 1800 then
+				characterObject.isHit = true
 				if dotTimer then timer.cancel( dotTimer ); end
 				callNewRound( false, "no" )
 			end
 			
-			if ghostObject.isHit == false and ghostObject.x < 0 then
+			if characterObject.isHit == false and characterObject.x < -800 then
 				if dotTimer then timer.cancel( dotTimer ); end
-				ghostObject.isHit = true
+				characterObject.isHit = true
 				if dotTimer then timer.cancel( dotTimer ); end
 				callNewRound( false, "no" )
 			end
@@ -1451,7 +1454,7 @@ function new()
 		gameGroup:insert( levelGroup )
 		groundObject1:toFront()
 		groundObject2:toFront()
-		ghostObject:toFront()
+		characterObject:toFront()
 		poofObject:toFront()
 		greenPoof:toFront()
 		hudGroup:toFront()
@@ -1470,9 +1473,6 @@ function new()
 		restartLevel = leveldata.restartLevel
 		nextLevel =  leveldata.nextLevel
 		
-		--monsterCount = leveldata.monsterCount
-		
-		monsterCount=0
 		
 		for key,data in pairs(leveldata.objects) do 
 		
@@ -1483,13 +1483,11 @@ function new()
 			physics.addBody(obj, data.bodyType, {density=properties[data.density], bounce=data.bounce, friction = data.friction, shape=properties[data.shape]})
 			levelGroup:insert(obj)
 		
-			if(obj.myName=="monster") then
+			if(obj.myName=="portal") then
 		
 				obj.isHit=false
-				obj.postCollision = onMonsterPostCollision
+				obj.postCollision = onExitPortalTouch
 				obj:addEventListener("postCollision",obj)
-				
-				monsterCount = monsterCount + 1
 			
 			end
 		
@@ -1541,9 +1539,9 @@ function new()
 				
 				pauseBtn:toFront()
 				
-				-- STOP GHOST ANIMATION
-				if ghostTween then
-					transition.cancel( ghostTween )
+				-- STOP character ANIMATION
+				if characterTween then
+					transition.cancel( characterTween )
 				end
 			end
 			
@@ -1568,7 +1566,7 @@ function new()
 		drawBackground()
 		createGround()
 		createShotOrb()
-		createGhost()
+		createcharacter()
 		-- createMagnet()
 		-- magnet1 = display.newCircle( 100, 50, 20 )
 		-- 		magnet1:setFillColor(0,255,00)
@@ -1612,7 +1610,7 @@ function new()
 		end
 		
 		-- Stop any transitions
-		if ghostTween then transition.cancel( ghostTween ); end
+		if characterTween then transition.cancel( characterTween ); end
 		if poofTween then transition.cancel( poofTween ); end
 		if swipeTween then transition.cancel( swipeTween ); end
 		

@@ -263,7 +263,7 @@ function getData()
 			height = 30,
 			x = 723-420,
 			y = 135,
-			myName = "monster",
+			myName = "portal",
 			bodyType = "static",
 			density = "monsterDensity",
 			bounce=0,
