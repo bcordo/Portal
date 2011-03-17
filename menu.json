@@ -1,0 +1,10 @@
+[
+  {
+    "name":"start",
+    "x":160,
+    "y":80,
+    "width":160,
+    "height":32,
+    "transition":["fade", 0, 0, 0]
+  },
+]
