@@ -17,6 +17,22 @@ function getData()
 		"images/background2.png"
 	}
 	
+	leveldata.portal = 
+	{
+		id = "monster1",
+		src = "images/monster.png",
+		width = 26,
+		height = 30,
+		x = 772,
+		y = 235,
+		myName = "portal",
+		bodyType = "static",
+		density = "monsterDensity",
+		bounce=0,
+		friction=0.5,
+		shape="monsterShape"				
+	}
+	
 	leveldata.interactions = 
 	{
 		BlackHole1 = 
@@ -252,24 +268,23 @@ function getData()
 			bounce=0,
 			friction=0.5,
 			shape="hPlankShape"				
-		},			
-
-		monster1 = 
+		},	
+		
+		switch1 = 
 		{
-			id = "monster1",
-			src = "images/monster.png",
-			width = 26,
+			id = "switch1",
+			src = "images/whitehole.png",
+			width = 30,
 			height = 30,
-			x = 772,
-			y = 235,
-			myName = "portal",
+			x = 300,
+			y = 250,
+			myName = "switch",
 			bodyType = "static",
 			density = "monsterDensity",
 			bounce=0,
 			friction=0.5,
 			shape="monsterShape"				
-		},
-		
+		},		
 		
 		
 	}
