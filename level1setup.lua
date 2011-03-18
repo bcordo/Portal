@@ -11,6 +11,22 @@ function getData()
 	leveldata.restartLevel = 1
 	leveldata.nextLevel = 2
 	
+	leveldata.portal = 
+	{
+		id = "monster2",
+		src = "images/monster.png",
+		width = 26,
+		height = 30,
+		x = 723-420,
+		y = 135,
+		myName = "portal",
+		bodyType = "static",
+		density = "monsterDensity",
+		bounce=0,
+		friction=0.5,
+		shape="monsterShape"				
+	}
+	
 	leveldata.backgrounds = 
 	{
 		"images/background1.png",
@@ -253,24 +269,23 @@ function getData()
 			friction=0.5,
 			shape="hPlankShape"				
 		},			
-
+	
 		
-		monster2 = 
+		switch1 = 
 		{
-			id = "monster2",
-			src = "images/monster.png",
-			width = 26,
+			id = "switch1",
+			src = "images/whitehole.png",
+			width = 30,
 			height = 30,
-			x = 723-420,
-			y = 135,
-			myName = "portal",
+			x = 300,
+			y = 250,
+			myName = "switch",
 			bodyType = "static",
 			density = "monsterDensity",
 			bounce=0,
 			friction=0.5,
 			shape="monsterShape"				
-		},		
-		
+		},
 		
 	}
 	

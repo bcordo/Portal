@@ -83,7 +83,7 @@ function new()
 	local greenPoof; local poofTween
 
 	--New UI Elements
-	local portal
+	local portalObject
 	local switch
 	local pendulum
 	local balloon
@@ -112,7 +112,8 @@ function new()
 	local gameScore = 0
 	local bestScore
 	local ThroughExitPortal = false
-	
+	local portalOpen = false
+
 
 	
 
@@ -633,11 +634,16 @@ function new()
 			life2.alpha = 0.3
 			life1.alpha = 0.3
 			isGameOver = true
-		end
-			
+		end	
 		
 		if shouldPoof then
-				
+			
+			if characterObject.isexited == true then
+				characterObject.isVisible = false
+				shouldPoof = false
+				instantPoof = "no"
+			end
+					
 			local poofThecharacter = function()
 				local theDelay = 300
 				
@@ -655,10 +661,12 @@ function new()
 				poofObject.alpha = 0
 				poofObject.isVisible = true
 				
-				local fadePoof = function()
-					transition.to( poofObject, { time=2000, alpha=0 } )	
+				if characterObject.isexited ~= true then
+					local fadePoof = function()
+						transition.to( poofObject, { time=2000, alpha=0 } )	
+					end
+					transition.to( poofObject, { time=10, alpha=1.0, onComplete=fadePoof } )
 				end
-				transition.to( poofObject, { time=10, alpha=1.0, onComplete=fadePoof } )
 				
 				-- Move camera to far right to see effect
 				-- if gameGroup.x > -480 then
@@ -1002,6 +1010,26 @@ function new()
 		gameGroup:insert( shotOrb )
 	end
 	
+	-- local createPortal = function()
+	-- 	portal = display.newImageRect( "images/monster.png", 723-420, 135 )
+	-- 	portal.xScale = 1.0; portal.yScale = 1.0
+	-- 	portal.isVisible = false
+	-- 	
+	-- 	gameGroup:insert( portal )
+	-- end
+	
+	-- local createPortal = function()
+	-- 	portal = display.newImageRect(leveldata.portal.src, leveldata.portal.width, leveldata.portal.height)
+	-- 	portal.x = leveldata.portal.x
+	-- 	portal.y = leveldata.portal.y
+	-- 	portal.myName = leveldata.portal.myName
+	-- 	print("This is the portal name:" .. portal.x)
+	-- 	portalObject = physics.addBody(portal, leveldata.portal.bodyType, {density=properties[leveldata.portal.density], bounce=leveldata.portal.bounce, friction = leveldata.portal.friction, shape=properties[leveldata.portal.shape]})
+	-- 	gameGroup:insert(portal)
+	-- 	portal.isVisible = false
+	-- 	print("Portal Invisible!!!!")
+	-- end
+	
 	local createcharacter = function()
 		
 		local oncharacterCollision = function( self, event )
@@ -1009,9 +1037,13 @@ function new()
 				
 				audio.play( impactSound )
 				
-				-- if event.other.myName == "portal"
-				-- 	
-				-- end
+				if event.other.myName == "switch" then
+						portalOpen = true
+				end
+				
+				if event.other.myName == "portal" then
+						characterObject.isexited = true		
+				end
 				
 				if characterObject.isHit == false then
 				
@@ -1024,7 +1056,7 @@ function new()
 					characterObject.isHit = true
 
 					
-					if event.other.myName == "wood" or event.other.myName == "stone" or event.other.myName == "tomb" or event.other.myName == "portal" then
+					if event.other.myName == "wood" or event.other.myName == "stone" then
 						callNewRound( true, "yes" )
 					else
 						callNewRound( true, "no" )
@@ -1146,6 +1178,7 @@ function new()
 				shotOrb.alpha = 0.75
 				shotOrb.x = characterObject.x; shotOrb.y = characterObject.y
 				shotOrb.xScale = 0.1; shotOrb.yScale = 0.1
+				
 				
 				shotArrow.isVisible = true
 			
@@ -1366,7 +1399,6 @@ function new()
 	local gameLoop = function()
 		if gameIsActive then
 			
-			
 			-- Create Interactions
 			for key,data in pairs(leveldata.interactions) do 
 				if(data.myName=="blackhole") then
@@ -1381,8 +1413,6 @@ function new()
 				end
 				
 			end
-			
-			
 		
 			-- CAMERA CONTROL
 			if characterObject.x > 240 and characterObject.x < 720 and not waitingForNewRound then
@@ -1406,6 +1436,9 @@ function new()
 				blastGlow.y = characterObject.y + 3
 			end
 			
+			if portalOpen == true then
+				portal.isVisible = true
+			end
 			
 			-- MOVE CLOUDS SLOWLY
 			local cloudMoveSpeed = 0.5
@@ -1473,25 +1506,39 @@ function new()
 		restartLevel = leveldata.restartLevel
 		nextLevel =  leveldata.nextLevel
 		
-		
+
 		for key,data in pairs(leveldata.objects) do 
-		
+			
 			local obj = display.newImageRect(data.src, data.width, data.height)
 			obj.x = data.x
 			obj.y = data.y
 			obj.myName = data.myName
 			physics.addBody(obj, data.bodyType, {density=properties[data.density], bounce=data.bounce, friction = data.friction, shape=properties[data.shape]})
 			levelGroup:insert(obj)
-		
-			if(obj.myName=="portal") then
-		
-				obj.isHit=false
-				obj.postCollision = onExitPortalTouch
-				obj:addEventListener("postCollision",obj)
 			
-			end
-		
+			-- if(data.myName ~= "portal") then
+			-- obj.isHit=false
+			-- obj.postCollision = onExitPortalTouch
+			-- obj:addEventListener("postCollision",obj)
+			-- print("Portal Invisible!!!!")
+			-- end
+			
 		end
+		
+		--Create Portal
+		portal = display.newImageRect(leveldata.portal.src, leveldata.portal.width, leveldata.portal.height)
+		portal.x = leveldata.portal.x
+		portal.y = leveldata.portal.y
+		portal.myName = leveldata.portal.myName
+		print("This is the portal name:" .. portal.x)
+		portalObject = physics.addBody(portal, leveldata.portal.bodyType, {density=properties[leveldata.portal.density], bounce=leveldata.portal.bounce, friction = leveldata.portal.friction, shape=properties[leveldata.portal.shape]})
+		gameGroup:insert(portal)
+		portal.isVisible = false
+		print("Portal Invisible!!!!")
+		
+		portal.isHit=false
+		portal.postCollision = onExitPortalTouch
+		portal:addEventListener("postCollision",portal)
 		
 		for key,data in pairs(leveldata.interactions) do 
 		
@@ -1564,9 +1611,11 @@ function new()
 		
 		-- DRAW GAME OBJECTS
 		drawBackground()
+		-- createPortal()
 		createGround()
 		createShotOrb()
 		createcharacter()
+		
 		-- createMagnet()
 		-- magnet1 = display.newCircle( 100, 50, 20 )
 		-- 		magnet1:setFillColor(0,255,00)
