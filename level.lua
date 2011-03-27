@@ -1042,7 +1042,14 @@ function new()
 				end
 				
 				if event.other.myName == "portal" then
-						characterObject.isexited = true		
+						characterObject.isexited = true
+						print("isexited = true")	
+				end
+				
+				if event.other.myName == "teleporter1" then
+						print("Transport time!!")
+						-- characterObject.x = 120--teleporter2.x
+						-- characterObject.y = 200--teleporter2.y
 				end
 				
 				if characterObject.isHit == false then
@@ -1134,7 +1141,9 @@ function new()
 	local onExitPortalTouch = function( self, event )
 		if self.isHit == false and event.other.myName == "character" then
 			audio.play( monsterPoofSound )
-			
+			characterObject.isBullet = false
+			characterObject.isVisible = false
+			characterObject.trailNum = 0
 			self.isHit = true
 			print( "Exited Portal!! " )
 			self.isVisible = false
@@ -1160,6 +1169,17 @@ function new()
 			
 			local newScore = gameScore + mCeil(5000)
 			setScore( newScore )
+		end
+	end
+	
+	local onTransporter1Touch = function( self, event )
+		if event.other.myName == "character" then
+			audio.play( monsterPoofSound )
+			needToTeleport = true
+			-- characterObject.x = 100
+			-- characterObject.y = 200
+			print( "Transport Time!! " )
+			
 		end
 	end
 	
@@ -1413,6 +1433,13 @@ function new()
 				end
 				
 			end
+			
+			--Teleporter Function
+			if(needToTeleport == true) then
+				characterObject.x = teleporter2.x
+				characterObject.y = teleporter2.y
+				needToTeleport = false
+			end
 		
 			-- CAMERA CONTROL
 			if characterObject.x > 240 and characterObject.x < 720 and not waitingForNewRound then
@@ -1509,12 +1536,27 @@ function new()
 
 		for key,data in pairs(leveldata.objects) do 
 			
+			teleporter1 = display.newRect(40,100,50,10)
+			teleporter1.angle = 90
+			teleporter1.myName = "teleporter1"
+			physics.addBody(teleporter1,"static",{isSensor = true})
+			gameGroup:insert(teleporter1)
+			
+			teleporter1.collision = onTransporter1Touch
+			teleporter1:addEventListener("collision",teleporter1)
+			
+			teleporter2 = display.newRect(120,200,50,10)
+			teleporter2.angle = 90
+			teleporter2.myName = "teleporter2"
+			print("teleporter 2 . x = ".. teleporter2.x)
+			levelGroup:insert(teleporter2)
+			
 			local obj = display.newImageRect(data.src, data.width, data.height)
 			obj.x = data.x
 			obj.y = data.y
 			obj.myName = data.myName
 			physics.addBody(obj, data.bodyType, {density=properties[data.density], bounce=data.bounce, friction = data.friction, shape=properties[data.shape]})
-			levelGroup:insert(obj)
+			gameGroup:insert(obj)
 			
 			-- if(data.myName ~= "portal") then
 			-- obj.isHit=false
@@ -1531,14 +1573,14 @@ function new()
 		portal.y = leveldata.portal.y
 		portal.myName = leveldata.portal.myName
 		print("This is the portal name:" .. portal.x)
-		portalObject = physics.addBody(portal, leveldata.portal.bodyType, {density=properties[leveldata.portal.density], bounce=leveldata.portal.bounce, friction = leveldata.portal.friction, shape=properties[leveldata.portal.shape]})
+		portalObject = physics.addBody(portal, leveldata.portal.bodyType, {isSensor = true,shape=properties[leveldata.portal.shape]})--{density=properties[leveldata.portal.density], bounce=leveldata.portal.bounce, friction = leveldata.portal.friction, shape=properties[leveldata.portal.shape]})
 		gameGroup:insert(portal)
 		portal.isVisible = false
 		print("Portal Invisible!!!!")
 		
 		portal.isHit=false
-		portal.postCollision = onExitPortalTouch
-		portal:addEventListener("postCollision",portal)
+		portal.collision = onExitPortalTouch
+		portal:addEventListener("collision",portal)
 		
 		for key,data in pairs(leveldata.interactions) do 
 		
