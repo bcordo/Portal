@@ -11,6 +11,43 @@ function getData()
 	leveldata.restartLevel = 1
 	leveldata.nextLevel = 2
 	
+	leveldata.characters = 
+	{
+		character1 = {
+		id = "character",
+		src1 = "images/character1.png",
+		src2 = "images/character1-waiting.png",
+		width = 26,
+		height = 26,
+		},
+		
+		character2 = {
+		id = "robot1",
+		src1 = "images/greenpoof.png",
+		src2 = "images/greenpoof.png",
+		width = 26,
+		height = 26,
+		},
+		
+		character3 = {
+		id = "robot2",
+		src1 = "images/monster.png",
+		src2 = "images/monster.png",
+		width = 26,
+		height = 26,
+		},
+		
+		character4 = {
+		id = "robot3",
+		src1 = "images/orb.png",
+		src2 = "images/orb.png",
+		width = 26,
+		height = 26,
+		},
+		
+		
+	}
+	
 	leveldata.portal = 
 	{
 		id = "monster2",

@@ -78,7 +78,7 @@ function new()
 	local shotOrb
 	local shotArrow
 	local blastGlow
-	local characterObject
+	local characterObject = {}
 	local poofObject
 	local greenPoof; local poofTween
 
@@ -113,7 +113,7 @@ function new()
 	local bestScore
 	local ThroughExitPortal = false
 	local portalOpen = false
-
+	characterBoolean = 1
 
 	
 
@@ -204,6 +204,7 @@ function new()
 	end
 	
 	local startNewRound = function()
+		createcharacter()
 		if characterObject then
 			
 			local activateRound = function()
@@ -636,9 +637,9 @@ function new()
 			isGameOver = true
 		end	
 		
-		if shouldPoof then
+		if shouldPoof and characterObject.isExited ~= true then
 			
-			if characterObject.isexited == true then
+			if characterObject.isExited == true then
 				characterObject.isVisible = false
 				shouldPoof = false
 				instantPoof = "no"
@@ -661,7 +662,7 @@ function new()
 				poofObject.alpha = 0
 				poofObject.isVisible = true
 				
-				if characterObject.isexited ~= true then
+				if characterObject.isExited ~= true then
 					local fadePoof = function()
 						transition.to( poofObject, { time=2000, alpha=0 } )	
 					end
@@ -704,9 +705,9 @@ function new()
 			end
 			
 			if instantPoof == "yes" then
-				local poofTimer = timer.performWithDelay( 5, poofThecharacter, 1 ) --makes the character last longer 
+				local poofTimer = timer.performWithDelay( 10, poofThecharacter, 1 ) --makes the character last longer 
 			else
-				local poofTimer = timer.performWithDelay( 1700, poofThecharacter, 1 )
+				local poofTimer = timer.performWithDelay( 1500, poofThecharacter, 1 )
 			end
 		else
 			
@@ -1030,7 +1031,7 @@ function new()
 	-- 	print("Portal Invisible!!!!")
 	-- end
 	
-	local createcharacter = function()
+	createcharacter = function()
 		
 		local oncharacterCollision = function( self, event )
 			if event.phase == "began" then
@@ -1042,12 +1043,11 @@ function new()
 				end
 				
 				if event.other.myName == "portal" then
-						characterObject.isexited = true
-						print("isexited = true")	
+						characterObject.isExited = true
+						print("isExited = true")	
 				end
 				
 				if event.other.myName == "teleporter1" then
-						print("Transport time!!")
 						-- characterObject.x = 120--teleporter2.x
 						-- characterObject.y = 200--teleporter2.y
 				end
@@ -1065,8 +1065,10 @@ function new()
 					
 					if event.other.myName == "wood" or event.other.myName == "stone" then
 						callNewRound( true, "yes" )
+						characterBoolean = characterBoolean + 1
 					else
 						callNewRound( true, "no" )
+						characterBoolean = characterBoolean + 1
 					end
 					
 					local newScore = gameScore + 500
@@ -1086,7 +1088,16 @@ function new()
 		
 		gameGroup:insert( shotArrow )
 		
-		characterObject = movieclip.newAnim({ "images/character1-waiting.png", "images/character1.png" }, 26, 26 )
+		i = 1
+		characterTable = {}
+		for key,data in pairs(leveldata.characters) do 
+			characterTable[ i ] = data
+			-- print(characterTable[ i ].src1)
+			i = i + 1
+		end
+	
+		print(characterBoolean)
+		characterObject = movieclip.newAnim({ characterTable[characterBoolean].src2, characterTable[characterBoolean].src1 }, characterTable[characterBoolean].width, characterTable[characterBoolean].height )
 		characterObject.x = 150; characterObject.y = 195
 		characterObject.isVisible = false
 		
@@ -1098,7 +1109,7 @@ function new()
 		
 		characterObject.radius = 12
 		characterObject.myName = "character"
-		physics.addBody( characterObject, "static", { density=1.0, bounce=0.1, friction=0.15, radius=characterObject.radius } )
+		physics.addBody( characterObject, "static", { density=1.0, bounce=0.1, friction=0.15, radius=movieclip.newAnimradius } )
 		characterObject.rotation = 0
 		characterObject:stopAtFrame( 1 )
 		
@@ -1141,14 +1152,15 @@ function new()
 	local onExitPortalTouch = function( self, event )
 		if self.isHit == false and event.other.myName == "character" then
 			audio.play( monsterPoofSound )
-			characterObject.isBullet = false
-			characterObject.isVisible = false
-			characterObject.trailNum = 0
 			self.isHit = true
 			print( "Exited Portal!! " )
 			self.isVisible = false
 			self.isBodyActive = false
 			self.isBullet = false
+			characterObject:setLinearVelocity( 0, 0 )
+			characterObject.isVisible = false
+			characterObject.isBullet = false
+			characterObject.trailNum = 0
 			
 			-- Poof code below --
 			if poofTween then transition.cancel( poofTween ); end
@@ -1172,16 +1184,28 @@ function new()
 		end
 	end
 	
-	local onTransporter1Touch = function( self, event )
+	local onTeleporter1Touch = function( self, event )
 		if event.other.myName == "character" then
 			audio.play( monsterPoofSound )
-			needToTeleport = true
+			needToTeleport1 = true
+			needToTeleport2 = false
 			-- characterObject.x = 100
 			-- characterObject.y = 200
-			print( "Transport Time!! " )
 			
 		end
 	end
+	
+	local onTeleporter2Touch = function( self, event )
+		if event.other.myName == "character" then
+			audio.play( monsterPoofSound )
+			needToTeleport1 = false
+			needToTeleport2 = true
+			-- characterObject.x = 100
+			-- characterObject.y = 200
+			
+		end
+	end
+	
 	
 	local onScreenTouch = function( event )
 		if gameIsActive then
@@ -1435,10 +1459,28 @@ function new()
 			end
 			
 			--Teleporter Function
-			if(needToTeleport == true) then
-				characterObject.x = teleporter2.x
-				characterObject.y = teleporter2.y
-				needToTeleport = false
+			if(needToTeleport1 == true and needToTeleport2 ~= true) then
+				cvx,cvy = characterObject:getLinearVelocity()
+				if cvy < 0 then
+					characterObject.x = teleporter2.x
+					characterObject.y = teleporter2.y - 2*teleporter2.width - 20
+				elseif cvy >= 0 then
+					characterObject.x = teleporter2.x
+					characterObject.y = teleporter2.y + 2*teleporter2.width + 20
+				end
+				needToTeleport1 = false
+			end
+			
+			if(needToTeleport2 == true and needToTeleport1 ~= true) then
+					cvx,cvy = characterObject:getLinearVelocity()
+					if cvy < 0 then
+						characterObject.x = teleporter1.x
+						characterObject.y = teleporter1.y - 2*teleporter2.width - 20 
+					elseif cvy >= 0 then
+						characterObject.x = teleporter1.x
+						characterObject.y = teleporter1.y + 2*teleporter2.width + 20
+					end
+					needToTeleport2 = false
 			end
 		
 			-- CAMERA CONTROL
@@ -1497,6 +1539,7 @@ function new()
 				characterObject.isHit = true
 				if dotTimer then timer.cancel( dotTimer ); end
 				callNewRound( false, "no" )
+				characterBoolean = characterBoolean + 1
 			end
 			
 			if characterObject.isHit == false and characterObject.x < -800 then
@@ -1504,6 +1547,7 @@ function new()
 				characterObject.isHit = true
 				if dotTimer then timer.cancel( dotTimer ); end
 				callNewRound( false, "no" )
+				characterBoolean = characterBoolean + 1
 			end
 		end
 	end
@@ -1536,20 +1580,23 @@ function new()
 
 		for key,data in pairs(leveldata.objects) do 
 			
-			teleporter1 = display.newRect(40,100,50,10)
-			teleporter1.angle = 90
+			teleporter1 = display.newRect(50,100,10,50)
+			teleporter1:rotate(90)
 			teleporter1.myName = "teleporter1"
 			physics.addBody(teleporter1,"static",{isSensor = true})
 			gameGroup:insert(teleporter1)
 			
-			teleporter1.collision = onTransporter1Touch
+			teleporter1.collision = onTeleporter1Touch
 			teleporter1:addEventListener("collision",teleporter1)
 			
-			teleporter2 = display.newRect(120,200,50,10)
-			teleporter2.angle = 90
-			teleporter2.myName = "teleporter2"
-			print("teleporter 2 . x = ".. teleporter2.x)
-			levelGroup:insert(teleporter2)
+			teleporter2 = display.newRect(120,200,10,50)
+			teleporter2:rotate(90)
+			teleporter2.myName = "teleporter1"
+			physics.addBody(teleporter2,"static",{isSensor = true})
+			gameGroup:insert(teleporter2)
+			
+			teleporter2.collision = onTeleporter2Touch
+			teleporter2:addEventListener("collision",teleporter2)
 			
 			local obj = display.newImageRect(data.src, data.width, data.height)
 			obj.x = data.x
@@ -1653,7 +1700,6 @@ function new()
 		
 		-- DRAW GAME OBJECTS
 		drawBackground()
-		-- createPortal()
 		createGround()
 		createShotOrb()
 		createcharacter()
