@@ -143,7 +143,9 @@ function new()
 	
 	
 	-- AUDIO
-	
+	local portalOpenSound = audio.loadSound("soundfx/portalopen.wav")
+	local portalExitSound = audio.loadSound("soundfx/portal.wav")
+	-- local telporterSound = audio.loadSound("soundfx/teleporter.wav")
 	local tapSound = audio.loadSound( "soundfx/tapsound.wav" )
 	local blastOffSound = audio.loadSound( "soundfx/blastoff.wav" )
 	local characterPoofSound = audio.loadSound( "soundfx/characterpoof.wav" )
@@ -151,8 +153,8 @@ function new()
 	local impactSound = audio.loadSound( "soundfx/impact.wav" )
 	local weeSound = audio.loadSound( "soundfx/wee.wav" )
 	local newRoundSound = audio.loadSound( "soundfx/entersound.wav" )
-	local youWinSound = audio.loadSound( "soundfx/youwin.wav" )
-	local youLoseSound = audio.loadSound( "soundfx/youlose.wav" )
+	local youWinSound = audio.loadSound( "soundfx/win.wav" )
+	local youLoseSound = audio.loadSound( "soundfx/lose.wav" )
 	
 	--***************************************************
 
@@ -1040,17 +1042,14 @@ function new()
 				
 				if event.other.myName == "switch" then
 						portalOpen = true
+						audio.play( portalOpenSound )
 				end
 				
 				if event.other.myName == "portal" then
 						characterObject.isExited = true
 						print("isExited = true")	
 				end
-				
-				if event.other.myName == "teleporter1" then
-						-- characterObject.x = 120--teleporter2.x
-						-- characterObject.y = 200--teleporter2.y
-				end
+
 				
 				if characterObject.isHit == false then
 				
@@ -1098,7 +1097,7 @@ function new()
 	
 		print(characterBoolean)
 		characterObject = movieclip.newAnim({ characterTable[characterBoolean].src2, characterTable[characterBoolean].src1 }, characterTable[characterBoolean].width, characterTable[characterBoolean].height )
-		characterObject.x = 150; characterObject.y = 195
+		characterObject.x = -500; characterObject.y = -500
 		characterObject.isVisible = false
 		
 		characterObject.isReady = false	--> Not "flingable" until touched.
@@ -1151,7 +1150,7 @@ function new()
 	
 	local onExitPortalTouch = function( self, event )
 		if self.isHit == false and event.other.myName == "character" then
-			audio.play( monsterPoofSound )
+			audio.play( portalExitSound )
 			self.isHit = true
 			print( "Exited Portal!! " )
 			self.isVisible = false
@@ -1186,7 +1185,7 @@ function new()
 	
 	local onTeleporter1Touch = function( self, event )
 		if event.other.myName == "character" then
-			audio.play( monsterPoofSound )
+			-- audio.play( telporterSound )
 			needToTeleport1 = true
 			needToTeleport2 = false
 			-- characterObject.x = 100
@@ -1197,7 +1196,7 @@ function new()
 	
 	local onTeleporter2Touch = function( self, event )
 		if event.other.myName == "character" then
-			audio.play( monsterPoofSound )
+			-- audio.play( telporterSound )
 			needToTeleport1 = false
 			needToTeleport2 = true
 			-- characterObject.x = 100
@@ -1458,28 +1457,47 @@ function new()
 				
 			end
 			
+			
 			--Teleporter Function
 			if(needToTeleport1 == true and needToTeleport2 ~= true) then
-				cvx,cvy = characterObject:getLinearVelocity()
-				if cvy < 0 then
-					characterObject.x = teleporter2.x
-					characterObject.y = teleporter2.y - 2*teleporter2.width - 20
-				elseif cvy >= 0 then
-					characterObject.x = teleporter2.x
-					characterObject.y = teleporter2.y + 2*teleporter2.width + 20
-				end
+				local cvx,cvy = characterObject:getLinearVelocity()
+				local cx = characterObject.x
+				local cy = characterObject.y
+				local vTotal = math.sqrt(cvx^2 + cvy^2)
+				local cvxPrime = cvx*math.cos((mPi/180)*(math.abs(rotateAngle2 - rotateAngle1)) ) + cvy*math.sin((mPi/180)*(math.abs(rotateAngle2 - rotateAngle1)))
+				local cvyPrime = -cvx*math.sin((mPi/180)*(math.abs(rotateAngle2 - rotateAngle1))) + cvy*math.cos((mPi/180)*(math.abs(rotateAngle2 - rotateAngle1)))
+				local cxPrime = cx*math.cos((mPi/180)*(math.abs(rotateAngle2 - rotateAngle1))) + cy*math.sin((mPi/180)*(math.abs(rotateAngle2 - rotateAngle1)))
+				local cyPrime = -cx*math.sin((mPi/180)*(math.abs(rotateAngle2 - rotateAngle1))) + cy*math.cos((mPi/180)*(math.abs(rotateAngle2 - rotateAngle1)))
+				
+				characterObject:setLinearVelocity(vTotal*math.cos((mPi/180)*rotateAngle2),-vTotal*math.sin((mPi/180)*rotateAngle2))
+				characterObject.x = teleporter2.x + (math.cos((mPi/180)*rotateAngle2)*(2*teleporter2.width + 20)) 
+				characterObject.y = teleporter2.y - (math.sin((mPi/180)*rotateAngle2)*(2*teleporter2.width + 20))
+				
+				-- characterObject:setLinearVelocity(cvxPrime,cvyPrime)
+				-- characterObject.x = teleporter2.x + (cvxPrime/(math.abs(cyPrime)))*(2*teleporter2.width + 20)
+				-- characterObject.y = teleporter2.y + (cvyPrime/(math.abs(cyPrime)))*(2*teleporter2.width + 20)
+				
 				needToTeleport1 = false
 			end
 			
 			if(needToTeleport2 == true and needToTeleport1 ~= true) then
-					cvx,cvy = characterObject:getLinearVelocity()
-					if cvy < 0 then
-						characterObject.x = teleporter1.x
-						characterObject.y = teleporter1.y - 2*teleporter2.width - 20 
-					elseif cvy >= 0 then
-						characterObject.x = teleporter1.x
-						characterObject.y = teleporter1.y + 2*teleporter2.width + 20
-					end
+					local cvx,cvy = characterObject:getLinearVelocity()
+					local cx = characterObject.x
+					local cy = characterObject.y
+					local vTotal = math.sqrt(cvx^2 + cvy^2)
+					local cvxPrime = cvx*math.cos((mPi/180)*(rotateAngle1 - rotateAngle2)) + cvy*math.sin((mPi/180)*(rotateAngle1 - rotateAngle2))
+					local cvyPrime = -cvx*math.sin((mPi/180)*(rotateAngle1 - rotateAngle2)) + cvy*math.cos((mPi/180)*(rotateAngle1 - rotateAngle2))
+					local cxPrime = cx*math.cos((mPi/180)*(rotateAngle1 - rotateAngle2)) + cy*math.sin((mPi/180)*(rotateAngle1 - rotateAngle2))
+					local cyPrime = -cx*math.sin((mPi/180)*(rotateAngle1 - rotateAngle2)) + cy*math.cos((mPi/180)*(rotateAngle1 - rotateAngle2))
+
+					characterObject:setLinearVelocity(vTotal*math.cos((mPi/180)*rotateAngle1),-vTotal*math.sin((mPi/180)*rotateAngle1))
+					characterObject.x = teleporter1.x + (math.cos((mPi/180)*rotateAngle1)*(2*teleporter1.width + 20)) 
+					characterObject.y = teleporter1.y - (math.sin((mPi/180)*rotateAngle1)*(2*teleporter1.width + 20) ) 
+					
+					-- characterObject:setLinearVelocity(cvxPrime,cvyPrime)
+					-- characterObject.x = teleporter1.x + (cvxPrime/(math.abs(cyPrime)))*(2*teleporter1.width + 20)
+					-- characterObject.y = teleporter1.y + (cyPrime/(math.abs(cyPrime)))*(2*teleporter1.width + 20)
+
 					needToTeleport2 = false
 			end
 		
@@ -1577,11 +1595,11 @@ function new()
 		restartLevel = leveldata.restartLevel
 		nextLevel =  leveldata.nextLevel
 		
-
-		for key,data in pairs(leveldata.objects) do 
-			
-			teleporter1 = display.newRect(50,100,10,50)
-			teleporter1:rotate(90)
+			teleporter1 = display.newImageRect("images/teleporter.png",15,70)
+			teleporter1.x = 50
+			teleporter1.y = 120
+			rotateAngle1 = 90
+			teleporter1:rotate(rotateAngle1)
 			teleporter1.myName = "teleporter1"
 			physics.addBody(teleporter1,"static",{isSensor = true})
 			gameGroup:insert(teleporter1)
@@ -1589,14 +1607,20 @@ function new()
 			teleporter1.collision = onTeleporter1Touch
 			teleporter1:addEventListener("collision",teleporter1)
 			
-			teleporter2 = display.newRect(120,200,10,50)
-			teleporter2:rotate(90)
+			teleporter2 = display.newImageRect("images/teleporter.png",15,70)
+			teleporter2.x = 120
+			teleporter2.y = 175
+			rotateAngle2 = 270
+			teleporter2:rotate(rotateAngle2)
 			teleporter2.myName = "teleporter1"
 			physics.addBody(teleporter2,"static",{isSensor = true})
 			gameGroup:insert(teleporter2)
 			
 			teleporter2.collision = onTeleporter2Touch
-			teleporter2:addEventListener("collision",teleporter2)
+			teleporter2:addEventListener("collision",teleporter2)	
+		
+
+		for key,data in pairs(leveldata.objects) do 
 			
 			local obj = display.newImageRect(data.src, data.width, data.height)
 			obj.x = data.x

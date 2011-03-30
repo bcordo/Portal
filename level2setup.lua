@@ -2,7 +2,7 @@ module(..., package.seeall)
 
 function getData()
 
-	print("this is level 2 setup")	
+	print("this is level 1 setup")	
 	
 	local leveldata = {}
 	
@@ -11,26 +11,63 @@ function getData()
 	leveldata.restartLevel = 2
 	leveldata.nextLevel = 1
 	
-	leveldata.backgrounds = 
+	leveldata.characters = 
 	{
-		"images/background1.png",
-		"images/background2.png"
+		character1 = {
+		id = "character",
+		src1 = "images/character1.png",
+		src2 = "images/character1-waiting.png",
+		width = 26,
+		height = 26,
+		},
+		
+		character2 = {
+		id = "robot1",
+		src1 = "images/greenpoof.png",
+		src2 = "images/greenpoof.png",
+		width = 26,
+		height = 26,
+		},
+		
+		character3 = {
+		id = "robot2",
+		src1 = "images/monster.png",
+		src2 = "images/monster.png",
+		width = 26,
+		height = 26,
+		},
+		
+		character4 = {
+		id = "robot3",
+		src1 = "images/orb.png",
+		src2 = "images/orb.png",
+		width = 26,
+		height = 26,
+		},
+		
+		
 	}
 	
 	leveldata.portal = 
 	{
-		id = "monster1",
+		id = "monster2",
 		src = "images/monster.png",
 		width = 26,
 		height = 30,
-		x = 772,
-		y = 235,
+		x = 723-420,
+		y = 135,
 		myName = "portal",
 		bodyType = "static",
 		density = "monsterDensity",
 		bounce=0,
 		friction=0.5,
 		shape="monsterShape"				
+	}
+	
+	leveldata.backgrounds = 
+	{
+		"images/background1.png",
+		"images/background2.png"
 	}
 	
 	leveldata.interactions = 
@@ -68,7 +105,7 @@ function getData()
 			src = "images/vertical-stone.png",
 			width = 28,
 			height = 58,
-			x = 575,
+			x = 575-420,
 			y = 215,
 			myName = "stone",
 			bodyType = "dynamic",
@@ -84,7 +121,7 @@ function getData()
 			src = "images/vertical-stone.png",
 			width = 28,
 			height = 58,
-			x = 575,
+			x = 575-420,
 			y = 155,
 			myName = "stone",
 			bodyType = "dynamic",
@@ -100,7 +137,7 @@ function getData()
 			src = "images/vertical-wood.png",
 			width = 14,
 			height = 98,
-			x = 623,
+			x = 623-420,
 			y = 215,
 			myName = "wood",
 			bodyType = "dynamic",
@@ -116,7 +153,7 @@ function getData()
 			src = "images/vertical-wood.png",
 			width = 14,
 			height = 98,
-			x = 723,
+			x = 723-420,
 			y = 215,
 			myName = "wood",
 			bodyType = "dynamic",
@@ -132,7 +169,7 @@ function getData()
 			src = "images/vertical-wood.png",
 			width = 14,
 			height = 98,
-			x = 823,
+			x = 823-420,
 			y = 215,
 			myName = "wood",
 			bodyType = "dynamic",
@@ -148,7 +185,7 @@ function getData()
 			src = "images/vertical-stone.png",
 			width = 28,
 			height = 58,
-			x = 871,
+			x = 871-420,
 			y = 215,
 			myName = "stone",
 			bodyType = "dynamic",
@@ -164,7 +201,7 @@ function getData()
 			src = "images/vertical-stone.png",
 			width = 28,
 			height = 58,
-			x = 871,
+			x = 871-420,
 			y = 155,
 			myName = "stone",
 			bodyType = "dynamic",
@@ -180,7 +217,7 @@ function getData()
 			src = "images/horizontal-wood.png",
 			width = 98,
 			height = 14,
-			x = 674,
+			x = 674-420,
 			y = 162,
 			myName = "wood",
 			bodyType = "dynamic",
@@ -196,7 +233,7 @@ function getData()
 			src = "images/horizontal-wood.png",
 			width = 98,
 			height = 14,
-			x = 772,
+			x = 772-420,
 			y = 162,
 			myName = "wood",
 			bodyType = "dynamic",
@@ -212,7 +249,7 @@ function getData()
 			src = "images/horizontal-wood.png",
 			width = 98,
 			height = 14,
-			x = 723,
+			x = 723-420,
 			y = 143,
 			myName = "wood",
 			bodyType = "dynamic",
@@ -228,7 +265,7 @@ function getData()
 			src = "images/vertical-stone.png",
 			width = 28,
 			height = 58,
-			x = 685,
+			x = 685-420,
 			y = 128,
 			myName = "stone",
 			bodyType = "dynamic",
@@ -244,7 +281,7 @@ function getData()
 			src = "images/vertical-stone.png",
 			width = 28,
 			height = 58,
-			x = 760,
+			x = 760-420,
 			y = 128,
 			myName = "stone",
 			bodyType = "dynamic",
@@ -260,7 +297,7 @@ function getData()
 			src = "images/horizontal-wood.png",
 			width = 98,
 			height = 14,
-			x = 723,
+			x = 723-420,
 			y = 70,
 			myName = "wood",
 			bodyType = "dynamic",
@@ -268,12 +305,13 @@ function getData()
 			bounce=0,
 			friction=0.5,
 			shape="hPlankShape"				
-		},	
+		},			
+	
 		
 		switch1 = 
 		{
 			id = "switch1",
-			src = "images/whitehole.png",
+			src = "images/button.png",
 			width = 30,
 			height = 30,
 			x = 300,
@@ -284,14 +322,11 @@ function getData()
 			bounce=0,
 			friction=0.5,
 			shape="monsterShape"				
-		},		
-		
+		},
 		
 	}
 	
-
 	return leveldata
-	
 
 end
 

@@ -311,7 +311,7 @@ function getData()
 		switch1 = 
 		{
 			id = "switch1",
-			src = "images/whitehole.png",
+			src = "images/button.png",
 			width = 30,
 			height = 30,
 			x = 300,
