@@ -143,6 +143,7 @@ function new()
 	
 	
 	-- AUDIO
+	local explosionSound = media.newEventSound( "soundfx/explosion.mp3" )
 	local portalOpenSound = audio.loadSound("soundfx/portalopen.wav")
 	local portalExitSound = audio.loadSound("soundfx/portal.wav")
 	-- local telporterSound = audio.loadSound("soundfx/teleporter.wav")
@@ -219,8 +220,8 @@ function new()
 				end
 				
 				groundLight1:toFront()
-				groundObject1:toFront()
-				groundObject2:toFront()
+				-- groundObject1:toFront()
+				-- groundObject2:toFront()
 				characterObject.x = 52; --characterObject.y = 195
 				characterObject.y = 320;
 				characterObject:stopAtFrame( 1 )
@@ -749,23 +750,23 @@ function new()
 		gameGroup:insert( backgroundImage1 )
 		gameGroup:insert( backgroundImage2 )
 		
-		-- CLOUDS
-		clouds1 = display.newImageRect( "images/clouds-left.png", 480, 320 )
-		clouds1.x = 240; clouds1.y = 160
-		
-		clouds2 = display.newImageRect( "images/clouds-right.png", 480, 320 )
-		clouds2.x = 720; clouds2.y = 160
-		
-		clouds3 = display.newImageRect( "images/clouds-left.png", 480, 320 )
-		clouds3.x = 1200; clouds3.y = 160
-		
-		clouds4 = display.newImageRect( "images/clouds-right.png", 480, 320 )
-		clouds4.x = 1680; clouds4.y = 160
-		
-		gameGroup:insert( clouds1 )
-		gameGroup:insert( clouds2 )
-		gameGroup:insert( clouds3 )
-		gameGroup:insert( clouds4 )
+		-- -- CLOUDS
+		-- 	clouds1 = display.newImageRect( "images/clouds-left.png", 480, 320 )
+		-- 	clouds1.x = 240; clouds1.y = 160
+		-- 	
+		-- 	clouds2 = display.newImageRect( "images/clouds-right.png", 480, 320 )
+		-- 	clouds2.x = 720; clouds2.y = 160
+		-- 	
+		-- 	clouds3 = display.newImageRect( "images/clouds-left.png", 480, 320 )
+		-- 	clouds3.x = 1200; clouds3.y = 160
+		-- 	
+		-- 	clouds4 = display.newImageRect( "images/clouds-right.png", 480, 320 )
+		-- 	clouds4.x = 1680; clouds4.y = 160
+		-- 	
+		-- 	gameGroup:insert( clouds1 )
+		-- 	gameGroup:insert( clouds2 )
+		-- 	gameGroup:insert( clouds3 )
+		-- 	gameGroup:insert( clouds4 )
 		
 		-- -- TREES
 		-- 	local treesLeft = display.newImageRect( "trees-left.png", 480, 320 )
@@ -980,29 +981,29 @@ function new()
 	
 	local createGround = function()
 		groundLight1 = display.newImageRect( "images/groundlight.png", 228, 156 )
-		groundLight1.x = 50; groundLight1.y = 255
+		groundLight1.x = 50; groundLight1.y = 282
 		groundLight1:scale(.5,.5)
 		
-		groundObject1 = display.newImageRect( "images/ground1.png", 480, 37 )
-		groundObject1:setReferencePoint( display.BottomLeftReferencePoint )
-		groundObject1.x = 0; groundObject1.y = 320
-		--groundObject1:scale(1,.5)
+		-- groundObject1 = display.newImageRect( "images/ground1.png", 480, 37 )
+		-- groundObject1:setReferencePoint( display.BottomLeftReferencePoint )
+		-- groundObject1.x = 0; groundObject1.y = 320
+		-- --groundObject1:scale(1,.5)
+		-- 
+		-- groundObject2 = display.newImageRect( "images/ground2.png", 480, 37 )
+		-- groundObject2:setReferencePoint( display.BottomLeftReferencePoint )
+		-- groundObject2.x = 480; groundObject2.y = 320
+		-- --groundObject2:scale(1,.5)
+		-- 
+		-- groundObject1.myName = "ground"
+		-- groundObject2.myName = "ground"
 		
-		groundObject2 = display.newImageRect( "images/ground2.png", 480, 37 )
-		groundObject2:setReferencePoint( display.BottomLeftReferencePoint )
-		groundObject2.x = 480; groundObject2.y = 320
-		--groundObject2:scale(1,.5)
-		
-		groundObject1.myName = "ground"
-		groundObject2.myName = "ground"
-		
-		local groundShape = { -240,-10, 240,-10, 240,10, -240,10 }
-		physics.addBody( groundObject1, "static", { density=1.0, bounce=0, friction=0.5, shape=groundShape } )
-		physics.addBody( groundObject2, "static", { density=1.0, bounce=0, friction=0.5, shape=groundShape } )
+		-- local groundShape = { -240,-10, 240,-10, 240,10, -240,10 }
+		-- physics.addBody( groundObject1, "static", { density=1.0, bounce=0, friction=0.5, shape=groundShape } )
+		-- physics.addBody( groundObject2, "static", { density=1.0, bounce=0, friction=0.5, shape=groundShape } )
 		
 		gameGroup:insert( groundLight1 )
-		gameGroup:insert( groundObject1 )
-		gameGroup:insert( groundObject2 )
+		-- gameGroup:insert( groundObject1 )
+		-- gameGroup:insert( groundObject2 )
 	end
 	
 	local createShotOrb = function()
@@ -1134,7 +1135,7 @@ function new()
 		poofObject.alpha = 1.0
 		poofObject.isVisible = false
 		
-		greenPoof = display.newImageRect( "images/greenpoof.png", 80, 70 )
+		greenPoof = display.newImageRect( "images/poof.png", 80, 70 )
 		greenPoof.alpha = 1.0
 		greenPoof.isVisible = false
 		
@@ -1145,6 +1146,83 @@ function new()
 		gameGroup:insert( poofObject )
 		gameGroup:insert( greenPoof )
 		
+	end
+	
+	-- local onBombCollision = function(self, event )
+	-- 			local circle = ""
+	-- 			local explosion = ""
+	-- 			if bombIsOn == true then
+	-- 			local blast = function( event )
+	-- 				media.playEventSound( explosionSound )
+	-- 			    circle = display.newCircle( 150, 250, 300 )
+	-- 				explosion = display.newImage( "images/explosion.png", 150, 250 )
+	-- 				circle:setFillColor(0,0,0, 0)
+	-- 				physics.addBody( circle, "static", {isSensor = true} )
+	-- 				circle.myName = "circle"
+	-- 				circle.collision = onBombBlast
+	-- 				circle:addEventListener( "collision", circle )
+	-- 			 end
+	-- 	
+	-- 			 local removeStuff = function( event )
+	-- 				circle:removeSelf()
+	-- 				explosion:removeSelf()
+	-- 			 end
+	-- 			 timer.performWithDelay(20, blast )
+	-- 			 timer.performWithDelay(100, removeStuff)
+	-- 		end
+	-- 		bombIsOn = false
+	-- 	end
+	
+	local function BombBlastWave( self, event )
+	        if ( event.phase == "began" and self.myName == "circle" ) then
+				forceConstant = 0
+				local forcex = forceConstant*(event.other.x-self.x)
+				local forcey = forceConstant*(event.other.y-self.y)
+				if(forcex < 0) then
+					forcex = 0-(80 + forcex)-12
+				else
+					forcex = 80 - forcex+12
+				end
+				event.other:applyLinearImpulse( forcex, forcey, self.x, self.y )
+				if(math.abs(forcex) > 60 or math.abs(forcey) > 60) then
+					local explosion = display.newImage( "images/explosion.png", event.other.x, event.other.y )
+					event.other:removeSelf()
+					local function removeExplosion( event )
+						explosion:removeSelf()
+					end
+
+					timer.performWithDelay( 50,  removeExplosion)
+				end
+
+	        end
+	end
+
+	local function onBombTouch ( self, event )
+			
+			if(event.phase == "began" and self.bombArmedQ == "yes") then
+				print("bomb id " .. self.bombIndex)
+				local circle = ""
+				local explosion = ""
+				local function blast( event )
+					media.playEventSound( explosionSound )
+				    circle = display.newCircle( self.x, self.y, 100 )
+					explosion = display.newImage( "images/explosion.png", self.x, self.y )
+					self:removeSelf()
+					circle:setFillColor(0,0,0, 0)
+					physics.addBody( circle, "static", {isSensor = true} )
+					circle.myName = "circle"
+					circle.collision = BombBlastWave
+					circle:addEventListener( "collision", circle )
+				 end
+
+				 local function removeStuff( event )
+					circle:removeSelf()
+					explosion:removeSelf()
+				 end
+				 timer.performWithDelay(10, blast )
+				 timer.performWithDelay(110, removeStuff)
+			end
+		self.bombArmedQ = "no"
 	end
 	
 	
@@ -1457,6 +1535,41 @@ function new()
 				
 			end
 			
+			local onBombBlast = function(self, event)
+					print("bomb force boom!!!")
+					local forcex = event.other.x-self.x
+					local forcey = event.other.y-self.y
+					if(forcex < 0) then
+						forcex = 0-(80 + forcex)-12
+					else
+						forcex = 80 - forcex+12
+					end
+					event.other:applyForce( forcex, forcey, self.x, self.y )
+					if(math.abs(forcex) > 60 or math.abs(forcey) > 60) then
+						local explosion = display.newImage( "images/explosion.png", event.other.x, event.other.y )
+						event.other:removeSelf()
+						local removeExplosion = function( event )
+							explosion:removeSelf()
+						end
+
+						timer.performWithDelay( 50,  removeExplosion)
+					end
+			end
+			
+			for key,data in pairs(leveldata.interactions) do 
+				if(data.myName=="whitehole") then
+
+					dx = data.x - characterObject.x
+					dy = data.y - characterObject.y
+					r = math.sqrt(dx^2 + dy^2)
+					forceFactor = data.forceFactor
+					fx = forceFactor*dx/(r^2); fy = forceFactor*dy/(r^2)
+					characterObject:applyForce( -fx, -fy, characterObject.x, characterObject.y )
+
+				end
+				
+			end
+			
 			
 			--Teleporter Function
 			if(needToTeleport1 == true and needToTeleport2 ~= true) then
@@ -1527,29 +1640,29 @@ function new()
 				portal.isVisible = true
 			end
 			
-			-- MOVE CLOUDS SLOWLY
-			local cloudMoveSpeed = 0.5
-			
-			clouds1.x = clouds1.x - cloudMoveSpeed
-			clouds2.x = clouds2.x - cloudMoveSpeed
-			clouds3.x = clouds3.x - cloudMoveSpeed
-			clouds4.x = clouds4.x - cloudMoveSpeed
-			
-			if clouds1.x <= -240 then
-				clouds1.x = 1680
-			end
-			
-			if clouds2.x <= -240 then
-				clouds2.x = 1680
-			end
-			
-			if clouds3.x <= -240 then
-				clouds3.x = 1680
-			end
-			
-			if clouds4.x <= -240 then
-				clouds4.x = 1680
-			end
+			-- -- MOVE CLOUDS SLOWLY
+			-- 			local cloudMoveSpeed = 0.5
+			-- 			
+			-- 			clouds1.x = clouds1.x - cloudMoveSpeed
+			-- 			clouds2.x = clouds2.x - cloudMoveSpeed
+			-- 			clouds3.x = clouds3.x - cloudMoveSpeed
+			-- 			clouds4.x = clouds4.x - cloudMoveSpeed
+			-- 			
+			-- 			if clouds1.x <= -240 then
+			-- 				clouds1.x = 1680
+			-- 			end
+			-- 			
+			-- 			if clouds2.x <= -240 then
+			-- 				clouds2.x = 1680
+			-- 			end
+			-- 			
+			-- 			if clouds3.x <= -240 then
+			-- 				clouds3.x = 1680
+			-- 			end
+			-- 			
+			-- 			if clouds4.x <= -240 then
+			-- 				clouds4.x = 1680
+			-- 			end
 			-- END CLOUD MOVEMENT
 			
 			-- CHECK IF character GOES PAST SCREEN
@@ -1574,8 +1687,8 @@ function new()
 		
 		
 		gameGroup:insert( levelGroup )
-		groundObject1:toFront()
-		groundObject2:toFront()
+		-- groundObject1:toFront()
+		-- groundObject2:toFront()
 		characterObject:toFront()
 		poofObject:toFront()
 		greenPoof:toFront()
@@ -1595,7 +1708,7 @@ function new()
 		restartLevel = leveldata.restartLevel
 		nextLevel =  leveldata.nextLevel
 		
-			teleporter1 = display.newImageRect("images/teleporter.png",15,70)
+			teleporter1 = display.newImageRect("images/teleporterpurple.png",15,70)
 			teleporter1.x = 50
 			teleporter1.y = 120
 			rotateAngle1 = 90
@@ -1607,7 +1720,7 @@ function new()
 			teleporter1.collision = onTeleporter1Touch
 			teleporter1:addEventListener("collision",teleporter1)
 			
-			teleporter2 = display.newImageRect("images/teleporter.png",15,70)
+			teleporter2 = display.newImageRect("images/teleporterpurple.png",15,70)
 			teleporter2.x = 120
 			teleporter2.y = 175
 			rotateAngle2 = 270
@@ -1619,7 +1732,26 @@ function new()
 			teleporter2.collision = onTeleporter2Touch
 			teleporter2:addEventListener("collision",teleporter2)	
 		
-
+		bomb = {}
+		bombArmedQ = {}
+		for key,data in pairs(leveldata.bombs) do
+			index = data.bombIndex
+			bomb = display.newImageRect(data.src, data.width, data.height)
+			bomb.x = data.x
+			bomb.y = data.y
+			bomb.bombIndex = data.bombIndex
+			bomb.id = data.id
+			bomb.myName = data.myName
+			physics.addBody(bomb, data.bodyType, {density=properties[data.density], bounce=data.bounce, friction = data.friction, shape=properties[data.shape]})			
+			gameGroup:insert(bomb)
+			bomb.bombArmedQ = "yes"
+			
+			bomb.isHit=false
+			bomb.collision = onBombTouch
+			bomb:addEventListener("collision",bomb)
+			print("bomb index " .. bomb.x .. " index " .. index .. " bomb is on " .. bomb.bombArmedQ)
+		end
+			
 		for key,data in pairs(leveldata.objects) do 
 			
 			local obj = display.newImageRect(data.src, data.width, data.height)
@@ -1628,13 +1760,6 @@ function new()
 			obj.myName = data.myName
 			physics.addBody(obj, data.bodyType, {density=properties[data.density], bounce=data.bounce, friction = data.friction, shape=properties[data.shape]})
 			gameGroup:insert(obj)
-			
-			-- if(data.myName ~= "portal") then
-			-- obj.isHit=false
-			-- obj.postCollision = onExitPortalTouch
-			-- obj:addEventListener("postCollision",obj)
-			-- print("Portal Invisible!!!!")
-			-- end
 			
 		end
 		

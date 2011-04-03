@@ -23,24 +23,30 @@ function getData()
 		
 		character2 = {
 		id = "robot1",
-		src1 = "images/greenpoof.png",
-		src2 = "images/greenpoof.png",
+		src1 = "images/character1.png",
+		src2 = "images/character1-waiting.png",
+		-- src1 = "images/greenpoof.png",
+		-- src2 = "images/greenpoof.png",
 		width = 26,
 		height = 26,
 		},
 		
 		character3 = {
 		id = "robot2",
-		src1 = "images/monster.png",
-		src2 = "images/monster.png",
+		src1 = "images/character1.png",
+		src2 = "images/character1-waiting.png",
+		-- src1 = "images/exitportal.png",
+		-- src2 = "images/exitportal.png",
 		width = 26,
 		height = 26,
 		},
 		
 		character4 = {
 		id = "robot3",
-		src1 = "images/orb.png",
-		src2 = "images/orb.png",
+		src1 = "images/character1.png",
+		src2 = "images/character1-waiting.png",
+		-- src1 = "images/orb.png",
+		-- src2 = "images/orb.png",
 		width = 26,
 		height = 26,
 		},
@@ -51,8 +57,8 @@ function getData()
 	leveldata.portal = 
 	{
 		id = "monster2",
-		src = "images/monster.png",
-		width = 26,
+		src = "images/portal1.png",
+		width = 45,
 		height = 30,
 		x = 723-420,
 		y = 135,
@@ -66,23 +72,23 @@ function getData()
 	
 	leveldata.backgrounds = 
 	{
-		"images/background1.png",
-		"images/background2.png"
+		"images/space1.png",
+		"images/space1-2.png"
 	}
 	
 	leveldata.interactions = 
 	{
-		BlackHole1 = 
-		 { 
-			id =  "BlackHole1",
-			src = "images/blackhole.png",
-			width = 25,
-			height = 25,
-			x = 50,
-			y = 100,
-			myName = "blackhole",
-			forceFactor = 10
-		},
+		-- BlackHole1 = 
+		--  { 
+		-- 	id =  "BlackHole1",
+		-- 	src = "images/blackhole.png",
+		-- 	width = 25,
+		-- 	height = 25,
+		-- 	x = 50,
+		-- 	y = 100,
+		-- 	myName = "blackhole",
+		-- 	forceFactor = 10
+		-- },
 		
 		BlackHole2 = 
 		 { 
@@ -94,6 +100,53 @@ function getData()
 			y = 200,
 			myName = "blackhole",
 			forceFactor = 10
+		},
+		
+		WhiteHole1 = 
+		 { 
+			id =  "WhiteHole1",
+			src = "images/whitehole.png",
+			width = 25,
+			height = 25,
+			x = 50,
+			y = 100,
+			myName = "whitehole",
+			forceFactor = 10
+		},
+	}
+	
+	leveldata.bombs = 
+	{
+		bomb1 = 
+		{
+			id = "bomb1",
+			bombIndex = 1,
+			src = "images/bomb.png",
+			width = 30,
+			height = 30,
+			x = 70,
+			y = 199,
+			myName = "bomb",
+			bodyType = "static",
+			density = "monsterDensity",
+			bounce=0,
+			friction=0.5,
+		},
+		
+		bomb2 = 
+		{
+			id = "bomb2",
+			bombIndex = 2,
+			src = "images/bomb.png",
+			width = 30,
+			height = 30,
+			x = 150,
+			y = 250,
+			myName = "bomb",
+			bodyType = "static",
+			density = "monsterDensity",
+			bounce=0,
+			friction=0.5,
 		},
 	}
 	
@@ -321,8 +374,8 @@ function getData()
 			density = "monsterDensity",
 			bounce=0,
 			friction=0.5,
-			shape="monsterShape"				
 		},
+		
 		
 	}
 	
