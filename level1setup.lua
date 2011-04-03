@@ -15,6 +15,7 @@ function getData()
 	{
 		character1 = {
 		id = "character",
+		myName = "character",
 		src1 = "images/character1.png",
 		src2 = "images/character1-waiting.png",
 		width = 26,
@@ -23,6 +24,7 @@ function getData()
 		
 		character2 = {
 		id = "robot1",
+		myName = "character",
 		src1 = "images/character1.png",
 		src2 = "images/character1-waiting.png",
 		-- src1 = "images/greenpoof.png",
@@ -33,6 +35,7 @@ function getData()
 		
 		character3 = {
 		id = "robot2",
+		myName = "character",
 		src1 = "images/character1.png",
 		src2 = "images/character1-waiting.png",
 		-- src1 = "images/exitportal.png",
@@ -43,6 +46,7 @@ function getData()
 		
 		character4 = {
 		id = "robot3",
+		myName = "character",
 		src1 = "images/character1.png",
 		src2 = "images/character1-waiting.png",
 		-- src1 = "images/orb.png",
@@ -115,39 +119,83 @@ function getData()
 		},
 	}
 	
+	-- teleporter1 = display.newImageRect("images/teleporterpurple.png",15,70)
+	-- teleporter1.x = 50
+	-- teleporter1.y = 120
+	-- rotateAngle1 = 90
+	-- teleporter1:rotate(rotateAngle1)
+	-- teleporter1.myName = "teleporter1"
+	-- physics.addBody(teleporter1,"static",{isSensor = true})
+	-- gameGroup:insert(teleporter1)
+	-- 
+	-- teleporter1.collision = onTeleporter1Touch
+	-- teleporter1:addEventListener("collision",teleporter1)
+	-- 
+	-- teleporter2 = display.newImageRect("images/teleporterpurple.png",15,70)
+	-- teleporter2.x = 120
+	-- teleporter2.y = 175
+	-- rotateAngle2 = 270
+	-- teleporter2:rotate(rotateAngle2)
+	-- teleporter2.myName = "teleporter1"
+	-- physics.addBody(teleporter2,"static",{isSensor = true})
+	-- gameGroup:insert(teleporter2)
+	-- 
+	-- teleporter2.collision = onTeleporter2Touch
+	-- teleporter2:addEventListener("collision",teleporter2)
+	
+	leveldata.teleporters = 
+	{
+		teleporter1 = 
+		{
+			id1 = "teleporter1-1",
+			id2 = "teleporter1-2",
+			myName1 = "teleporter1",
+			myName2 = "teleporter2",
+			src = "images/teleporterpurple.png",
+			width = 15,
+			height = 70,
+			x1 = 50,
+			y1 = 120,
+			rotateAngle1 = 30,
+			x2 = 120,
+			y2 = 175,
+			rotateAngle2 = 30,
+			
+		},
+	}
 	leveldata.bombs = 
 	{
-		bomb1 = 
-		{
-			id = "bomb1",
-			bombIndex = 1,
-			src = "images/bomb.png",
-			width = 30,
-			height = 30,
-			x = 70,
-			y = 199,
-			myName = "bomb",
-			bodyType = "static",
-			density = "monsterDensity",
-			bounce=0,
-			friction=0.5,
-		},
-		
-		bomb2 = 
-		{
-			id = "bomb2",
-			bombIndex = 2,
-			src = "images/bomb.png",
-			width = 30,
-			height = 30,
-			x = 150,
-			y = 250,
-			myName = "bomb",
-			bodyType = "static",
-			density = "monsterDensity",
-			bounce=0,
-			friction=0.5,
-		},
+		-- bomb1 = 
+		-- 		{
+		-- 			id = "bomb1",
+		-- 			bombIndex = 1,
+		-- 			src = "images/bomb.png",
+		-- 			width = 30,
+		-- 			height = 30,
+		-- 			x = 70,
+		-- 			y = 199,
+		-- 			myName = "bomb",
+		-- 			bodyType = "static",
+		-- 			density = "monsterDensity",
+		-- 			bounce=0,
+		-- 			friction=0.5,
+		-- 		},
+		-- 		
+		-- 		bomb2 = 
+		-- 		{
+		-- 			id = "bomb2",
+		-- 			bombIndex = 2,
+		-- 			src = "images/bomb.png",
+		-- 			width = 30,
+		-- 			height = 30,
+		-- 			x = 150,
+		-- 			y = 250,
+		-- 			myName = "bomb",
+		-- 			bodyType = "static",
+		-- 			density = "monsterDensity",
+		-- 			bounce=0,
+		-- 			friction=0.5,
+		-- 		},
 	}
 	
 	leveldata.objects = 

@@ -1261,22 +1261,33 @@ function new()
 		end
 	end
 	
-	local onTeleporter1Touch = function( self, event )
+	onTeleporter1Touch = function( self, event )
+		print("teleporter 1 touch")
 		if event.other.myName == "character" then
 			-- audio.play( telporterSound )
 			needToTeleport1 = true
 			needToTeleport2 = false
+			c2x = self.xo
+			c2y = self.yo
+			rotateAngle1 = self.rotations 
+			rotateAngle2 = self.rotationo
+			print("rotations angles " .. self.rotations .. " " .. self.rotationo)
 			-- characterObject.x = 100
 			-- characterObject.y = 200
 			
 		end
 	end
 	
-	local onTeleporter2Touch = function( self, event )
+	onTeleporter2Touch = function( self, event )
 		if event.other.myName == "character" then
 			-- audio.play( telporterSound )
 			needToTeleport1 = false
 			needToTeleport2 = true
+			c1x = self.xo
+			c1y = self.yo
+			rotateAngle2 = self.rotations 
+			rotateAngle1 = self.rotationo 
+			print("rotations angles " .. rotateAngle1 .. " " .. rotateAngle2)
 			-- characterObject.x = 100
 			-- characterObject.y = 200
 			
@@ -1534,27 +1545,7 @@ function new()
 				end
 				
 			end
-			
-			local onBombBlast = function(self, event)
-					print("bomb force boom!!!")
-					local forcex = event.other.x-self.x
-					local forcey = event.other.y-self.y
-					if(forcex < 0) then
-						forcex = 0-(80 + forcex)-12
-					else
-						forcex = 80 - forcex+12
-					end
-					event.other:applyForce( forcex, forcey, self.x, self.y )
-					if(math.abs(forcex) > 60 or math.abs(forcey) > 60) then
-						local explosion = display.newImage( "images/explosion.png", event.other.x, event.other.y )
-						event.other:removeSelf()
-						local removeExplosion = function( event )
-							explosion:removeSelf()
-						end
 
-						timer.performWithDelay( 50,  removeExplosion)
-					end
-			end
 			
 			for key,data in pairs(leveldata.interactions) do 
 				if(data.myName=="whitehole") then
@@ -1583,8 +1574,8 @@ function new()
 				local cyPrime = -cx*math.sin((mPi/180)*(math.abs(rotateAngle2 - rotateAngle1))) + cy*math.cos((mPi/180)*(math.abs(rotateAngle2 - rotateAngle1)))
 				
 				characterObject:setLinearVelocity(vTotal*math.cos((mPi/180)*rotateAngle2),-vTotal*math.sin((mPi/180)*rotateAngle2))
-				characterObject.x = teleporter2.x + (math.cos((mPi/180)*rotateAngle2)*(2*teleporter2.width + 20)) 
-				characterObject.y = teleporter2.y - (math.sin((mPi/180)*rotateAngle2)*(2*teleporter2.width + 20))
+				characterObject.x = c2x + (math.cos((mPi/180)*rotateAngle2)*(2*teleWidth + 20)) 
+				characterObject.y = c2y - (math.sin((mPi/180)*rotateAngle2)*(2*teleWidth + 20))
 				
 				-- characterObject:setLinearVelocity(cvxPrime,cvyPrime)
 				-- characterObject.x = teleporter2.x + (cvxPrime/(math.abs(cyPrime)))*(2*teleporter2.width + 20)
@@ -1602,15 +1593,15 @@ function new()
 					local cvyPrime = -cvx*math.sin((mPi/180)*(rotateAngle1 - rotateAngle2)) + cvy*math.cos((mPi/180)*(rotateAngle1 - rotateAngle2))
 					local cxPrime = cx*math.cos((mPi/180)*(rotateAngle1 - rotateAngle2)) + cy*math.sin((mPi/180)*(rotateAngle1 - rotateAngle2))
 					local cyPrime = -cx*math.sin((mPi/180)*(rotateAngle1 - rotateAngle2)) + cy*math.cos((mPi/180)*(rotateAngle1 - rotateAngle2))
-
+			
 					characterObject:setLinearVelocity(vTotal*math.cos((mPi/180)*rotateAngle1),-vTotal*math.sin((mPi/180)*rotateAngle1))
-					characterObject.x = teleporter1.x + (math.cos((mPi/180)*rotateAngle1)*(2*teleporter1.width + 20)) 
-					characterObject.y = teleporter1.y - (math.sin((mPi/180)*rotateAngle1)*(2*teleporter1.width + 20) ) 
+					characterObject.x = c1x + (math.cos((mPi/180)*rotateAngle1)*(2*teleWidth + 20)) 
+					characterObject.y = c1y - (math.sin((mPi/180)*rotateAngle1)*(2*teleWidth + 20) ) 
 					
 					-- characterObject:setLinearVelocity(cvxPrime,cvyPrime)
 					-- characterObject.x = teleporter1.x + (cvxPrime/(math.abs(cyPrime)))*(2*teleporter1.width + 20)
 					-- characterObject.y = teleporter1.y + (cyPrime/(math.abs(cyPrime)))*(2*teleporter1.width + 20)
-
+			
 					needToTeleport2 = false
 			end
 		
@@ -1707,30 +1698,42 @@ function new()
 	
 		restartLevel = leveldata.restartLevel
 		nextLevel =  leveldata.nextLevel
+
 		
-			teleporter1 = display.newImageRect("images/teleporterpurple.png",15,70)
-			teleporter1.x = 50
-			teleporter1.y = 120
-			rotateAngle1 = 90
-			teleporter1:rotate(rotateAngle1)
-			teleporter1.myName = "teleporter1"
-			physics.addBody(teleporter1,"static",{isSensor = true})
-			gameGroup:insert(teleporter1)
+		for key,data in pairs(leveldata.teleporters) do
+			local tele1 = display.newImageRect(data.src, data.width, data.height)
+			tele1.x = data.x1
+			tele1.y = data.y1
+			tele1.rotations = data.rotateAngle1
+			tele1.xo = data.x2
+			tele1.yo = data.y2
+			tele1.rotationo = data.rotateAngle2
+			tele1.myName = data.myName1
+			tele1:rotate(-data.rotateAngle1)
+			physics.addBody(tele1,"static",{isSensor = true})
+			gameGroup:insert(tele1)
+			tele1.collision = onTeleporter1Touch
+			tele1:addEventListener("collision",tele1)
 			
-			teleporter1.collision = onTeleporter1Touch
-			teleporter1:addEventListener("collision",teleporter1)
 			
-			teleporter2 = display.newImageRect("images/teleporterpurple.png",15,70)
-			teleporter2.x = 120
-			teleporter2.y = 175
-			rotateAngle2 = 270
-			teleporter2:rotate(rotateAngle2)
-			teleporter2.myName = "teleporter1"
-			physics.addBody(teleporter2,"static",{isSensor = true})
-			gameGroup:insert(teleporter2)
+			local tele2 = display.newImageRect(data.src, data.width, data.height)
+			tele2.x = data.x2
+			tele2.y = data.y2
+			tele2.rotations = data.rotateAngle2
+			tele2.xo = data.x1
+			tele2.yo = data.y1
+			tele2.rotationo = data.rotateAngle1
+			tele2.myName = data.myName2
+			tele2:rotate(-data.rotateAngle2)
+			physics.addBody(tele2,"static",{isSensor = true})
+			gameGroup:insert(tele2)
+			tele2.collision = onTeleporter2Touch
+			tele2:addEventListener("collision",tele2)
 			
-			teleporter2.collision = onTeleporter2Touch
-			teleporter2:addEventListener("collision",teleporter2)	
+			teleWidth = data.width
+			teleHeight = data.height
+			
+		end	
 		
 		bomb = {}
 		bombArmedQ = {}
