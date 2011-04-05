@@ -9,6 +9,7 @@ function new()
 	local slider			= nil
 	local slider_sprt		= nil
 	local ui = require("ui")
+	nLevelsComplete = 0
 	
 	-- local director = require("director")
 	-- mainGroup:insert(director.directorView)
@@ -42,51 +43,47 @@ function new()
 		local btn_sprt = nil
 		local textInfo_tbl = {}
 		local btnInfo_tbl = {}
+		index = 1
+		
 
 		-- slide 1
-		textInfo_tbl = {}
-		btnInfo_tbl = { "level_orb1" }
-		slide_sprt = renderSlide( 1, textInfo_tbl, btnInfo_tbl )
+		btnInfo_tbl = { "images/crates.png" }
+		slide_sprt = renderSlide( 1, btnInfo_tbl )
 		btn_sprt = renderSlideBtn( 1, 256 )
 		-- slider
 		slider.addSlide( slide_sprt, btn_sprt )
 
 		-- slide 2
-		textInfo_tbl = {}
-		btnInfo_tbl = {"level_orb2"}
-		slide_sprt = renderSlide( 2, textInfo_tbl, btnInfo_tbl )
+		btnInfo_tbl = { "images/crates.png" }
+		slide_sprt = renderSlide( 2, btnInfo_tbl )
 		btn_sprt = renderSlideBtn( 2, 256 )
 		-- slider
 		slider.addSlide( slide_sprt, btn_sprt )
 
 		-- slide 3
-		textInfo_tbl = {}
-		btnInfo_tbl = {"level_orb3"}
-		slide_sprt = renderSlide( 3, textInfo_tbl, btnInfo_tbl )
+		btnInfo_tbl = { "images/crates.png" }
+		slide_sprt = renderSlide( 3, btnInfo_tbl )
 		btn_sprt = renderSlideBtn( 3, 256 )
 		-- slider
 		slider.addSlide( slide_sprt, btn_sprt )
 		
+
 
 	end
 
 	----------------------------------------------------------------------------------------------------
 	-- renderSlide
 	----------------------------------------------------------------------------------------------------
-	function renderSlide( slideIndex, textInfo_tbl, btnInfo_tbl )
+	function renderSlide( slideIndex, btnInfo_tbl )
 
 		-- slide_sprt
 		local slide_sprt = display.newGroup()
 
 		-- bck_sprt
-		local bck_sprt = display.newImage("images/blackhole.png")
-		bck_sprt:scale(.8,.8)
-		bck_sprt.alpha = 0.01
-		slide_sprt:insert( bck_sprt )
-		
-		
-		bck_sprt.x = display.contentWidth*.3
-		bck_sprt.y = display.contentHeight *.3
+		local bck_shp = display.newRect( 0, 0, 256, 320 )
+		slide_sprt:insert( bck_shp )
+		bck_shp.alpha = 0.01
+	
 		
 		-- -- text
 		-- local this_txt = nil
@@ -103,15 +100,36 @@ function new()
 		-- end
 
 		-- btns
-		local this_btn = nil
-		for i=1, #btnInfo_tbl do
-			this_btn = display.newImage( "images/" .. btnInfo_tbl[ i ] .. ".png" )
-			slide_sprt:insert( this_btn )
-			this_btn:scale(.21,.21)
-			this_btn.x = display.contentWidth*.3
-			this_btn.y = display.contentHeight *.3
-			this_btn.id = slideIndex
-			this_btn:addEventListener( "tap", tapCb )
+		-- local this_btn = nil
+		-- for i=1, #btnInfo_tbl do
+		-- 	this_btn = display.newImage( "images/" .. btnInfo_tbl[ i ] .. ".png" )
+		-- 	slide_sprt:insert( this_btn )
+		-- 	this_btn:scale(.21,.21)
+		-- 	this_btn.x = display.contentWidth*.3
+		-- 	this_btn.y = display.contentHeight *.3
+		-- 	this_btn.id = slideIndex
+		-- 	this_btn:addEventListener( "tap", tapCb )
+		-- end
+		
+		local crates = {}
+		for j = 1,3 do
+		for k = 1,4 do
+		crates[index] = display.newImage("images/crate.png", -50 + (k*70), -50 + (j*70) )
+		crates[index].id = index
+		slide_sprt:insert(crates[index])
+			
+		txt = display.newText( slide_sprt,"level" .. index, -50 + (k*70)+5, -50 + (j*70)+10, native.systemFontBold, 10 )
+		
+		if index > nLevelsComplete then
+			crates[index].alpha = 0
+			txt.alpha = 0
+		else 
+			crates[index]:addEventListener("tap",tapCb)
+		end
+		
+		print(index)
+		index = index + 1
+		end
 		end
 
 		return slide_sprt
@@ -122,7 +140,7 @@ function new()
 	-- renderSlideBtn
 	----------------------------------------------------------------------------------------------------
 	function renderSlideBtn( btnIndex, slideWidth )
-
+		
 		local numBtns = 3
 
 		-- btn
@@ -152,19 +170,10 @@ function new()
 	----------------------------------------------------------------------------------------------------
 	function tapCb( evt )
 
-		local btnId = evt.target.id
+		local btnId = evt.target.id*.1 + 3
 		print( "btnId = " .. btnId )
-
-		if ( 1 == btnId ) then
-			_G.loadLevel=1
-			director:changeScene("world1", "fade", 0,0,0)
-		elseif ( 2 == btnId ) then
-			_G.loadLevel=2
-			director:changeScene("world2", "fade", 0,0,0)
-		elseif ( 3 == btnId ) then
-			_G.loadLevel=2
-			director:changeScene("world3", "fade", 0,0,0)
-		end
+		_G.loadLevel= btnId
+		director:changeScene("loadlevel", "fade", 0,0,0)
 
 	end
 

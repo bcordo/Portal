@@ -2,14 +2,13 @@ module(..., package.seeall)
 
 function getData()
 
-	print("this is level 1 setup")	
+	print("this is level 1.2 setup")	
 	
 	local leveldata = {}
 	
-	leveldata.monsterCount=2
 	
-	leveldata.restartLevel = 1
-	leveldata.nextLevel = 2
+	leveldata.restartLevel = 1.2
+	leveldata.nextLevel = 1.1
 	
 	leveldata.characters = 
 	{
@@ -142,37 +141,37 @@ function getData()
 	}
 	leveldata.bombs = 
 	{
-		-- bomb1 = 
-		-- 		{
-		-- 			id = "bomb1",
-		-- 			bombIndex = 1,
-		-- 			src = "images/bomb.png",
-		-- 			width = 30,
-		-- 			height = 30,
-		-- 			x = 70,
-		-- 			y = 199,
-		-- 			myName = "bomb",
-		-- 			bodyType = "static",
-		-- 			density = "monsterDensity",
-		-- 			bounce=0,
-		-- 			friction=0.5,
-		-- 		},
-		-- 		
-		-- 		bomb2 = 
-		-- 		{
-		-- 			id = "bomb2",
-		-- 			bombIndex = 2,
-		-- 			src = "images/bomb.png",
-		-- 			width = 30,
-		-- 			height = 30,
-		-- 			x = 150,
-		-- 			y = 250,
-		-- 			myName = "bomb",
-		-- 			bodyType = "static",
-		-- 			density = "monsterDensity",
-		-- 			bounce=0,
-		-- 			friction=0.5,
-		-- 		},
+		bomb1 = 
+			{
+				id = "bomb1",
+				bombIndex = 1,
+				src = "images/bomb.png",
+				width = 30,
+				height = 30,
+				x = 70,
+				y = 199,
+				myName = "bomb",
+				bodyType = "static",
+				density = "monsterDensity",
+				bounce=0,
+				friction=0.5,
+			},
+	
+			bomb2 = 
+			{
+				id = "bomb2",
+				bombIndex = 2,
+				src = "images/bomb.png",
+				width = 30,
+				height = 30,
+				x = 150,
+				y = 250,
+				myName = "bomb",
+				bodyType = "static",
+				density = "monsterDensity",
+				bounce=0,
+				friction=0.5,
+			},
 	}
 	
 	leveldata.objects = 
