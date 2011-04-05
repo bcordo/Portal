@@ -1089,43 +1089,48 @@ function new()
 		local oncharacterCollision = function( self, event )
 			if event.phase == "began" then
 				
+				if event.other.myName ~= "portal" then
 				audio.play( impactSound )
+				end
+				
 				
 				if event.other.myName == "switch" then
 						portalOpen = true
 						audio.play( portalOpenSound )
 				end
 				
-				if event.other.myName == "portal" then
+				if event.other.myName == "portal" and portalOpen == true then
 						characterObject.isExited = true
 						print("isExited = true")	
 				end
 
+				if event.other.myName ~= "portal" and event.other.myName ~= "teleporter1" and event.other.myName ~= "teleporter2" then
+					
+					if characterObject.isHit == false then
 				
-				if characterObject.isHit == false then
-				
-					if blastGlow.isVisible then
-						blastGlow.isVisible = false
-					end
+						if blastGlow.isVisible then
+							blastGlow.isVisible = false
+						end
 					
 					
-					if dotTimer then timer.cancel( dotTimer ); end
-					characterObject.isHit = true
+						if dotTimer then timer.cancel( dotTimer ); end
+						characterObject.isHit = true
 
 					
-					if event.other.myName == "wood" or event.other.myName == "stone" then
-						callNewRound( true, "yes" )
-						characterBoolean = characterBoolean + 1
-					else
-						callNewRound( true, "no" )
-						characterBoolean = characterBoolean + 1
-					end
+						if event.other.myName == "wood" or event.other.myName == "stone" then
+							callNewRound( true, "yes" )
+							characterBoolean = characterBoolean + 1
+						else
+							callNewRound( true, "no" )
+							characterBoolean = characterBoolean + 1
+						end
 					
-					local newScore = gameScore + 500
-					setScore( newScore )
+						local newScore = gameScore + 500
+						setScore( newScore )
 				
-				elseif characterObject.isHit then
-					return true
+					elseif characterObject.isHit then
+						return true
+					end
 				end
 			end
 		end
@@ -1198,31 +1203,6 @@ function new()
 		
 	end
 	
-	-- local onBombCollision = function(self, event )
-	-- 			local circle = ""
-	-- 			local explosion = ""
-	-- 			if bombIsOn == true then
-	-- 			local blast = function( event )
-	-- 				media.playEventSound( explosionSound )
-	-- 			    circle = display.newCircle( 150, 250, 300 )
-	-- 				explosion = display.newImage( "images/explosion.png", 150, 250 )
-	-- 				circle:setFillColor(0,0,0, 0)
-	-- 				physics.addBody( circle, "static", {isSensor = true} )
-	-- 				circle.myName = "circle"
-	-- 				circle.collision = onBombBlast
-	-- 				circle:addEventListener( "collision", circle )
-	-- 			 end
-	-- 	
-	-- 			 local removeStuff = function( event )
-	-- 				circle:removeSelf()
-	-- 				explosion:removeSelf()
-	-- 			 end
-	-- 			 timer.performWithDelay(20, blast )
-	-- 			 timer.performWithDelay(100, removeStuff)
-	-- 		end
-	-- 		bombIsOn = false
-	-- 	end
-	
 	local function BombBlastWave( self, event )
 	        if ( event.phase == "began" and self.myName == "circle" ) then
 				forceConstant = 0
@@ -1277,7 +1257,7 @@ function new()
 	
 	
 	local onExitPortalTouch = function( self, event )
-		if self.isHit == false and event.other.myName == "character" then
+		if self.isHit == false and portalOpen == true and event.other.myName == "character" then
 			audio.play( portalExitSound )
 			self.isHit = true
 			print( "Exited Portal!! " )
@@ -1680,31 +1660,7 @@ function new()
 			if portalOpen == true then
 				portal.isVisible = true
 			end
-			
-			-- -- MOVE CLOUDS SLOWLY
-			-- 			local cloudMoveSpeed = 0.5
-			-- 			
-			-- 			clouds1.x = clouds1.x - cloudMoveSpeed
-			-- 			clouds2.x = clouds2.x - cloudMoveSpeed
-			-- 			clouds3.x = clouds3.x - cloudMoveSpeed
-			-- 			clouds4.x = clouds4.x - cloudMoveSpeed
-			-- 			
-			-- 			if clouds1.x <= -240 then
-			-- 				clouds1.x = 1680
-			-- 			end
-			-- 			
-			-- 			if clouds2.x <= -240 then
-			-- 				clouds2.x = 1680
-			-- 			end
-			-- 			
-			-- 			if clouds3.x <= -240 then
-			-- 				clouds3.x = 1680
-			-- 			end
-			-- 			
-			-- 			if clouds4.x <= -240 then
-			-- 				clouds4.x = 1680
-			-- 			end
-			-- END CLOUD MOVEMENT
+
 			
 			-- CHECK IF character GOES PAST SCREEN
 			if characterObject.isHit == false and characterObject.x >= 1800 then
@@ -1728,8 +1684,6 @@ function new()
 		
 		
 		gameGroup:insert( levelGroup )
-		-- groundObject1:toFront()
-		-- groundObject2:toFront()
 		characterObject:toFront()
 		poofObject:toFront()
 		greenPoof:toFront()
@@ -1822,7 +1776,7 @@ function new()
 		portal.y = leveldata.portal.y
 		portal.myName = leveldata.portal.myName
 		print("This is the portal name:" .. portal.x)
-		portalObject = physics.addBody(portal, leveldata.portal.bodyType, {isSensor = true,shape=properties[leveldata.portal.shape]})--{density=properties[leveldata.portal.density], bounce=leveldata.portal.bounce, friction = leveldata.portal.friction, shape=properties[leveldata.portal.shape]})
+		portalObject = physics.addBody(portal, leveldata.portal.bodyType, {isSensor = true})--{density=properties[leveldata.portal.density], bounce=leveldata.portal.bounce, friction = leveldata.portal.friction, shape=properties[leveldata.portal.shape]})
 		gameGroup:insert(portal)
 		portal.isVisible = false
 		print("Portal Invisible!!!!")
