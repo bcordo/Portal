@@ -97,7 +97,7 @@ function new()
 	local life1; local life2; local life3; local life4
 	local scoreText; local bestScoreText
 	local continueText; local continueTimer
-	local pauseMenuBtn; local pauseBtn; local pauseShade
+	local pauseMenuBtn; local pauseRestartBtn; local pauseBtn; local pauseShade
 	
 	-- VARIABLES
 	
@@ -863,7 +863,16 @@ function new()
 						pauseMenuBtn:toFront()
 					end
 					
+					-- SHOW RESTART BUTTON
+					if pauseRestartBtn then
+						pauseRestartBtn.isVisible = true
+						pauseRestartBtn.isActive = true
+						pauseRestartBtn:toFront()
+					end
+					
 					pauseBtn:toFront()
+					
+					
 					
 					-- STOP character ANIMATION
 					if characterTween then
@@ -881,6 +890,11 @@ function new()
 						pauseMenuBtn.isActive = false
 					end
 					
+					if pauseRestartBtn then
+						pauseRestartBtn.isVisible = false
+						pauseRestartBtn.isActive = false
+					end
+					
 					gameIsActive = true
 					physics.start()
 					
@@ -894,18 +908,18 @@ function new()
 							if characterObject.inAir or shotOrb.isVisible then
 								transition.cancel( characterTween )
 							else
-								characterTween = transition.to( characterObject, { time=375, y=190, onComplete=characterAnimation })
+								characterTween = transition.to( characterObject, { time=375, y=250, onComplete=characterAnimation })
 							end
 						end
 						
 						if characterObject.inAir or shotOrb.isVisible then
 							transition.cancel( characterTween )
 						else
-							characterTween = transition.to( characterObject, { time=375, y=200, onComplete=animUp })
+							characterTween = transition.to( characterObject, { time=375, y=260, onComplete=animUp })
 						end
 					end
 					
-					characterTween = transition.to( characterObject, { time=375, y=190, onComplete=characterAnimation })
+					characterTween = transition.to( characterObject, { time=375, y=250, onComplete=characterAnimation })
 				end
 			end
 		end
@@ -977,6 +991,42 @@ function new()
 		pauseMenuBtn.isActive = false
 		
 		hudGroup:insert( pauseMenuBtn )
+		
+		
+		-- RESTART BUTTON (on Pause Display)
+		local onRestartPauseTouch = function( event )
+			if event.phase == "release" and pauseRestartBtn.isActive then
+				audio.play( tapSound )
+				--local theModule = "load" .. restartModule
+				
+				_G.loadLevel = restartLevel
+				local theModule = "loadlevel"
+				
+				director:changeScene( theModule )
+			end
+		end
+		
+		pauseRestartBtn = ui.newButton{
+			defaultSrc = "images/restartbtn.png",
+			defaultX = 44,
+			defaultY = 44,
+			overSrc = "images/restartbtn-over.png",
+			overX = 44,
+			overY = 44,
+			onEvent = onRestartPauseTouch,
+			id = "RestartPauseTouch",
+			text = "",
+			font = "Helvetica",
+			textColor = { 255, 255, 255, 255 },
+			size = 16,
+			emboss = false
+		}
+		
+		pauseRestartBtn.x = 85; pauseRestartBtn.y = 288
+		pauseRestartBtn.isVisible = false
+		pauseRestartBtn.isActive = false
+		
+		hudGroup:insert( pauseRestartBtn )
 	end
 	
 	local createGround = function()
@@ -1823,6 +1873,13 @@ function new()
 					pauseMenuBtn.isVisible = true
 					pauseMenuBtn.isActive = true
 					pauseMenuBtn:toFront()
+				end
+				
+				-- SHOW RESTART BUTTON
+				if pauseRestartBtn then
+					pauseRestartBtn.isVisible = true
+					pauseRestartBtn.isActive = true
+					pauseRestartBtn:toFront()
 				end
 				
 				pauseBtn:toFront()
