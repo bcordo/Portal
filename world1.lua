@@ -10,9 +10,6 @@ function new()
 	local slider_sprt		= nil
 	local ui = require("ui")
 	nLevelsComplete = 2
-	
-	-- local director = require("director")
-	-- mainGroup:insert(director.directorView)
 
 	-- forward declerations
 
@@ -23,6 +20,8 @@ function new()
 
 		-- main_sprt
 		main_sprt = display.newGroup()
+		-- local director = require("director")
+		-- main_sprt:insert(director.directorView)
 
 		-- bck
 		bck_shp = display.newImage("images/blast_background.png")
@@ -30,6 +29,39 @@ function new()
 		bck_shp.y = display.contentHeight/2
 		main_sprt:insert( bck_shp )
 		-- bck_shp:setFillColor( 0, 0, 0 )
+		
+		local backButton = nil
+		  local function onBack ( event )
+		    if event.phase == "release" and backButton.isActive then
+				director:changeScene("world_select", "fade", 0,0,0)
+		
+				audio.play( tapSound )
+		
+		    end
+		  end	
+		
+		backButton = ui.newButton{
+			defaultSrc = "images/nextlevelbtn.png",
+			defaultX = 60,
+			defaultY = 60,
+			overSrc = "images/nextlevelbtn-over.png",
+			overX = 60,
+			overY = 60,
+			onEvent = onBack,
+			id = "NextButton",
+			text = "",
+			font = "Helvetica",
+			textColor = { 255, 255, 255, 255 },
+			size = 16,
+			emboss = false
+		}
+		
+			backButton:scale(.7,.7)
+			backButton.x = display.contentWidth*.1 
+			backButton.y = display.contentHeight*0.88
+			backButton:rotate(180)
+			backButton.isActive = true
+			main_sprt:insert(backButton)
 
 		-- slider
 		slider = require( "slider" )

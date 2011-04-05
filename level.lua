@@ -1007,10 +1007,10 @@ function new()
 		end
 		
 		pauseRestartBtn = ui.newButton{
-			defaultSrc = "images/restartbtn.png",
+			defaultSrc = "images/pauserestartbtn.png",
 			defaultX = 44,
 			defaultY = 44,
-			overSrc = "images/restartbtn-over.png",
+			overSrc = "images/pauserestartbtn-over.png",
 			overX = 44,
 			overY = 44,
 			onEvent = onRestartPauseTouch,
