@@ -61,8 +61,8 @@ function getData()
 	{
 		id = "monster2",
 		src = "images/portal1.png",
-		width = 45,
-		height = 30,
+		width = 60,
+		height = 40,
 		x = 723-420,
 		y = 135,
 		myName = "portal",
@@ -133,29 +133,29 @@ function getData()
 			x1 = 50,
 			y1 = 120,
 			rotateAngle1 = 30,
-			x2 = 600,
-			y2 = 175,
+			x2 = 100,
+			y2 = 200,
 			rotateAngle2 = 30,
 			
 		},
 	}
 	leveldata.bombs = 
 	{
-		bomb1 = 
-			{
-				id = "bomb1",
-				bombIndex = 1,
-				src = "images/bomb.png",
-				width = 30,
-				height = 30,
-				x = 70,
-				y = 199,
-				myName = "bomb",
-				bodyType = "static",
-				density = "monsterDensity",
-				bounce=0,
-				friction=0.5,
-			},
+		-- bomb1 = 
+		-- 	{
+		-- 		id = "bomb1",
+		-- 		bombIndex = 1,
+		-- 		src = "images/bomb.png",
+		-- 		width = 30,
+		-- 		height = 30,
+		-- 		x = 70,
+		-- 		y = 199,
+		-- 		myName = "bomb",
+		-- 		bodyType = "static",
+		-- 		density = "monsterDensity",
+		-- 		bounce=0,
+		-- 		friction=0.5,
+		-- 	},
 	
 			bomb2 = 
 			{

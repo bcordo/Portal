@@ -1,6 +1,12 @@
 local ui = require("ui")
--- local Particles = require("lib_particle_candy")
+-- LOAD PARTICLE LIB
+Particles	= require("lib_particle_candy")
+FXLibrary	= require("lib_particleEffects_01")
 
+-- INITIALIZE THE FX LIBRARY. THIS PRELOADS IMAGES FOR BETTER 
+-- PERFORMANCE & CREATES THE PARTICLE TYPES USED.
+-- ON LEVEL END, CALL FXLibrary.CleanUp() TO REMOVE PRELOADED IMAGES
+FXLibrary.Initialize()
 -- Hide Status Bar
 display.setStatusBar(display.HiddenStatusBar)
 

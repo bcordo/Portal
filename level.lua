@@ -56,6 +56,16 @@ function new()
 	--local facebook = require "facebook"
 	local physics = require("physics") 
 	
+	-- -- LOAD PARTICLE LIB
+	-- Particles	= require("lib_particle_candy")
+	-- FXLibrary	= require("lib_particleEffects_01")
+	-- 
+	-- -- INITIALIZE THE FX LIBRARY. THIS PRELOADS IMAGES FOR BETTER 
+	-- -- PERFORMANCE & CREATES THE PARTICLE TYPES USED.
+	-- -- ON LEVEL END, CALL FXLibrary.CleanUp() TO REMOVE PRELOADED IMAGES
+	-- FXLibrary.Initialize()
+	
+	
 
 
 	
@@ -114,7 +124,7 @@ function new()
 	local ThroughExitPortal = false
 	local portalOpen = false
 	characterBoolean = 1
-
+	BombEmitter = nil
 	
 
 	
@@ -1096,7 +1106,13 @@ function new()
 				
 				if event.other.myName == "switch" then
 						portalOpen = true
-						audio.play( portalOpenSound )
+						-- PortalSound = audio.loadStream("soundfx/explosion_long.aac")
+						-- PortalMusicChannel = audio.play( PortalSound, { channel = 6, loops=-1 }  )
+						-- audio.play( portalOpenSound )
+						PortalEmitter = Particles.CreateEmitter("PortalEmitter", portal.x, portal.y, 0,false, false, true) 
+						gameGroup:insert(Particles.GetEmitter("PortalEmitter"))
+						FXLibrary.AttachExitExplosionEndless("PortalEmitter")
+						Particles.StartEmitter("PortalEmitter")
 				end
 				
 				if event.other.myName == "portal" and portalOpen == true then
@@ -1236,7 +1252,11 @@ function new()
 				local function blast( event )
 					media.playEventSound( explosionSound )
 				    circle = display.newCircle( self.x, self.y, 100 )
-					explosion = display.newImage( "images/explosion.png", self.x, self.y )
+					BombEmitter = Particles.CreateEmitter("BombEmitter", self.x, self.y, 0,false, false, true) 
+					gameGroup:insert(Particles.GetEmitter("BombEmitter"))
+					FXLibrary.AttachExplosionHighPerformance("BombEmitter")
+					Particles.StartEmitter("BombEmitter")
+					-- explosion = display.newImage( "images/explosion.png", self.x, self.y )
 					self:removeSelf()
 					circle:setFillColor(0,0,0, 0)
 					physics.addBody( circle, "static", {isSensor = true} )
@@ -1247,7 +1267,7 @@ function new()
 
 				 local function removeStuff( event )
 					circle:removeSelf()
-					explosion:removeSelf()
+					-- DeleteEmitter("BombEmitter")
 				 end
 				 timer.performWithDelay(10, blast )
 				 timer.performWithDelay(110, removeStuff)
@@ -1260,6 +1280,8 @@ function new()
 		if self.isHit == false and portalOpen == true and event.other.myName == "character" then
 			audio.play( portalExitSound )
 			self.isHit = true
+			Particles.StopEmitter("PortalEmitter")
+			Particles.DeleteEmitter("PortalEmitter")
 			print( "Exited Portal!! " )
 			self.isVisible = false
 			self.isBodyActive = false
@@ -1295,6 +1317,14 @@ function new()
 		print("teleporter 1 touch")
 		if event.other.myName == "character" then
 			-- audio.play( telporterSound )
+			Teleporter1Emitter = Particles.CreateEmitter("Teleporter1Emitter", self.x, self.y, 0,false, false, true) 
+			gameGroup:insert(Particles.GetEmitter("Teleporter1Emitter"))
+			FXLibrary.AttachSparks("Teleporter1Emitter")
+			Particles.StartEmitter("Teleporter1Emitter")
+			Teleporter2Emitter = Particles.CreateEmitter("Teleporter2Emitter", self.xo, self.yo, 0,false, false, true) 
+			gameGroup:insert(Particles.GetEmitter("Teleporter2Emitter"))
+			FXLibrary.AttachSparks("Teleporter2Emitter")
+			Particles.StartEmitter("Teleporter2Emitter")
 			needToTeleport1 = true
 			needToTeleport2 = false
 			c2x = self.xo
@@ -1311,6 +1341,14 @@ function new()
 	onTeleporter2Touch = function( self, event )
 		if event.other.myName == "character" then
 			-- audio.play( telporterSound )
+			Teleporter1Emitter = Particles.CreateEmitter("Teleporter1Emitter", self.x, self.y, 0,false, false, true) 
+			gameGroup:insert(Particles.GetEmitter("Teleporter1Emitter"))
+			FXLibrary.AttachSparks("Teleporter1Emitter")
+			Particles.StartEmitter("Teleporter1Emitter")
+			Teleporter2Emitter = Particles.CreateEmitter("Teleporter2Emitter", self.xo, self.yo, 0,false, false, true) 
+			gameGroup:insert(Particles.GetEmitter("Teleporter2Emitter"))
+			FXLibrary.AttachSparks("Teleporter2Emitter")
+			Particles.StartEmitter("Teleporter2Emitter")
 			needToTeleport1 = false
 			needToTeleport2 = true
 			c1x = self.xo
@@ -1561,6 +1599,8 @@ function new()
 	local gameLoop = function()
 		if gameIsActive then
 			
+			Particles.Update()
+			
 			-- Create Interactions
 			for key,data in pairs(leveldata.interactions) do 
 				if(data.myName=="blackhole") then
@@ -1772,6 +1812,7 @@ function new()
 		
 		--Create Portal
 		portal = display.newImageRect(leveldata.portal.src, leveldata.portal.width, leveldata.portal.height)
+		portal.alpha = .01
 		portal.x = leveldata.portal.x
 		portal.y = leveldata.portal.y
 		portal.myName = leveldata.portal.myName
@@ -1853,7 +1894,7 @@ function new()
 	end
 	
 	local gameInit = function()
-		
+			
 		-- PHYSICS
 		physics.start( true )
 		physics.setDrawMode( "normal" )	-- set to "debug" or "hybrid" to see collision boundaries
@@ -1896,6 +1937,8 @@ function new()
 	unloadMe = function()
 		-- STOP PHYSICS ENGINE
 		physics.stop()
+		Particles.CleanUp()
+		
 		
 		-- REMOVE EVENT LISTENERS
 		Runtime:removeEventListener( "touch", onScreenTouch )
