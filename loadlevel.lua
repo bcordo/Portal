@@ -26,9 +26,7 @@ function new()
 			_G.currentLevel = _G.loadLevel
 			_G.loadLevel = nil
 			
-			level_string = "level" 
-
-			director:changeScene( level_string )
+			director:changeScene( "level", "fade" )
 		end
 		
 		theTimer = timer.performWithDelay( 1000, goToLevel, 1 )
@@ -36,7 +34,7 @@ function new()
 	
 	showLoadingScreen()
 	
-	unloadMe = function()
+	clean = function()
 		if theTimer then timer.cancel( theTimer ); end
 		
 		if loadingImage then

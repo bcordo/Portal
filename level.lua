@@ -15,6 +15,10 @@ module(..., package.seeall)
 
 
 
+-- INITIALIZE THE FX LIBRARY. THIS PRELOADS IMAGES FOR BETTER 
+-- PERFORMANCE & CREATES THE PARTICLE TYPES USED.
+-- ON LEVEL END, CALL FXLibrary.CleanUp() TO REMOVE PRELOADED IMAGES
+
 
 --***********************************************************************************************--
 --***********************************************************************************************--
@@ -31,11 +35,15 @@ module(..., package.seeall)
 -- Main function - MUST return a display.newGroup()
 function new()
 
+	FXLibrary.Initialize()
+	
+	
 
 	local levelsetup = require("level".._G.currentLevel.."setup")
 	local leveldata = levelsetup.getData()
 
 	local hudGroup = display.newGroup()
+	
 	
 	local gameGroup = display.newGroup()
 	gameGroup.x = 0
@@ -45,6 +53,9 @@ function new()
 	
 		
 	local levelGroup = display.newGroup()
+	
+
+
 	
 
 	
@@ -124,7 +135,13 @@ function new()
 	local ThroughExitPortal = false
 	local portalOpen = false
 	characterBoolean = 1
-	BombEmitter = nil
+	
+
+
+	
+
+	
+	
 	
 
 	
@@ -346,6 +363,16 @@ function new()
 		shadeRect:setFillColor( 0, 0, 0, 255 )
 		shadeRect.alpha = 0
 		
+		-- Particles.StopEmitter("PortalEmitter")
+		-- Particles.DeleteEmitter("PortalEmitter")
+		-- Particles.StopEmitter("BombEmitter")
+		-- Particles.DeleteEmitter("BombEmitter")
+		-- Particles.StopEmitter("Teleporter1Emitter")
+		-- Particles.DeleteEmitter("Teleporter1Emitter")
+		-- Particles.StopEmitter("Teleporter2Emitter")
+		-- Particles.DeleteEmitter("Teleporter2Emitter")
+	
+		
 		
 		-- GAME OVER WINDOW
 		local gameOverDisplay
@@ -406,7 +433,7 @@ function new()
 				
 				_G.loadLevel = restartLevel
 				local theModule = "loadlevel"
-				
+
 				director:changeScene( theModule )
 			end
 		end
@@ -436,6 +463,7 @@ function new()
 				audio.play( tapSound )
 				_G.loadLevel = nextLevel
 				local theModule = "loadlevel" 
+
 				director:changeScene( theModule )
 			end
 		end
@@ -602,6 +630,8 @@ function new()
 		bestScoreText.y = 304
 		
 		hudGroup:insert( bestScoreText )
+		
+
 	end
 	
 	local callNewRound = function( shouldPoof, instantPoof )
@@ -850,13 +880,17 @@ function new()
 		local onPauseTouch = function( event )
 			if event.phase == "release" and pauseBtn.isActive then
 				audio.play( tapSound )
-				
+
 				-- Pause the game
 				
 				if gameIsActive then
 				
 					gameIsActive = false
 					physics.pause()
+					-- if portalOpen == true then
+					-- 	Particles.StopEmitter("PortalEmitter")
+					-- end
+					Particles.Freeze()
 					
 					-- SHADE
 					if not shadeRect then
@@ -894,6 +928,11 @@ function new()
 						shadeRect:removeSelf()
 						shadeRect = nil
 					end
+					
+					-- if portalOpen == true then
+					-- 						Particles.StartEmitter("PortalEmitter")
+					-- 					end
+					Particles.WakeUp()
 					
 					if pauseMenuBtn then
 						pauseMenuBtn.isVisible = false
@@ -969,6 +1008,11 @@ function new()
 							-- Player click 'Cancel'; do nothing, just exit the dialog
 						elseif i == 1 then
 							-- Player clicked Yes, go to main menu
+							-- if portalOpen == true then
+							-- 	Particles.StopEmitter("PortalEmitter")
+							-- end
+							Particles.WakeUp()
+
 							director:changeScene( "world_select" )
 						end
 					end
@@ -1011,7 +1055,8 @@ function new()
 				
 				_G.loadLevel = restartLevel
 				local theModule = "loadlevel"
-				
+				Particles.WakeUp()
+
 				director:changeScene( theModule )
 			end
 		end
@@ -1104,15 +1149,15 @@ function new()
 				end
 				
 				
-				if event.other.myName == "switch" then
+				if event.other.myName == "switch" and portalOpen ~= true then
 						portalOpen = true
 						-- PortalSound = audio.loadStream("soundfx/explosion_long.aac")
 						-- PortalMusicChannel = audio.play( PortalSound, { channel = 6, loops=-1 }  )
 						-- audio.play( portalOpenSound )
-						PortalEmitter = Particles.CreateEmitter("PortalEmitter", portal.x, portal.y, 0,false, false, true) 
-						gameGroup:insert(Particles.GetEmitter("PortalEmitter"))
-						FXLibrary.AttachExitExplosionEndless("PortalEmitter")
+
 						Particles.StartEmitter("PortalEmitter")
+						-- Particles.StopEmitter("PortalEmitter")
+						-- Particles.DeleteEmitter("PortalEmitter")
 				end
 				
 				if event.other.myName == "portal" and portalOpen == true then
@@ -1252,9 +1297,7 @@ function new()
 				local function blast( event )
 					media.playEventSound( explosionSound )
 				    circle = display.newCircle( self.x, self.y, 100 )
-					BombEmitter = Particles.CreateEmitter("BombEmitter", self.x, self.y, 0,false, false, true) 
-					gameGroup:insert(Particles.GetEmitter("BombEmitter"))
-					FXLibrary.AttachExplosionHighPerformance("BombEmitter")
+				
 					Particles.StartEmitter("BombEmitter")
 					-- explosion = display.newImage( "images/explosion.png", self.x, self.y )
 					self:removeSelf()
@@ -1281,7 +1324,7 @@ function new()
 			audio.play( portalExitSound )
 			self.isHit = true
 			Particles.StopEmitter("PortalEmitter")
-			Particles.DeleteEmitter("PortalEmitter")
+			-- Particles.DeleteEmitter("PortalEmitter")
 			print( "Exited Portal!! " )
 			self.isVisible = false
 			self.isBodyActive = false
@@ -1317,14 +1360,10 @@ function new()
 		print("teleporter 1 touch")
 		if event.other.myName == "character" then
 			-- audio.play( telporterSound )
-			Teleporter1Emitter = Particles.CreateEmitter("Teleporter1Emitter", self.x, self.y, 0,false, false, true) 
-			gameGroup:insert(Particles.GetEmitter("Teleporter1Emitter"))
-			FXLibrary.AttachSparks("Teleporter1Emitter")
+
 			Particles.StartEmitter("Teleporter1Emitter")
-			Teleporter2Emitter = Particles.CreateEmitter("Teleporter2Emitter", self.xo, self.yo, 0,false, false, true) 
-			gameGroup:insert(Particles.GetEmitter("Teleporter2Emitter"))
-			FXLibrary.AttachSparks("Teleporter2Emitter")
 			Particles.StartEmitter("Teleporter2Emitter")
+		
 			needToTeleport1 = true
 			needToTeleport2 = false
 			c2x = self.xo
@@ -1341,14 +1380,10 @@ function new()
 	onTeleporter2Touch = function( self, event )
 		if event.other.myName == "character" then
 			-- audio.play( telporterSound )
-			Teleporter1Emitter = Particles.CreateEmitter("Teleporter1Emitter", self.x, self.y, 0,false, false, true) 
-			gameGroup:insert(Particles.GetEmitter("Teleporter1Emitter"))
-			FXLibrary.AttachSparks("Teleporter1Emitter")
+
 			Particles.StartEmitter("Teleporter1Emitter")
-			Teleporter2Emitter = Particles.CreateEmitter("Teleporter2Emitter", self.xo, self.yo, 0,false, false, true) 
-			gameGroup:insert(Particles.GetEmitter("Teleporter2Emitter"))
-			FXLibrary.AttachSparks("Teleporter2Emitter")
 			Particles.StartEmitter("Teleporter2Emitter")
+			
 			needToTeleport1 = false
 			needToTeleport2 = true
 			c1x = self.xo
@@ -1599,7 +1634,9 @@ function new()
 	local gameLoop = function()
 		if gameIsActive then
 			
+			
 			Particles.Update()
+			
 			
 			-- Create Interactions
 			for key,data in pairs(leveldata.interactions) do 
@@ -1738,7 +1775,7 @@ function new()
 	-- *********************************************************************************************
 	
 	local createLevel = function()
-
+	
 	
 		restartLevel = leveldata.restartLevel
 		nextLevel =  leveldata.nextLevel
@@ -1900,6 +1937,7 @@ function new()
 		physics.setDrawMode( "normal" )	-- set to "debug" or "hybrid" to see collision boundaries
 		physics.setGravity( 0, 0 )	--> 0, 9.8 = Earth-like gravity
 
+		-- Particles.StartAutoUpdate()
 
 		
 		-- DRAW GAME OBJECTS
@@ -1920,6 +1958,29 @@ function new()
 		-- DRAW HEADS-UP DISPLAY (score, lives, etc)
 		drawHUD()
 		
+		-- FXLibrary.CleanUp()
+		-- Particles.CleanUp()
+	
+		Particles.CreateEmitter("PortalEmitter", leveldata.portal.x, leveldata.portal.y, 0,false, false, false) 
+		gameGroup:insert(Particles.GetEmitter("PortalEmitter"))
+		FXLibrary.AttachExitExplosionEndless("PortalEmitter")
+		
+		
+		for key,data in pairs(leveldata.bombs) do
+			Particles.CreateEmitter("BombEmitter", data.x, data.y, 0,false, false, false) 
+			gameGroup:insert(Particles.GetEmitter("BombEmitter"))
+			FXLibrary.AttachExplosionHighPerformance("BombEmitter")
+		end
+		
+		for key,data in pairs(leveldata.teleporters) do
+			Particles.CreateEmitter("Teleporter1Emitter", data.x1, data.y1, 0,false, false, false) 
+			gameGroup:insert(Particles.GetEmitter("Teleporter1Emitter"))
+			FXLibrary.AttachSparks("Teleporter1Emitter")
+			Particles.CreateEmitter("Teleporter2Emitter", data.x2, data.y2, 0,false, false, false) 
+			gameGroup:insert(Particles.GetEmitter("Teleporter2Emitter"))
+			FXLibrary.AttachSparks("Teleporter2Emitter")
+		end
+		
 		-- LOAD BEST SCORE FOR THIS LEVEL
 		local bestScoreFilename = "level"..restartLevel .. ".data"
 		local loadedBestScore = loadValue( bestScoreFilename )	--> restarLevel should be "1" or "2", etc.
@@ -1934,11 +1995,23 @@ function new()
 		local startTimer = timer.performWithDelay( 2000, function() startNewRound(); end, 1 )
 	end
 	
-	unloadMe = function()
+	clean = function()
 		-- STOP PHYSICS ENGINE
 		physics.stop()
-		Particles.CleanUp()
+
+
+
+		-- BombEmitter = nil
+		-- PortalEmitter = nil
+		-- Teleporter1Emitter = nil
+		-- Teleporter2Emitter = nil
 		
+		if portalOpen == true then
+			Particles.StopEmitter("PortalEmitter")
+			-- Particles.DeleteEmitter("PortalEmitter")
+		end
+		FXLibrary.CleanUp()
+		Particles.CleanUp()
 		
 		-- REMOVE EVENT LISTENERS
 		Runtime:removeEventListener( "touch", onScreenTouch )
@@ -1951,6 +2024,7 @@ function new()
 			child.parent:remove( child )
 			child = nil
 		end
+		
 		
 		-- Stop any transitions
 		if characterTween then transition.cancel( characterTween ); end
