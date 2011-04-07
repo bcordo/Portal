@@ -9,7 +9,7 @@ function new()
 	local slider			= nil
 	local slider_sprt		= nil
 	local ui = require("ui")
-	nLevelsComplete = 2
+	nLevelsComplete = 30
 
 	-- forward declerations
 
@@ -24,7 +24,8 @@ function new()
 		-- main_sprt:insert(director.directorView)
 
 		-- bck
-		bck_shp = display.newImage("images/blast_background.png")
+		bck_shp = display.newImage("images/levelselect_background.png")
+		-- bck_shp = display.newRect(0,0, display.contentWidth,display.contentHeight)
 		bck_shp.x = display.contentWidth/2
 		bck_shp.y = display.contentHeight/2
 		main_sprt:insert( bck_shp )
@@ -41,10 +42,10 @@ function new()
 		  end	
 		
 		backButton = ui.newButton{
-			defaultSrc = "images/nextlevelbtn.png",
+			defaultSrc = "images/backbtn.png",
 			defaultX = 60,
 			defaultY = 60,
-			overSrc = "images/nextlevelbtn-over.png",
+			overSrc = "images/backbtn-over.png",
 			overX = 60,
 			overY = 60,
 			onEvent = onBack,
@@ -59,7 +60,7 @@ function new()
 			backButton:scale(.7,.7)
 			backButton.x = display.contentWidth*.1 
 			backButton.y = display.contentHeight*0.88
-			backButton:rotate(180)
+			-- backButton:rotate(180)
 			backButton.isActive = true
 			main_sprt:insert(backButton)
 
@@ -79,21 +80,21 @@ function new()
 		
 
 		-- slide 1
-		btnInfo_tbl = { "images/crates.png" }
+		btnInfo_tbl = { "images/level_icon.png" }
 		slide_sprt = renderSlide( 1, btnInfo_tbl )
 		btn_sprt = renderSlideBtn( 1, 256 )
 		-- slider
 		slider.addSlide( slide_sprt, btn_sprt )
 
 		-- slide 2
-		btnInfo_tbl = { "images/crates.png" }
+		btnInfo_tbl = { "images/level_icon.png" }
 		slide_sprt = renderSlide( 2, btnInfo_tbl )
 		btn_sprt = renderSlideBtn( 2, 256 )
 		-- slider
 		slider.addSlide( slide_sprt, btn_sprt )
 
 		-- slide 3
-		btnInfo_tbl = { "images/crates.png" }
+		btnInfo_tbl = { "images/level_icon.png" }
 		slide_sprt = renderSlide( 3, btnInfo_tbl )
 		btn_sprt = renderSlideBtn( 3, 256 )
 		-- slider
@@ -146,11 +147,17 @@ function new()
 		local crates = {}
 		for j = 1,3 do
 		for k = 1,4 do
-		crates[index] = display.newImage("images/crate.png", -50 + (k*70), -50 + (j*70) )
+		crates[index] = display.newImage("images/level_icon.png", -90 + (k*70), -85 + (j*70) )
+		crates[index]:scale(.5,.5)
 		crates[index].id = index
 		slide_sprt:insert(crates[index])
+		
+		if index <= 9 then	
+			txt = display.newText( slide_sprt,"level " .. index, -50 + (k*70)-5, -50 + (j*70)+5, "Danube", 6.5 )
+		else
+			txt = display.newText( slide_sprt,"level " .. index, -50 + (k*70) - 8, -50 + (j*70)+5, "Danube", 6.5 )
+		end
 			
-		txt = display.newText( slide_sprt,"level" .. index, -50 + (k*70)+5, -50 + (j*70)+10, native.systemFontBold, 10 )
 		
 		if index > nLevelsComplete then
 			crates[index].alpha = 0
