@@ -33,10 +33,10 @@ end
 -- Begin
 main()
 
-local fps = require("fps")
-local performance = fps.PerformanceOutput.new();
-performance.group.x, performance.group.y = display.contentWidth/2,  0;
-performance.alpha = 0.6;	
+-- local fps = require("fps")
+-- local performance = fps.PerformanceOutput.new();
+-- performance.group.x, performance.group.y = display.contentWidth/2,  0;
+-- performance.alpha = 0.6;	
 
 
 

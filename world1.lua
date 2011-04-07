@@ -147,15 +147,15 @@ function new()
 		local crates = {}
 		for j = 1,3 do
 		for k = 1,4 do
-		crates[index] = display.newImage("images/level_icon.png", -90 + (k*70), -85 + (j*70) )
+		crates[index] = display.newImage("images/level_icon.png", -90 + (k*70), -115 + (j*70) )
 		crates[index]:scale(.5,.5)
 		crates[index].id = index
 		slide_sprt:insert(crates[index])
 		
 		if index <= 9 then	
-			txt = display.newText( slide_sprt,"level " .. index, -50 + (k*70)-5, -50 + (j*70)+5, "Danube", 6.5 )
+			txt = display.newText( slide_sprt,"level " .. index, -50 + (k*70)-5, -80 + (j*70)+5, "Danube", 6.5 )
 		else
-			txt = display.newText( slide_sprt,"level " .. index, -50 + (k*70) - 8, -50 + (j*70)+5, "Danube", 6.5 )
+			txt = display.newText( slide_sprt,"level " .. index, -50 + (k*70) - 8, -80 + (j*70)+5, "Danube", 6.5 )
 		end
 			
 		

@@ -689,7 +689,7 @@ function new()
 			end
 					
 			local poofThecharacter = function()
-				local theDelay = 300
+				local theDelay = 30
 				
 				-- Make character disappear and show "poof" animation
 				characterObject:setLinearVelocity( 0, 0 )
@@ -750,7 +750,18 @@ function new()
 			if instantPoof == "yes" then
 				local poofTimer = timer.performWithDelay( 10, poofThecharacter, 1 ) --makes the character last longer 
 			else
-				local poofTimer = timer.performWithDelay( 1500, poofThecharacter, 1 )
+				if leveldata.restartLevel == 1.1 or leveldata.restartLevel == 1.2 then
+					if characterObject.isHit == false and characterObject.inAir then
+						characterObject.isHit = true
+						local poofTimer = timer.performWithDelay( 3000, poofThecharacter, 1 )
+						print("real timer")
+					else 
+						local poofTimer = timer.performWithDelay( 1500, poofThecharacter, 1 )
+						print("fake timer")
+					end
+				else
+					local poofTimer = timer.performWithDelay( 1500, poofThecharacter, 1 )
+				end
 			end
 		else
 			
@@ -869,7 +880,12 @@ function new()
 		
 		-- TAP TO CONTINUE DISPLAY
 		continueText = display.newText( "TAP TO CONTINUE", 240, 18, "Helvetica", 36 )
-		continueText:setTextColor( 249, 203, 64, 255 )
+		if leveldata.restartLevel == 1.1 or leveldata.restartLevel == 1.2 then
+			continueText:setTextColor( 0, 0, 0, 255 )
+		else
+			continueText:setTextColor( 249, 203, 64, 255 )
+			
+		end
 		continueText.xScale = 0.5; continueText.yScale = 0.5
 		continueText.x = 240; continueText.y = 18
 		continueText.isVisible = false
@@ -1178,7 +1194,7 @@ function new()
 						characterObject.isHit = true
 
 					
-						if event.other.myName == "wood" or event.other.myName == "stone" then
+						if event.other.myName == "wood" or event.other.myName == "stone" or event.other.myName == "switch" then
 							callNewRound( true, "yes" )
 							characterBoolean = characterBoolean + 1
 						else
@@ -1414,6 +1430,8 @@ function new()
 				shotOrb.x = characterObject.x; shotOrb.y = characterObject.y
 				shotOrb.xScale = 0.1; shotOrb.yScale = 0.1
 				
+				-- introText1 = display.newText(levelGroup, "pull character to launch  ", 100, 100, "Danube", 14 )
+				-- introText1:setTextColor(43, 43, 43)
 				
 				shotArrow.isVisible = true
 			
@@ -1550,7 +1568,11 @@ function new()
 							else
 								trailDot = display.newCircle( gameGroup, characterObject.x, characterObject.y, 1.5 )
 							end
-							trailDot:setFillColor( 255, 255, 255, 255 )
+							if leveldata.restartLevel == 1.1 or leveldata.restartLevel == 1.2 then
+								trailDot:setFillColor( 0, 0, 0, 0 )
+							else
+								trailDot:setFillColor( 255, 255, 255, 255 )
+							end
 							trailDot.alpha = 1.0
 							
 							trailGroup:insert( trailDot )
@@ -1630,12 +1652,84 @@ function new()
 		end
 	end
 	
+	if leveldata.restartLevel == 1.1 then
+	intro1_1Text1 = display.newText(levelGroup, "drag the character in any direction to lauch him ", 20, 170, "Danube", 8 )
+	intro1_1Text1:setTextColor(0, 0, 0)
+	-- introText1.isVisible = false
+	intro1_1Text2 = display.newText(levelGroup, "now launch him towards the red button ", 20, 170, "Danube", 8 )
+	intro1_1Text2:setTextColor(0, 0, 0)
+	intro1_1Text2.isVisible = false
+	intro1_1Text3 = display.newText(levelGroup, "send him through the portal to progress ", 10, 170, "Danube", 8 )
+	intro1_1Text3:setTextColor(0, 0, 0)
+	intro1_1Text3.isVisible = false
+	end
+	
+	if leveldata.restartLevel == 1.2 then
+		intro1_2Text1 = display.newText(levelGroup, "send him through the teleportal ", 20, 170, "Danube", 8 )
+		intro1_2Text1:setTextColor(0, 0, 0)
+		intro1_2Text2 = display.newText(levelGroup, "now launch him into the portal... into the unknown... ", 20, 170, "Danube", 8 )
+		intro1_2Text2:setTextColor(0, 0, 0)
+		intro1_2Text2.isVisible = false
+		
+	end
+
+		
+	
+	
+	
+	-- local introInstructions = function()
+	-- 	 local startIntro = function()
+	-- 	 	if introText1.isVisible then
+	-- 	 		introText1.isVisible = false
+	-- 			introText2.isVisible = true
+	-- 	 	elseif introText2.isVisible then
+	-- 	 		introText2.isVisible = false
+	-- 			introText3.isVisible = true
+	-- 		elseif introText3.isVisible then
+	-- 	 		introText3.isVisible = false
+	-- 			introText1.isVisible = true
+	-- 	 	end
+	-- 	 end
+	-- 	 
+	-- 	 introTextTimer = timer.performWithDelay( 3500, startIntro, 0 )
+	-- end
+	
 	-- Main enterFrame Listener
+	
+	
 	local gameLoop = function()
 		if gameIsActive then
 			
 			
 			Particles.Update()
+			if leveldata.restartLevel == 1.1 or leveldata.restartLevel == 1.2 then
+				if characterObject.isHit == false and characterObject.inAir then
+					-- characterObject.isHit = true
+					print("something is working!")
+					if dotTimer then timer.cancel( dotTimer ); end
+					timer.performWithDelay( 10000, callNewRound( true, "no" ), 0 )
+					characterBoolean = characterBoolean + 1
+				end
+			end
+				
+			if leveldata.restartLevel == 1.1 then
+				if characterObject.inAir == true then
+					intro1_1Text1.isVisible = false
+					intro1_1Text2.isVisible = true
+				end
+		
+				if portalOpen == true then
+					intro1_1Text2.isVisible = false
+					intro1_1Text3.isVisible = true
+				end
+			end
+			
+			if leveldata.restartLevel == 1.2 then
+					if portalOpen == true then
+					intro1_2Text1.isVisible = false
+					intro1_2Text2.isVisible = true
+				end
+			end
 			
 			
 			-- Create Interactions
@@ -1776,7 +1870,10 @@ function new()
 	
 	local createLevel = function()
 	
-	
+		-- introInstructions()
+		
+
+		
 		restartLevel = leveldata.restartLevel
 		nextLevel =  leveldata.nextLevel
 
@@ -1872,6 +1969,8 @@ function new()
 			levelGroup:insert(obj)
 		
 		end
+		
+
 		
 	
 		-- SET PROPER DRAW ORDER:
