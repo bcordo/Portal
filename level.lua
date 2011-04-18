@@ -38,8 +38,11 @@ function new()
 	FXLibrary.Initialize()
 	
 	
-
-	local levelsetup = require("level".._G.currentLevel.."setup")
+	
+	-- local levelfinder = require("level".._G.currentLevel.."setup")
+	-- local lvlfinder = levelfinder.newMain()
+	
+	local levelsetup = require("level_creator")
 	local leveldata = levelsetup.getData()
 
 	local hudGroup = display.newGroup()
@@ -750,7 +753,7 @@ function new()
 			if instantPoof == "yes" then
 				local poofTimer = timer.performWithDelay( 10, poofThecharacter, 1 ) --makes the character last longer 
 			else
-				if leveldata.restartLevel == 1.1 or leveldata.restartLevel == 1.2 then
+				if leveldata.restartLevel == 1.1 or leveldata.restartLevel == 1.2 or leveldata.restartLevel == 1.4 or leveldata.restartLevel == 1.5 then
 					if characterObject.isHit == false and characterObject.inAir then
 						characterObject.isHit = true
 						local poofTimer = timer.performWithDelay( 3000, poofThecharacter, 1 )
@@ -880,7 +883,7 @@ function new()
 		
 		-- TAP TO CONTINUE DISPLAY
 		continueText = display.newText( "TAP TO CONTINUE", 240, 18, "Helvetica", 36 )
-		if leveldata.restartLevel == 1.1 or leveldata.restartLevel == 1.2 then
+		if leveldata.restartLevel == 1.1 or leveldata.restartLevel == 1.2 or leveldata.restartLevel == 1.3 or leveldata.restartLevel == 1.4 or leveldata.restartLevel == 1.5 then
 			continueText:setTextColor( 0, 0, 0, 255 )
 		else
 			continueText:setTextColor( 249, 203, 64, 255 )
@@ -1194,7 +1197,7 @@ function new()
 						characterObject.isHit = true
 
 					
-						if event.other.myName == "wood" or event.other.myName == "stone" or event.other.myName == "switch" then
+						if event.other.myName == "wood" or event.other.myName == "stone" or event.other.myName == "switch" or event.other.myName == "metal" then
 							callNewRound( true, "yes" )
 							characterBoolean = characterBoolean + 1
 						else
@@ -1291,7 +1294,7 @@ function new()
 					forcex = 80 - forcex+12
 				end
 				event.other:applyLinearImpulse( forcex, forcey, self.x, self.y )
-				if(math.abs(forcex) > 60 or math.abs(forcey) > 60) then
+				if(math.abs(forcex) > 100 or math.abs(forcey) > 100) then
 					local explosion = display.newImage( "images/explosion.png", event.other.x, event.other.y )
 					event.other:removeSelf()
 					local function removeExplosion( event )
@@ -1306,15 +1309,15 @@ function new()
 
 	local function onBombTouch ( self, event )
 			
-			if(event.phase == "began" and self.bombArmedQ == "yes") then
+			if(event.phase == "began" and self.bombArmedQ == "yes" and gameIsActive) then
 				print("bomb id " .. self.bombIndex)
 				local circle = ""
 				local explosion = ""
 				local function blast( event )
 					media.playEventSound( explosionSound )
 				    circle = display.newCircle( self.x, self.y, 100 )
-				
-					Particles.StartEmitter("BombEmitter")
+					bombstring2 = "BombEmitter" .. self.bombIndex
+					Particles.StartEmitter(bombstring2)
 					-- explosion = display.newImage( "images/explosion.png", self.x, self.y )
 					self:removeSelf()
 					circle:setFillColor(0,0,0, 0)
@@ -1568,7 +1571,7 @@ function new()
 							else
 								trailDot = display.newCircle( gameGroup, characterObject.x, characterObject.y, 1.5 )
 							end
-							if leveldata.restartLevel == 1.1 or leveldata.restartLevel == 1.2 then
+							if leveldata.restartLevel == 1.1 or leveldata.restartLevel == 1.2 or leveldata.restartLevel == 1.3 or leveldata.restartLevel == 1.4 or leveldata.restartLevel == 1.5 then
 								trailDot:setFillColor( 0, 0, 0, 0 )
 							else
 								trailDot:setFillColor( 255, 255, 255, 255 )
@@ -1672,6 +1675,29 @@ function new()
 		intro1_2Text2.isVisible = false
 		
 	end
+	
+	if leveldata.restartLevel == 1.3 then
+		intro1_3Text1 = display.newText(levelGroup, "black holes create gravitational attraction ", 20, 145, "Danube", 8 )
+		intro1_3Text1:setTextColor(0, 0, 0)
+	end
+	
+	if leveldata.restartLevel == 1.4 then
+		intro1_4Text1 = display.newText(levelGroup, "white holes create gravitational repulsion ", 20, 145, "Danube", 8 )
+		intro1_4Text1:setTextColor(0, 0, 0)
+	end
+	
+	if leveldata.restartLevel == 1.5 then
+		intro1_5Text1 = display.newText(levelGroup, "and dynamite... well... ", 20, 130, "Danube", 8 )
+		intro1_5Text1:setTextColor(0, 0, 0)
+		intro1_5Text4 = display.newText(levelGroup, "blows things up ", 20, 142, "Danube", 8 )
+		intro1_5Text4:setTextColor(0, 0, 0)
+		intro1_5Text2 = display.newText(levelGroup, "now go through the portal and", 20, 130, "Danube", 8 )
+		intro1_5Text2:setTextColor(0, 0, 0)
+		intro1_5Text2.isVisible = false
+		intro1_5Text3 = display.newText(levelGroup, "let the real adventures begin.... ", 20, 142, "Danube", 8 )
+		intro1_5Text3:setTextColor(0, 0, 0)
+		intro1_5Text3.isVisible = false
+	end
 
 		
 	
@@ -1702,7 +1728,7 @@ function new()
 			
 			
 			Particles.Update()
-			if leveldata.restartLevel == 1.1 or leveldata.restartLevel == 1.2 then
+			if leveldata.restartLevel == 1.1 or leveldata.restartLevel == 1.2 or leveldata.restartLevel == 1.4 or leveldata.restartLevel == 1.5 then
 				if characterObject.isHit == false and characterObject.inAir then
 					-- characterObject.isHit = true
 					print("something is working!")
@@ -1731,9 +1757,19 @@ function new()
 				end
 			end
 			
+			if leveldata.restartLevel == 1.5 then
+					if portalOpen == true then
+					intro1_5Text1.isVisible = false
+					intro1_5Text4.isVisible = false
+					intro1_5Text2.isVisible = true
+					intro1_5Text3.isVisible = true
+				end
+			end
+			
+			
 			
 			-- Create Interactions
-			for key,data in pairs(leveldata.interactions) do 
+			for key,data in pairs(leveldata.blackHoles) do 
 				if(data.myName=="blackhole") then
 
 					dx = data.x - characterObject.x
@@ -1748,15 +1784,15 @@ function new()
 			end
 
 			
-			for key,data in pairs(leveldata.interactions) do 
+			for key,data in pairs(leveldata.whiteHoles) do 
 				if(data.myName=="whitehole") then
 
 					dx = data.x - characterObject.x
 					dy = data.y - characterObject.y
 					r = math.sqrt(dx^2 + dy^2)
-					forceFactor = data.forceFactor
+					forceFactor = -data.forceFactor
 					fx = forceFactor*dx/(r^2); fy = forceFactor*dy/(r^2)
-					characterObject:applyForce( -fx, -fy, characterObject.x, characterObject.y )
+					characterObject:applyForce( fx, fy, characterObject.x, characterObject.y )
 
 				end
 				
@@ -1933,11 +1969,45 @@ function new()
 			print("bomb index " .. bomb.x .. " index " .. index .. " bomb is on " .. bomb.bombArmedQ)
 		end
 			
-		for key,data in pairs(leveldata.objects) do 
+		--Create Stone
+		for key,data in pairs(leveldata.stones) do 
 			
 			local obj = display.newImageRect(data.src, data.width, data.height)
 			obj.x = data.x
 			obj.y = data.y
+			if data.rotate ~= nil then
+			obj:rotate(data.rotate)
+			end
+			obj.myName = data.myName
+			physics.addBody(obj, data.bodyType, {density=properties[data.density], bounce=data.bounce, friction = data.friction, shape=properties[data.shape]})
+			gameGroup:insert(obj)
+			
+		end
+		
+		--Create Metal
+		for key,data in pairs(leveldata.metals) do 
+			
+			local obj = display.newImageRect(data.src, data.width, data.height)
+			obj.x = data.x
+			obj.y = data.y
+			if data.rotate ~= nil then
+			obj:rotate(data.rotate)
+			end
+			obj.myName = data.myName
+			physics.addBody(obj, data.bodyType, {density=properties[data.density], bounce=data.bounce, friction = data.friction, shape=properties[data.shape]})
+			gameGroup:insert(obj)
+			
+		end
+		
+		--Create Wood
+		for key,data in pairs(leveldata.woods) do 
+			
+			local obj = display.newImageRect(data.src, data.width, data.height)
+			obj.x = data.x
+			obj.y = data.y
+			if data.rotate ~= nil then
+			obj:rotate(data.rotate)
+			end
 			obj.myName = data.myName
 			physics.addBody(obj, data.bodyType, {density=properties[data.density], bounce=data.bounce, friction = data.friction, shape=properties[data.shape]})
 			gameGroup:insert(obj)
@@ -1960,7 +2030,17 @@ function new()
 		portal.collision = onExitPortalTouch
 		portal:addEventListener("collision",portal)
 		
-		for key,data in pairs(leveldata.interactions) do 
+		for key,data in pairs(leveldata.blackHoles) do 
+		
+			local obj = display.newImageRect(data.src, data.width, data.height)
+			obj.x = data.x
+			obj.y = data.y
+			obj.myName = data.myName
+			levelGroup:insert(obj)
+		
+		end
+		
+		for key,data in pairs(leveldata.whiteHoles) do 
 		
 			local obj = display.newImageRect(data.src, data.width, data.height)
 			obj.x = data.x
@@ -2066,9 +2146,10 @@ function new()
 		
 		
 		for key,data in pairs(leveldata.bombs) do
-			Particles.CreateEmitter("BombEmitter", data.x, data.y, 0,false, false, false) 
-			gameGroup:insert(Particles.GetEmitter("BombEmitter"))
-			FXLibrary.AttachExplosionHighPerformance("BombEmitter")
+			bombstring = "BombEmitter" .. data.bombIndex
+			Particles.CreateEmitter(bombstring, data.x, data.y, 0,false, false, false) 
+			gameGroup:insert(Particles.GetEmitter(bombstring))
+			FXLibrary.AttachExplosionHighPerformance(bombstring)
 		end
 		
 		for key,data in pairs(leveldata.teleporters) do

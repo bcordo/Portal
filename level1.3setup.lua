@@ -15,8 +15,8 @@ display.setStatusBar(display.HiddenStatusBar)
 function newMain ()
 	local this = display.newGroup()
 	
-	this.currentLevel = 1.1
-	this.next_level = 1.2
+	this.currentLevel = 1.3
+	this.next_level = 1.4
 		
 	this.background = 
 	{
@@ -44,6 +44,17 @@ function newMain ()
 	
 	this:insert(portal_1)
 	this.portal_1 = portal_1
+	
+	local blackhole_1 = display.newImageRect(imagelookup.table["Blackhole"],imagelookup.table["BlackholeWidth"],imagelookup.table["BlackholeHeight"])
+	blackhole_1.x = 200
+	blackhole_1.y = 200
+	blackhole_1.xScale = 1
+	blackhole_1.yScale = 1
+	blackhole_1.isVisible = false
+	
+	this:insert(blackhole_1)
+	this.blackhole_1 = blackhole_1
+	
 
 	
 	return this

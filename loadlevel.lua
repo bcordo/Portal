@@ -1,9 +1,7 @@
 -- (This is easiest to play on iPad or other large devices, but should work on all iOS and Android devices)
 -- 
 -- Version: 1.0
--- 
--- Sample code is MIT licensed, see http://developer.anscamobile.com/code/license
--- Copyright (C) 2010 ANSCA Inc. All Rights Reserved.
+
 
 
 

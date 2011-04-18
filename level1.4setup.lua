@@ -15,8 +15,8 @@ display.setStatusBar(display.HiddenStatusBar)
 function newMain ()
 	local this = display.newGroup()
 	
-	this.currentLevel = 1.1
-	this.next_level = 1.2
+	this.currentLevel = 1.4
+	this.next_level = 1.5
 		
 	this.background = 
 	{
@@ -44,6 +44,17 @@ function newMain ()
 	
 	this:insert(portal_1)
 	this.portal_1 = portal_1
+	
+	local whitehole_1 = display.newImageRect(imagelookup.table["Whitehole"],imagelookup.table["WhiteholeWidth"],imagelookup.table["WhiteholeHeight"])
+	whitehole_1.x = 200
+	whitehole_1.y = 200
+	whitehole_1.xScale = 1
+	whitehole_1.yScale = 1
+	whitehole_1.isVisible = false
+	
+	this:insert(whitehole_1)
+	this.whitehole_1 = whitehole_1
+	
 
 	
 	return this
