@@ -632,7 +632,7 @@ function getData()
 			id2 = "teleporterwhite-2",
 			myName1 = "teleporter1",
 			myName2 = "teleporter2",
-			src = "images/teleporterpurple.png",
+			src = "images/teleporterwhite.png",
 			width = 15,
 			height = 70,
 			x1 = lvl.teleporterwhite_1.x,
