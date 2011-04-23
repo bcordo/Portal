@@ -24,8 +24,247 @@ function getData()
 		bodyType = "static",				
 	}
 	
+	if lvl.blackhole_1 and lvl.blackhole_2 and lvl.blackhole_3 and lvl.blackhole_4 and lvl.blackhole_5 and lvl.blackhole_6 then
+	leveldata.blackHoles = 
+	{
+		
+		BlackHole1 = 
+		 { 
+			id =  "BlackHole1",
+			src = "images/blackhole.png",
+			width = 25,
+			height = 25,
+		 	x = lvl.blackhole_1.x,
+			y = lvl.blackhole_1.y,
+			myName = "blackhole",
+			forceFactor = 10
+		},
+		
+		BlackHole2 = 
+		 { 
+			id =  "BlackHole2",
+			src = "images/blackhole.png",
+			width = 25,
+			height = 25,
+		 	x = lvl.blackhole_2.x,
+			y = lvl.blackhole_2.y,
+			myName = "blackhole",
+			forceFactor = 10
+		},
+		
+		BlackHole3 = 
+		 { 
+			id =  "BlackHole3",
+			src = "images/blackhole.png",
+			width = 25,
+			height = 25,
+		 	x = lvl.blackhole_3.x,
+			y = lvl.blackhole_3.y,
+			myName = "blackhole",
+			forceFactor = 10
+		},
+		
+		BlackHole4 = 
+		 { 
+			id =  "BlackHole4",
+			src = "images/blackhole.png",
+			width = 25,
+			height = 25,
+		 	x = lvl.blackhole_4.x,
+			y = lvl.blackhole_4.y,
+			myName = "blackhole",
+			forceFactor = 10
+		},
+		
+		BlackHole5 = 
+		 { 
+			id =  "BlackHole5",
+			src = "images/blackhole.png",
+			width = 25,
+			height = 25,
+		 	x = lvl.blackhole_5.x,
+			y = lvl.blackhole_5.y,
+			myName = "blackhole",
+			forceFactor = 10
+		},
+		
+		BlackHole6 = 
+		 { 
+			id =  "BlackHole6",
+			src = "images/blackhole.png",
+			width = 25,
+			height = 25,
+		 	x = lvl.blackhole_6.x,
+			y = lvl.blackhole_6.y,
+			myName = "blackhole",
+			forceFactor = 10
+		},
+	}
+	
+	elseif lvl.blackhole_1 and lvl.blackhole_2 and lvl.blackhole_3 and lvl.blackhole_4 and lvl.blackhole_5 then
+	leveldata.blackHoles = 
+	{
+		
+		BlackHole1 = 
+		 { 
+			id =  "BlackHole1",
+			src = "images/blackhole.png",
+			width = 25,
+			height = 25,
+		 	x = lvl.blackhole_1.x,
+			y = lvl.blackhole_1.y,
+			myName = "blackhole",
+			forceFactor = 10
+		},
+		
+		BlackHole2 = 
+		 { 
+			id =  "BlackHole2",
+			src = "images/blackhole.png",
+			width = 25,
+			height = 25,
+		 	x = lvl.blackhole_2.x,
+			y = lvl.blackhole_2.y,
+			myName = "blackhole",
+			forceFactor = 10
+		},
+		
+		BlackHole3 = 
+		 { 
+			id =  "BlackHole3",
+			src = "images/blackhole.png",
+			width = 25,
+			height = 25,
+		 	x = lvl.blackhole_3.x,
+			y = lvl.blackhole_3.y,
+			myName = "blackhole",
+			forceFactor = 10
+		},
+		
+		BlackHole4 = 
+		 { 
+			id =  "BlackHole4",
+			src = "images/blackhole.png",
+			width = 25,
+			height = 25,
+		 	x = lvl.blackhole_4.x,
+			y = lvl.blackhole_4.y,
+			myName = "blackhole",
+			forceFactor = 10
+		},
+		
+		BlackHole5 = 
+		 { 
+			id =  "BlackHole5",
+			src = "images/blackhole.png",
+			width = 25,
+			height = 25,
+		 	x = lvl.blackhole_5.x,
+			y = lvl.blackhole_5.y,
+			myName = "blackhole",
+			forceFactor = 10
+		},
+	}
+	
+	elseif lvl.blackhole_1 and lvl.blackhole_2 and lvl.blackhole_3 and lvl.blackhole_4 then
+	leveldata.blackHoles = 
+	{
+		
+		BlackHole1 = 
+		 { 
+			id =  "BlackHole1",
+			src = "images/blackhole.png",
+			width = 25,
+			height = 25,
+		 	x = lvl.blackhole_1.x,
+			y = lvl.blackhole_1.y,
+			myName = "blackhole",
+			forceFactor = 10
+		},
+		
+		BlackHole2 = 
+		 { 
+			id =  "BlackHole2",
+			src = "images/blackhole.png",
+			width = 25,
+			height = 25,
+		 	x = lvl.blackhole_2.x,
+			y = lvl.blackhole_2.y,
+			myName = "blackhole",
+			forceFactor = 10
+		},
+		
+		BlackHole3 = 
+		 { 
+			id =  "BlackHole3",
+			src = "images/blackhole.png",
+			width = 25,
+			height = 25,
+		 	x = lvl.blackhole_3.x,
+			y = lvl.blackhole_3.y,
+			myName = "blackhole",
+			forceFactor = 10
+		},
+		
+		BlackHole4 = 
+		 { 
+			id =  "BlackHole4",
+			src = "images/blackhole.png",
+			width = 25,
+			height = 25,
+		 	x = lvl.blackhole_4.x,
+			y = lvl.blackhole_4.y,
+			myName = "blackhole",
+			forceFactor = 10
+		},
+		
 
-	if lvl.blackhole_1 and lvl.blackhole_2 then
+	}
+	
+	elseif lvl.blackhole_1 and lvl.blackhole_2 and lvl.blackhole_3 then
+	leveldata.blackHoles = 
+	{
+		
+		BlackHole1 = 
+		 { 
+			id =  "BlackHole1",
+			src = "images/blackhole.png",
+			width = 25,
+			height = 25,
+		 	x = lvl.blackhole_1.x,
+			y = lvl.blackhole_1.y,
+			myName = "blackhole",
+			forceFactor = 10
+		},
+		
+		BlackHole2 = 
+		 { 
+			id =  "BlackHole2",
+			src = "images/blackhole.png",
+			width = 25,
+			height = 25,
+		 	x = lvl.blackhole_2.x,
+			y = lvl.blackhole_2.y,
+			myName = "blackhole",
+			forceFactor = 10
+		},
+		
+		BlackHole3 = 
+		 { 
+			id =  "BlackHole3",
+			src = "images/blackhole.png",
+			width = 25,
+			height = 25,
+		 	x = lvl.blackhole_3.x,
+			y = lvl.blackhole_3.y,
+			myName = "blackhole",
+			forceFactor = 10
+		},
+		
+
+	}
+
+	elseif lvl.blackhole_1 and lvl.blackhole_2 then
 	leveldata.blackHoles = 
 	{
 		
@@ -55,6 +294,7 @@ function getData()
 		
 
 	}
+	
 	elseif lvl.blackhole_1 then
 	leveldata.blackHoles = 
 	{

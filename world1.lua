@@ -209,7 +209,7 @@ function new()
 	----------------------------------------------------------------------------------------------------
 	function tapCb( evt )
 
-		local btnId = evt.target.id*.1 + 1
+		local btnId = "1-" .. evt.target.id
 		print( "btnId = " .. btnId )
 		_G.loadLevel= btnId
 		director:changeScene("loadlevel", "fade", 0,0,0)

@@ -753,7 +753,7 @@ function new()
 			if instantPoof == "yes" then
 				local poofTimer = timer.performWithDelay( 10, poofThecharacter, 1 ) --makes the character last longer 
 			else
-				if leveldata.restartLevel == 1.1 or leveldata.restartLevel == 1.2 or leveldata.restartLevel == 1.4 or leveldata.restartLevel == 1.5 then
+				if leveldata.restartLevel == "1-1" or leveldata.restartLevel == "1-2" or leveldata.restartLevel == "1-4" or leveldata.restartLevel == "1-5" or leveldata.restartLevel == "1-3" then
 					if characterObject.isHit == false and characterObject.inAir then
 						characterObject.isHit = true
 						local poofTimer = timer.performWithDelay( 3000, poofThecharacter, 1 )
@@ -883,7 +883,7 @@ function new()
 		
 		-- TAP TO CONTINUE DISPLAY
 		continueText = display.newText( "TAP TO CONTINUE", 240, 18, "Helvetica", 36 )
-		if leveldata.restartLevel == 1.1 or leveldata.restartLevel == 1.2 or leveldata.restartLevel == 1.3 or leveldata.restartLevel == 1.4 or leveldata.restartLevel == 1.5 then
+		if leveldata.restartLevel == "1-1" or leveldata.restartLevel == "1-2" or leveldata.restartLevel == "1-3" or leveldata.restartLevel == "1-4" or leveldata.restartLevel == "1-5" then
 			continueText:setTextColor( 0, 0, 0, 255 )
 		else
 			continueText:setTextColor( 249, 203, 64, 255 )
@@ -1349,6 +1349,7 @@ function new()
 			self.isBodyActive = false
 			self.isBullet = false
 			characterObject:setLinearVelocity( 0, 0 )
+			characterObject.bodyType = "static"
 			characterObject.isVisible = false
 			characterObject.isBullet = false
 			characterObject.trailNum = 0
@@ -1571,7 +1572,7 @@ function new()
 							else
 								trailDot = display.newCircle( gameGroup, characterObject.x, characterObject.y, 1.5 )
 							end
-							if leveldata.restartLevel == 1.1 or leveldata.restartLevel == 1.2 or leveldata.restartLevel == 1.3 or leveldata.restartLevel == 1.4 or leveldata.restartLevel == 1.5 then
+							if leveldata.restartLevel == "1-1" or leveldata.restartLevel == "1-2" or leveldata.restartLevel == "1-3" or leveldata.restartLevel == "1-4" or leveldata.restartLevel == "1-5" then
 								trailDot:setFillColor( 0, 0, 0, 0 )
 							else
 								trailDot:setFillColor( 255, 255, 255, 255 )
@@ -1655,7 +1656,7 @@ function new()
 		end
 	end
 	
-	if leveldata.restartLevel == 1.1 then
+	if leveldata.restartLevel == "1-1" then
 	intro1_1Text1 = display.newText(levelGroup, "drag the character in any direction to lauch him ", 20, 170, "Danube", 8 )
 	intro1_1Text1:setTextColor(0, 0, 0)
 	-- introText1.isVisible = false
@@ -1667,7 +1668,7 @@ function new()
 	intro1_1Text3.isVisible = false
 	end
 	
-	if leveldata.restartLevel == 1.2 then
+	if leveldata.restartLevel == "1-2" then
 		intro1_2Text1 = display.newText(levelGroup, "send him through the teleportal ", 20, 170, "Danube", 8 )
 		intro1_2Text1:setTextColor(0, 0, 0)
 		intro1_2Text2 = display.newText(levelGroup, "now launch him into the portal... into the unknown... ", 20, 170, "Danube", 8 )
@@ -1676,17 +1677,17 @@ function new()
 		
 	end
 	
-	if leveldata.restartLevel == 1.3 then
+	if leveldata.restartLevel == "1-3" then
 		intro1_3Text1 = display.newText(levelGroup, "black holes create gravitational attraction ", 20, 145, "Danube", 8 )
 		intro1_3Text1:setTextColor(0, 0, 0)
 	end
 	
-	if leveldata.restartLevel == 1.4 then
+	if leveldata.restartLevel == "1-4" then
 		intro1_4Text1 = display.newText(levelGroup, "white holes create gravitational repulsion ", 20, 145, "Danube", 8 )
 		intro1_4Text1:setTextColor(0, 0, 0)
 	end
 	
-	if leveldata.restartLevel == 1.5 then
+	if leveldata.restartLevel == "1-5" then
 		intro1_5Text1 = display.newText(levelGroup, "and dynamite... well... ", 20, 130, "Danube", 8 )
 		intro1_5Text1:setTextColor(0, 0, 0)
 		intro1_5Text4 = display.newText(levelGroup, "blows things up ", 20, 142, "Danube", 8 )
@@ -1728,7 +1729,7 @@ function new()
 			
 			
 			Particles.Update()
-			if leveldata.restartLevel == 1.1 or leveldata.restartLevel == 1.2 or leveldata.restartLevel == 1.4 or leveldata.restartLevel == 1.5 then
+			if leveldata.restartLevel == "1-1" or leveldata.restartLevel == "1-2" or leveldata.restartLevel == "1-4" or leveldata.restartLevel == "1-5" or leveldata.restartLevel == "1-3" then
 				if characterObject.isHit == false and characterObject.inAir then
 					-- characterObject.isHit = true
 					print("something is working!")
@@ -1738,7 +1739,7 @@ function new()
 				end
 			end
 				
-			if leveldata.restartLevel == 1.1 then
+			if leveldata.restartLevel == "1-1" then
 				if characterObject.inAir == true then
 					intro1_1Text1.isVisible = false
 					intro1_1Text2.isVisible = true
@@ -1750,14 +1751,14 @@ function new()
 				end
 			end
 			
-			if leveldata.restartLevel == 1.2 then
+			if leveldata.restartLevel == "1-2" then
 					if portalOpen == true then
 					intro1_2Text1.isVisible = false
 					intro1_2Text2.isVisible = true
 				end
 			end
 			
-			if leveldata.restartLevel == 1.5 then
+			if leveldata.restartLevel == "1-5" then
 					if portalOpen == true then
 					intro1_5Text1.isVisible = false
 					intro1_5Text4.isVisible = false
