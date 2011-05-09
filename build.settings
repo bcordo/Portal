@@ -1,15 +1,27 @@
 settings =
 {
-  orientation = 
-  {
-    default = "landscapeRight",
-    supported = 
-    {
-      "landscapeLeft", "landscapeRight",
-    },
-  },
-   androidPermissions =
-   {
-       "android.permission.INTERNET"
-   },
+        orientation =
+        {
+                default = "landscapeRight",
+				supported = 
+			    {
+			      "landscapeLeft", "landscapeRight",
+			    },
+        },
+ 
+        iphone =
+        {
+                plist =
+                {
+                        UIAppFonts = 
+						{
+							"danube.ttf"
+						}
+                },
+        },
+ 
+        androidPermissions =
+		   {
+		       "android.permission.INTERNET"
+		   },
 }

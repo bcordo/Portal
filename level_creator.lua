@@ -913,7 +913,559 @@ function getData()
 		}
 	end
 	
-	if lvl.bomb_1 and lvl.bomb_2 then
+	if lvl.bomb_1 and lvl.bomb_2 and lvl.bomb_3 and lvl.bomb_4 and lvl.bomb_5 and lvl.bomb_6 and lvl.bomb_7 and lvl.bomb_8 then
+	leveldata.bombs = 
+	{
+		bomb1 = 
+			{
+				id = "bomb1",
+				bombIndex = 1,
+				src = "images/dynamite1.png",
+				width = 30,
+				height = 30,
+				x = lvl.bomb_1.x,
+				y = lvl.bomb_1.y,
+				myName = "bomb",
+				bodyType = "static",
+				density = "monsterDensity",
+				bounce=0,
+				friction=0.5,
+			},
+	
+		bomb2 = 
+			{
+				id = "bomb2",
+				bombIndex = 2,
+				src = "images/dynamite1.png",
+				width = 30,
+				height = 30,
+				x = lvl.bomb_2.x,
+				y = lvl.bomb_2.y,
+				myName = "bomb",
+				bodyType = "static",
+				density = "monsterDensity",
+				bounce=0,
+				friction=0.5,
+			},
+			
+		bomb3 = 
+			{
+				id = "bomb3",
+				bombIndex = 3,
+				src = "images/dynamite1.png",
+				width = 30,
+				height = 30,
+				x = lvl.bomb_3.x,
+				y = lvl.bomb_3.y,
+				myName = "bomb",
+				bodyType = "static",
+				density = "monsterDensity",
+				bounce=0,
+				friction=0.5,
+			},
+			
+		bomb4 = 
+			{
+				id = "bomb4",
+				bombIndex = 4,
+				src = "images/dynamite1.png",
+				width = 30,
+				height = 30,
+				x = lvl.bomb_4.x,
+				y = lvl.bomb_4.y,
+				myName = "bomb",
+				bodyType = "static",
+				density = "monsterDensity",
+				bounce=0,
+				friction=0.5,
+			},	
+			
+		bomb5 = 
+			{
+				id = "bomb5",
+				bombIndex = 5,
+				src = "images/dynamite1.png",
+				width = 30,
+				height = 30,
+				x = lvl.bomb_5.x,
+				y = lvl.bomb_5.y,
+				myName = "bomb",
+				bodyType = "static",
+				density = "monsterDensity",
+				bounce=0,
+				friction=0.5,
+			},	
+			
+		bomb6 = 
+			{
+				id = "bomb6",
+				bombIndex = 6,
+				src = "images/dynamite1.png",
+				width = 30,
+				height = 30,
+				x = lvl.bomb_6.x,
+				y = lvl.bomb_6.y,
+				myName = "bomb",
+				bodyType = "static",
+				density = "monsterDensity",
+				bounce=0,
+				friction=0.5,
+			},
+			
+		bomb7 = 
+			{
+				id = "bomb7",
+				bombIndex = 7,
+				src = "images/dynamite1.png",
+				width = 30,
+				height = 30,
+				x = lvl.bomb_7.x,
+				y = lvl.bomb_7.y,
+				myName = "bomb",
+				bodyType = "static",
+				density = "monsterDensity",
+				bounce=0,
+				friction=0.5,
+			},
+			
+		bomb8 = 
+			{
+				id = "bomb8",
+				bombIndex = 8,
+				src = "images/dynamite1.png",
+				width = 30,
+				height = 30,
+				x = lvl.bomb_8.x,
+				y = lvl.bomb_8.y,
+				myName = "bomb",
+				bodyType = "static",
+				density = "monsterDensity",
+				bounce=0,
+				friction=0.5,
+			},
+	}
+	
+	elseif lvl.bomb_1 and lvl.bomb_2 and lvl.bomb_3 and lvl.bomb_4 and lvl.bomb_5 and lvl.bomb_6 and lvl.bomb_7 then
+	leveldata.bombs = 
+	{
+		bomb1 = 
+			{
+				id = "bomb1",
+				bombIndex = 1,
+				src = "images/dynamite1.png",
+				width = 30,
+				height = 30,
+				x = lvl.bomb_1.x,
+				y = lvl.bomb_1.y,
+				myName = "bomb",
+				bodyType = "static",
+				density = "monsterDensity",
+				bounce=0,
+				friction=0.5,
+			},
+	
+		bomb2 = 
+			{
+				id = "bomb2",
+				bombIndex = 2,
+				src = "images/dynamite1.png",
+				width = 30,
+				height = 30,
+				x = lvl.bomb_2.x,
+				y = lvl.bomb_2.y,
+				myName = "bomb",
+				bodyType = "static",
+				density = "monsterDensity",
+				bounce=0,
+				friction=0.5,
+			},
+			
+		bomb3 = 
+			{
+				id = "bomb3",
+				bombIndex = 3,
+				src = "images/dynamite1.png",
+				width = 30,
+				height = 30,
+				x = lvl.bomb_3.x,
+				y = lvl.bomb_3.y,
+				myName = "bomb",
+				bodyType = "static",
+				density = "monsterDensity",
+				bounce=0,
+				friction=0.5,
+			},
+			
+		bomb4 = 
+			{
+				id = "bomb4",
+				bombIndex = 4,
+				src = "images/dynamite1.png",
+				width = 30,
+				height = 30,
+				x = lvl.bomb_4.x,
+				y = lvl.bomb_4.y,
+				myName = "bomb",
+				bodyType = "static",
+				density = "monsterDensity",
+				bounce=0,
+				friction=0.5,
+			},	
+			
+		bomb5 = 
+			{
+				id = "bomb5",
+				bombIndex = 5,
+				src = "images/dynamite1.png",
+				width = 30,
+				height = 30,
+				x = lvl.bomb_5.x,
+				y = lvl.bomb_5.y,
+				myName = "bomb",
+				bodyType = "static",
+				density = "monsterDensity",
+				bounce=0,
+				friction=0.5,
+			},	
+			
+		bomb6 = 
+			{
+				id = "bomb6",
+				bombIndex = 6,
+				src = "images/dynamite1.png",
+				width = 30,
+				height = 30,
+				x = lvl.bomb_6.x,
+				y = lvl.bomb_6.y,
+				myName = "bomb",
+				bodyType = "static",
+				density = "monsterDensity",
+				bounce=0,
+				friction=0.5,
+			},
+			
+		bomb7 = 
+			{
+				id = "bomb7",
+				bombIndex = 7,
+				src = "images/dynamite1.png",
+				width = 30,
+				height = 30,
+				x = lvl.bomb_7.x,
+				y = lvl.bomb_7.y,
+				myName = "bomb",
+				bodyType = "static",
+				density = "monsterDensity",
+				bounce=0,
+				friction=0.5,
+			},
+	}
+	
+	elseif lvl.bomb_1 and lvl.bomb_2 and lvl.bomb_3 and lvl.bomb_4 and lvl.bomb_5 and lvl.bomb_6 then
+	leveldata.bombs = 
+	{
+		bomb1 = 
+			{
+				id = "bomb1",
+				bombIndex = 1,
+				src = "images/dynamite1.png",
+				width = 30,
+				height = 30,
+				x = lvl.bomb_1.x,
+				y = lvl.bomb_1.y,
+				myName = "bomb",
+				bodyType = "static",
+				density = "monsterDensity",
+				bounce=0,
+				friction=0.5,
+			},
+	
+		bomb2 = 
+			{
+				id = "bomb2",
+				bombIndex = 2,
+				src = "images/dynamite1.png",
+				width = 30,
+				height = 30,
+				x = lvl.bomb_2.x,
+				y = lvl.bomb_2.y,
+				myName = "bomb",
+				bodyType = "static",
+				density = "monsterDensity",
+				bounce=0,
+				friction=0.5,
+			},
+			
+		bomb3 = 
+			{
+				id = "bomb3",
+				bombIndex = 3,
+				src = "images/dynamite1.png",
+				width = 30,
+				height = 30,
+				x = lvl.bomb_3.x,
+				y = lvl.bomb_3.y,
+				myName = "bomb",
+				bodyType = "static",
+				density = "monsterDensity",
+				bounce=0,
+				friction=0.5,
+			},
+			
+		bomb4 = 
+			{
+				id = "bomb4",
+				bombIndex = 4,
+				src = "images/dynamite1.png",
+				width = 30,
+				height = 30,
+				x = lvl.bomb_4.x,
+				y = lvl.bomb_4.y,
+				myName = "bomb",
+				bodyType = "static",
+				density = "monsterDensity",
+				bounce=0,
+				friction=0.5,
+			},	
+			
+		bomb5 = 
+			{
+				id = "bomb5",
+				bombIndex = 5,
+				src = "images/dynamite1.png",
+				width = 30,
+				height = 30,
+				x = lvl.bomb_5.x,
+				y = lvl.bomb_5.y,
+				myName = "bomb",
+				bodyType = "static",
+				density = "monsterDensity",
+				bounce=0,
+				friction=0.5,
+			},	
+			
+		bomb6 = 
+			{
+				id = "bomb6",
+				bombIndex = 6,
+				src = "images/dynamite1.png",
+				width = 30,
+				height = 30,
+				x = lvl.bomb_6.x,
+				y = lvl.bomb_6.y,
+				myName = "bomb",
+				bodyType = "static",
+				density = "monsterDensity",
+				bounce=0,
+				friction=0.5,
+			},
+	}
+	
+	elseif lvl.bomb_1 and lvl.bomb_2 and lvl.bomb_3 and lvl.bomb_4 and lvl.bomb_5 then
+	leveldata.bombs = 
+	{
+		bomb1 = 
+			{
+				id = "bomb1",
+				bombIndex = 1,
+				src = "images/dynamite1.png",
+				width = 30,
+				height = 30,
+				x = lvl.bomb_1.x,
+				y = lvl.bomb_1.y,
+				myName = "bomb",
+				bodyType = "static",
+				density = "monsterDensity",
+				bounce=0,
+				friction=0.5,
+			},
+	
+		bomb2 = 
+			{
+				id = "bomb2",
+				bombIndex = 2,
+				src = "images/dynamite1.png",
+				width = 30,
+				height = 30,
+				x = lvl.bomb_2.x,
+				y = lvl.bomb_2.y,
+				myName = "bomb",
+				bodyType = "static",
+				density = "monsterDensity",
+				bounce=0,
+				friction=0.5,
+			},
+			
+		bomb3 = 
+			{
+				id = "bomb3",
+				bombIndex = 3,
+				src = "images/dynamite1.png",
+				width = 30,
+				height = 30,
+				x = lvl.bomb_3.x,
+				y = lvl.bomb_3.y,
+				myName = "bomb",
+				bodyType = "static",
+				density = "monsterDensity",
+				bounce=0,
+				friction=0.5,
+			},
+			
+		bomb4 = 
+			{
+				id = "bomb4",
+				bombIndex = 4,
+				src = "images/dynamite1.png",
+				width = 30,
+				height = 30,
+				x = lvl.bomb_4.x,
+				y = lvl.bomb_4.y,
+				myName = "bomb",
+				bodyType = "static",
+				density = "monsterDensity",
+				bounce=0,
+				friction=0.5,
+			},	
+			
+		bomb5 = 
+			{
+				id = "bomb5",
+				bombIndex = 5,
+				src = "images/dynamite1.png",
+				width = 30,
+				height = 30,
+				x = lvl.bomb_5.x,
+				y = lvl.bomb_5.y,
+				myName = "bomb",
+				bodyType = "static",
+				density = "monsterDensity",
+				bounce=0,
+				friction=0.5,
+			},	
+	}
+	
+	elseif lvl.bomb_1 and lvl.bomb_2 and lvl.bomb_3 and lvl.bomb_4 then
+	leveldata.bombs = 
+	{
+		bomb1 = 
+			{
+				id = "bomb1",
+				bombIndex = 1,
+				src = "images/dynamite1.png",
+				width = 30,
+				height = 30,
+				x = lvl.bomb_1.x,
+				y = lvl.bomb_1.y,
+				myName = "bomb",
+				bodyType = "static",
+				density = "monsterDensity",
+				bounce=0,
+				friction=0.5,
+			},
+	
+		bomb2 = 
+			{
+				id = "bomb2",
+				bombIndex = 2,
+				src = "images/dynamite1.png",
+				width = 30,
+				height = 30,
+				x = lvl.bomb_2.x,
+				y = lvl.bomb_2.y,
+				myName = "bomb",
+				bodyType = "static",
+				density = "monsterDensity",
+				bounce=0,
+				friction=0.5,
+			},
+			
+		bomb3 = 
+			{
+				id = "bomb3",
+				bombIndex = 3,
+				src = "images/dynamite1.png",
+				width = 30,
+				height = 30,
+				x = lvl.bomb_3.x,
+				y = lvl.bomb_3.y,
+				myName = "bomb",
+				bodyType = "static",
+				density = "monsterDensity",
+				bounce=0,
+				friction=0.5,
+			},
+			
+		bomb4 = 
+			{
+				id = "bomb4",
+				bombIndex = 4,
+				src = "images/dynamite1.png",
+				width = 30,
+				height = 30,
+				x = lvl.bomb_4.x,
+				y = lvl.bomb_4.y,
+				myName = "bomb",
+				bodyType = "static",
+				density = "monsterDensity",
+				bounce=0,
+				friction=0.5,
+			},	
+	}
+	
+	elseif lvl.bomb_1 and lvl.bomb_2 and lvl.bomb_3 then
+	leveldata.bombs = 
+	{
+		bomb1 = 
+			{
+				id = "bomb1",
+				bombIndex = 1,
+				src = "images/dynamite1.png",
+				width = 30,
+				height = 30,
+				x = lvl.bomb_1.x,
+				y = lvl.bomb_1.y,
+				myName = "bomb",
+				bodyType = "static",
+				density = "monsterDensity",
+				bounce=0,
+				friction=0.5,
+			},
+	
+		bomb2 = 
+			{
+				id = "bomb2",
+				bombIndex = 2,
+				src = "images/dynamite1.png",
+				width = 30,
+				height = 30,
+				x = lvl.bomb_2.x,
+				y = lvl.bomb_2.y,
+				myName = "bomb",
+				bodyType = "static",
+				density = "monsterDensity",
+				bounce=0,
+				friction=0.5,
+			},
+			
+		bomb3 = 
+			{
+				id = "bomb3",
+				bombIndex = 3,
+				src = "images/dynamite1.png",
+				width = 30,
+				height = 30,
+				x = lvl.bomb_3.x,
+				y = lvl.bomb_3.y,
+				myName = "bomb",
+				bodyType = "static",
+				density = "monsterDensity",
+				bounce=0,
+				friction=0.5,
+			},
+	}
+	
+	elseif lvl.bomb_1 and lvl.bomb_2 then
 	leveldata.bombs = 
 	{
 		bomb1 = 
@@ -1169,8 +1721,217 @@ function getData()
 		
 	end
 	
+	if lvl.metal_1 and lvl.metal_2 and lvl.metal_3 and lvl.metal_4 and lvl.metal_5 then
+	leveldata.metals = 
+	{
+
+		Metal1 = 
+		{
+			id = "Metal1",
+			src = "images/v_metalpiece.png",
+			width = 14,
+			height = 98,
+			x = lvl.metal_1.x,
+			y = lvl.metal_1.y,
+			rotate = lvl.metal_1.rotation,
+			myName = "metal",
+			bodyType = "static",
+			density = "monsterDensity",
+			bounce=0,
+			friction=0.5,
+		},
+		
+		Metal2 = 
+		{
+			id = "Metal2",
+			src = "images/v_metalpiece.png",
+			width = 14,
+			height = 98,
+			x = lvl.metal_2.x,
+			y = lvl.metal_2.y,
+			rotate = lvl.metal_2.rotation,
+			myName = "metal",
+			bodyType = "static",
+			density = "monsterDensity",
+			bounce=0,
+			friction=0.5,
+		},
+		
+		Metal3 = 
+		{
+			id = "Metal3",
+			src = "images/v_metalpiece.png",
+			width = 14,
+			height = 98,
+			x = lvl.metal_3.x,
+			y = lvl.metal_3.y,
+			rotate = lvl.metal_3.rotation,
+			myName = "metal",
+			bodyType = "static",
+			density = "monsterDensity",
+			bounce=0,
+			friction=0.5,
+		},
+		
+		Metal4 = 
+		{
+			id = "Metal4",
+			src = "images/v_metalpiece.png",
+			width = 14,
+			height = 98,
+			x = lvl.metal_4.x,
+			y = lvl.metal_4.y,
+			rotate = lvl.metal_4.rotation,
+			myName = "metal",
+			bodyType = "static",
+			density = "monsterDensity",
+			bounce=0,
+			friction=0.5,
+		},
+		
+		Metal5 = 
+		{
+			id = "Metal5",
+			src = "images/v_metalpiece.png",
+			width = 14,
+			height = 98,
+			x = lvl.metal_5.x,
+			y = lvl.metal_5.y,
+			rotate = lvl.metal_5.rotation,
+			myName = "metal",
+			bodyType = "static",
+			density = "monsterDensity",
+			bounce=0,
+			friction=0.5,
+		},
+		
+	}
 	
-	if lvl.metal_1 and lvl.metal_2 then
+	elseif lvl.metal_1 and lvl.metal_2 and lvl.metal_3 and lvl.metal_4 then
+	leveldata.metals = 
+	{
+
+		Metal1 = 
+		{
+			id = "Metal1",
+			src = "images/v_metalpiece.png",
+			width = 14,
+			height = 98,
+			x = lvl.metal_1.x,
+			y = lvl.metal_1.y,
+			rotate = lvl.metal_1.rotation,
+			myName = "metal",
+			bodyType = "static",
+			density = "monsterDensity",
+			bounce=0,
+			friction=0.5,
+		},
+		
+		Metal2 = 
+		{
+			id = "Metal2",
+			src = "images/v_metalpiece.png",
+			width = 14,
+			height = 98,
+			x = lvl.metal_2.x,
+			y = lvl.metal_2.y,
+			rotate = lvl.metal_2.rotation,
+			myName = "metal",
+			bodyType = "static",
+			density = "monsterDensity",
+			bounce=0,
+			friction=0.5,
+		},
+		
+		Metal3 = 
+		{
+			id = "Metal3",
+			src = "images/v_metalpiece.png",
+			width = 14,
+			height = 98,
+			x = lvl.metal_3.x,
+			y = lvl.metal_3.y,
+			rotate = lvl.metal_3.rotation,
+			myName = "metal",
+			bodyType = "static",
+			density = "monsterDensity",
+			bounce=0,
+			friction=0.5,
+		},
+		
+		Metal4 = 
+		{
+			id = "Metal4",
+			src = "images/v_metalpiece.png",
+			width = 14,
+			height = 98,
+			x = lvl.metal_4.x,
+			y = lvl.metal_4.y,
+			rotate = lvl.metal_4.rotation,
+			myName = "metal",
+			bodyType = "static",
+			density = "monsterDensity",
+			bounce=0,
+			friction=0.5,
+		},
+		
+	}
+	
+	elseif lvl.metal_1 and lvl.metal_2 and lvl.metal_3 then
+	leveldata.metals = 
+	{
+
+		Metal1 = 
+		{
+			id = "Metal1",
+			src = "images/v_metalpiece.png",
+			width = 14,
+			height = 98,
+			x = lvl.metal_1.x,
+			y = lvl.metal_1.y,
+			rotate = lvl.metal_1.rotation,
+			myName = "metal",
+			bodyType = "static",
+			density = "monsterDensity",
+			bounce=0,
+			friction=0.5,
+		},
+		
+		Metal2 = 
+		{
+			id = "Metal2",
+			src = "images/v_metalpiece.png",
+			width = 14,
+			height = 98,
+			x = lvl.metal_2.x,
+			y = lvl.metal_2.y,
+			rotate = lvl.metal_2.rotation,
+			myName = "metal",
+			bodyType = "static",
+			density = "monsterDensity",
+			bounce=0,
+			friction=0.5,
+		},
+		
+		Metal3 = 
+		{
+			id = "Metal3",
+			src = "images/v_metalpiece.png",
+			width = 14,
+			height = 98,
+			x = lvl.metal_3.x,
+			y = lvl.metal_3.y,
+			rotate = lvl.metal_3.rotation,
+			myName = "metal",
+			bodyType = "static",
+			density = "monsterDensity",
+			bounce=0,
+			friction=0.5,
+		},
+		
+	}
+	
+	elseif lvl.metal_1 and lvl.metal_2 then
 	leveldata.metals = 
 	{
 

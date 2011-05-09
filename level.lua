@@ -1420,7 +1420,7 @@ function new()
 	
 	local onScreenTouch = function( event )
 		if gameIsActive then
-			if event.phase == "began" and characterObject.inAir == false and event.xStart > 50 and event.xStart < 60 and event.yStart > 245 and event.yStart < 265 and screenPosition == "left" then
+			if event.phase == "began" and characterObject.inAir == false and event.xStart > 0 and event.xStart < 200 and event.yStart > 200 and event.yStart < 350 and screenPosition == "left" then
 				--
 				--
 				--
