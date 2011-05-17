@@ -1,37 +1,16 @@
+-- 
+-- Abstract: Portal- Physics Game 
+-- Designed and created by Brad G Cordova 
+-- http://bcordova.com
+
+-- (This is easiest to play on iPad or other large devices, but should work on all iOS and Android devices)
+-- 
+-- Version: 1.0
+--
+
+--particle controller
+
 module (..., package.seeall)
-
---[[
-----------------------------------------------------------------
-PARTICLE CANDY FOR CORONA SDK
-----------------------------------------------------------------
-PRODUCT  :		PARTICLE CANDY EFFECTS ENGINE
-VERSION  :		1.0.07
-AUTHOR   :		MIKE DOGAN / X-PRESSIVE.COM
-WEB SITE :		http:www.x-pressive.com
-SUPPORT  :		info@x-pressive.com
-PUBLISHER:		X-PRESSIVE.COM
-COPYRIGHT:		(C)2010 MIKE DOGAN GAMES & ENTERTAINMENT
-
-----------------------------------------------------------------
-
-PLEASE NOTE:
-A LOT OF HARD AND HONEST WORK HAS BEEN SPENT
-INTO THIS PROJECT AND WE'RE STILL WORKING HARD
-TO IMPROVE IT FURTHER.
-IF YOU DID NOT PURCHASE THIS SOURCE LEGALLY,
-PLEASE ASK YOURSELF IF YOU DID THE RIGHT AND
-GET A LEGAL COPY (YOU'LL BE ABLE TO RECEIVE
-ALL FUTURE UPDATES FOR FREE THEN) TO HELP
-US CONTINUING OUR WORK. THE PRICE IS REALLY
-FAIR. THANKS FOR YOUR SUPPORT AND APPRECIATION.
-
-FOR FEEDBACK & SUPPORT, PLEASE CONTACT:
-INFO@X-PRESSIVE.COM
-
-]]--
-
-
-
 ----------------------------------------------------------------
 -- CHANGE THIS TO YOUR NEEDS:
 ----------------------------------------------------------------

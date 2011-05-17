@@ -1,23 +1,16 @@
 -- 
--- Abstract: characters Vs Monsters sample project 
--- Designed and created by Jonathan and Biffy Beebe of Beebe Games exclusively for Ansca, Inc.
--- http://beebegamesonline.appspot.com/
+-- Abstract: Portal- Physics Game 
+-- Designed and created by Brad G Cordova 
+-- http://bcordova.com
 
 -- (This is easiest to play on iPad or other large devices, but should work on all iOS and Android devices)
 -- 
 -- Version: 1.0
 -- 
--- Sample code is MIT licensed, see http://developer.anscamobile.com/code/license
--- Copyright (C) 2010 ANSCA Inc. All Rights Reserved.
+
 
 
 module(..., package.seeall)
-
-
-
--- INITIALIZE THE FX LIBRARY. THIS PRELOADS IMAGES FOR BETTER 
--- PERFORMANCE & CREATES THE PARTICLE TYPES USED.
--- ON LEVEL END, CALL FXLibrary.CleanUp() TO REMOVE PRELOADED IMAGES
 
 
 --***********************************************************************************************--
@@ -39,8 +32,7 @@ function new()
 	
 	
 	
-	-- local levelfinder = require("level".._G.currentLevel.."setup")
-	-- local lvlfinder = levelfinder.newMain()
+
 	
 	local levelsetup = require("level_creator")
 	local leveldata = levelsetup.getData()
@@ -69,18 +61,6 @@ function new()
 	local ui = require("ui")
 	--local facebook = require "facebook"
 	local physics = require("physics") 
-	
-	-- -- LOAD PARTICLE LIB
-	-- Particles	= require("lib_particle_candy")
-	-- FXLibrary	= require("lib_particleEffects_01")
-	-- 
-	-- -- INITIALIZE THE FX LIBRARY. THIS PRELOADS IMAGES FOR BETTER 
-	-- -- PERFORMANCE & CREATES THE PARTICLE TYPES USED.
-	-- -- ON LEVEL END, CALL FXLibrary.CleanUp() TO REMOVE PRELOADED IMAGES
-	-- FXLibrary.Initialize()
-	
-	
-
 
 	
 	local mCeil = math.ceil
@@ -186,6 +166,7 @@ function new()
 	local newRoundSound = audio.loadSound( "soundfx/entersound.wav" )
 	local youWinSound = audio.loadSound( "soundfx/win.wav" )
 	local youLoseSound = audio.loadSound( "soundfx/lose.wav" )
+	local switchSound = audio.loadSound( "soundfx/switch_activate.wav" )
 	
 	--***************************************************
 
@@ -358,6 +339,7 @@ function new()
 		
 		if continueTimer then timer.cancel( continueTimer ); end
 		continueText.isVisible = false
+		trainingText.isVisible = true
 		
 		-- Create all game over objects and insert them into the HUD group
 		
@@ -365,15 +347,6 @@ function new()
 		local shadeRect = display.newRect( 0, 0, 480, 320 )
 		shadeRect:setFillColor( 0, 0, 0, 255 )
 		shadeRect.alpha = 0
-		
-		-- Particles.StopEmitter("PortalEmitter")
-		-- Particles.DeleteEmitter("PortalEmitter")
-		-- Particles.StopEmitter("BombEmitter")
-		-- Particles.DeleteEmitter("BombEmitter")
-		-- Particles.StopEmitter("Teleporter1Emitter")
-		-- Particles.DeleteEmitter("Teleporter1Emitter")
-		-- Particles.StopEmitter("Teleporter2Emitter")
-		-- Particles.DeleteEmitter("Teleporter2Emitter")
 	
 		
 		
@@ -500,89 +473,6 @@ function new()
 				
 			end
 		end
-		
-		-- local ofBtn = ui.newButton{
-		-- 			defaultSrc = "images/openfeintbtn.png",
-		-- 			defaultX = 168,
-		-- 			defaultY = 40,
-		-- 			overSrc = "images/openfeintbtn-over.png",
-		-- 			overX = 168,
-		-- 			overY = 40,
-		-- 			onEvent = onOFTouch,
-		-- 			id = "OpenfeintButton",
-		-- 			text = "",
-		-- 			font = "Helvetica",
-		-- 			textColor = { 255, 255, 255, 255 },
-		-- 			size = 16,
-		-- 			emboss = false
-		-- 		}
-		-- 		
-		-- 		ofBtn.x = 168; ofBtn.y = 110
-		-- 		ofBtn.alpha = 0
-		-- 		
-		-- 		local fbBtn
-		-- 		
-		-- 		-- FACEBOOK BUTTON
-		-- 		local onFBTouch = function( event )
-		-- 			if event.phase == "release" and fbBtn.isActive then
-		-- 				audio.play( tapSound )
-		-- 				
-		-- 				-- Code to Post Status to Facebook (don't forget the 'require "facebook"' line at top of module)
-		-- 				-- The Code below is fully functional as long as you replace the fbAppID var with valid app ID.
-		-- 				
-		-- 				--[[
-		-- 				local fbAppID = "1234567890"	--> (string) Your FB App ID from facebook developer's panel
-		-- 				
-		-- 				local facebookListener = function( event )
-		-- 					if ( "session" == event.type ) then
-		-- 						-- upon successful login, update their status
-		-- 						if ( "login" == event.phase ) then
-		-- 							
-		-- 							local scoreToPost = comma_value(gameScore)
-		-- 							
-		-- 							local statusUpdate = "just scored a " .. gameScore .. " on characters v.s Monsters!"
-		-- 							
-		-- 							facebook.request( "me/feed", "POST", {
-		-- 								message=statusUpdate,
-		-- 								name="Download characters vs. Monsters to Compete with Me!",
-		-- 								caption="characters vs. Monsters - Sample app created with the Corona SDK by Ansca Mobile.",
-		-- 								link="http://itunes.apple.com/us/app/your-app-name/id382456881?mt=8",
-		-- 								picture="http://www.yoursite.com/link-to-90x90-image.png" } )
-		-- 						end
-		-- 					end
-		-- 				end
-		-- 				
-		-- 				facebook.login( fbAppID, facebookListener, { "publish_stream" } )
-		-- 				]]--
-		-- 			end
-		-- 		end
-		-- 		
-		-- 		fbBtn = ui.newButton{
-		-- 			defaultSrc = "images/facebookbtn.png",
-		-- 			defaultX = 302,
-		-- 			defaultY = 40,
-		-- 			overSrc = "images/facebookbtn-over.png",
-		-- 			overX = 302,
-		-- 			overY = 40,
-		-- 			onEvent = onFBTouch,
-		-- 			id = "FacebookButton",
-		-- 			text = "",
-		-- 			font = "Helvetica",
-		-- 			textColor = { 255, 255, 255, 255 },
-		-- 			size = 16,
-		-- 			emboss = false
-		-- 		}
-		-- 		
-		-- 		fbBtn.x = 240; fbBtn.y = 220
-		-- 		fbBtn.alpha = 0
-		-- 
-		-- if isWin == "yes" then
-		-- 	fbBtn.isVisible = true
-		-- 	fbBtn.isActive = true
-		-- else
-		-- 	fbBtn.isVisible = false
-		-- 	fbBtn.isActive = false
-		-- end
 		
 		-- INSERT ALL ITEMS INTO GROUP
 		hudGroup:insert( shadeRect )
@@ -726,6 +616,7 @@ function new()
 					 		continueText.isVisible = false
 					 	else
 					 		continueText.isVisible = true
+							trainingText.isVisible = false
 					 	end
 					 end
 					 
@@ -737,17 +628,7 @@ function new()
 					continueBlink();
 				end, 1 )
 				
-				--[[
-				if not isGameOver then
-					restartTimer = timer.performWithDelay( theDelay, function() waitingForNewRound = true; end, 1 )
-				else
-					if monsterCount > 0 then
-						restartTimer = timer.performWithDelay( theDelay, function() callGameOver( "no" ); end, 1 )
-					else
-						restartTimer = timer.performWithDelay( 3000, function() callGameOver( "yes" ); end, 1 )
-					end
-				end
-				]]--
+	
 			end
 			
 			if instantPoof == "yes" then
@@ -884,7 +765,12 @@ function new()
 		-- TAP TO CONTINUE DISPLAY
 		continueText = display.newText( "TAP TO CONTINUE", 240, 18, "Helvetica", 36 )
 		if leveldata.restartLevel == "1-1" or leveldata.restartLevel == "1-2" or leveldata.restartLevel == "1-3" or leveldata.restartLevel == "1-4" or leveldata.restartLevel == "1-5" then
-			continueText:setTextColor( 0, 0, 0, 255 )
+			continueText:setTextColor( 254, 113, 2, 200 ) --( 0, 0, 0, 255 )
+			trainingText = display.newText("TRAINING LEVEL " .. string.sub(leveldata.restartLevel,-1), 240, 18, "Danube", 36)
+			trainingText:setTextColor( 254, 113, 2, 200 )
+			trainingText.xScale = 0.5; trainingText.yScale = 0.5
+			trainingText.x = 240; trainingText.y = 18
+			hudGroup:insert(trainingText)
 		else
 			continueText:setTextColor( 249, 203, 64, 255 )
 			
@@ -1138,25 +1024,6 @@ function new()
 		gameGroup:insert( shotOrb )
 	end
 	
-	-- local createPortal = function()
-	-- 	portal = display.newImageRect( "images/monster.png", 723-420, 135 )
-	-- 	portal.xScale = 1.0; portal.yScale = 1.0
-	-- 	portal.isVisible = false
-	-- 	
-	-- 	gameGroup:insert( portal )
-	-- end
-	
-	-- local createPortal = function()
-	-- 	portal = display.newImageRect(leveldata.portal.src, leveldata.portal.width, leveldata.portal.height)
-	-- 	portal.x = leveldata.portal.x
-	-- 	portal.y = leveldata.portal.y
-	-- 	portal.myName = leveldata.portal.myName
-	-- 	print("This is the portal name:" .. portal.x)
-	-- 	portalObject = physics.addBody(portal, leveldata.portal.bodyType, {density=properties[leveldata.portal.density], bounce=leveldata.portal.bounce, friction = leveldata.portal.friction, shape=properties[leveldata.portal.shape]})
-	-- 	gameGroup:insert(portal)
-	-- 	portal.isVisible = false
-	-- 	print("Portal Invisible!!!!")
-	-- end
 	
 	createcharacter = function()
 		
@@ -1170,6 +1037,7 @@ function new()
 				
 				if event.other.myName == "switch" and portalOpen ~= true then
 						portalOpen = true
+						audio.play( switchSound )
 						-- PortalSound = audio.loadStream("soundfx/explosion_long.aac")
 						-- PortalMusicChannel = audio.play( PortalSound, { channel = 6, loops=-1 }  )
 						-- audio.play( portalOpenSound )
@@ -1444,6 +1312,7 @@ function new()
 				waitingForNewRound = false
 				if continueTimer then timer.cancel( continueTimer ); end
 				continueText.isVisible = false
+				trainingText.isVisible = true
 				
 				if gameLives < 1 then
 					-- GAME OVER
@@ -1463,6 +1332,7 @@ function new()
 				
 				if continueTimer then timer.cancel( continueTimer ); end
 				continueText.isVisible = false
+				trainingText.isVisible = true
 				
 				if gameLives < 1 then
 					-- GAME OVER
@@ -1657,71 +1527,74 @@ function new()
 	end
 	
 	if leveldata.restartLevel == "1-1" then
-	intro1_1Text1 = display.newText(levelGroup, "drag the character in any direction to lauch him ", 20, 170, "Danube", 8 )
+	intro1_1Text1 = display.newText(levelGroup, "drag the character in any direction to lauch him ", 20, 170, "Danube", 24 )
+	intro1_1Text1.xScale = 0.5; intro1_1Text1.yScale = 0.5
+	intro1_1Text1.x = intro1_1Text1.width/4 + 10; 
 	intro1_1Text1:setTextColor(0, 0, 0)
 	-- introText1.isVisible = false
-	intro1_1Text2 = display.newText(levelGroup, "now launch him towards the red button ", 20, 170, "Danube", 8 )
+	intro1_1Text2 = display.newText(levelGroup, "now launch him towards the red button ", 20, 170, "Danube", 24 )
+	intro1_1Text2.xScale = 0.5; intro1_1Text2.yScale = 0.5
+	intro1_1Text2.x = intro1_1Text2.width/4 + 10;
 	intro1_1Text2:setTextColor(0, 0, 0)
 	intro1_1Text2.isVisible = false
-	intro1_1Text3 = display.newText(levelGroup, "send him through the portal to progress ", 10, 170, "Danube", 8 )
+	intro1_1Text3 = display.newText(levelGroup, "Great! send him through the portal to progress ", 10, 170, "Danube", 24 )
+	intro1_1Text3.xScale = 0.5; intro1_1Text3.yScale = 0.5
+	intro1_1Text3.x = intro1_1Text3.width/4 + 10;
 	intro1_1Text3:setTextColor(0, 0, 0)
 	intro1_1Text3.isVisible = false
 	end
 	
 	if leveldata.restartLevel == "1-2" then
-		intro1_2Text1 = display.newText(levelGroup, "send him through the teleportal ", 20, 170, "Danube", 8 )
+		intro1_2Text1 = display.newText(levelGroup, "send him through the purple transporter ", 20, 170, "Danube", 24 )
+		intro1_2Text1.xScale = 0.5; intro1_2Text1.yScale = 0.5
+		intro1_2Text1.x = intro1_2Text1.width/4 + 10;
 		intro1_2Text1:setTextColor(0, 0, 0)
-		intro1_2Text2 = display.newText(levelGroup, "now launch him into the portal... into the unknown... ", 20, 170, "Danube", 8 )
+		intro1_2Text2 = display.newText(levelGroup, "now launch him into the portal... into the unknown... ", 20, 170, "Danube", 24 )
+		intro1_2Text2.xScale = 0.5; intro1_2Text2.yScale = 0.5
+		intro1_2Text2.x = intro1_2Text2.width/4 + 10;
 		intro1_2Text2:setTextColor(0, 0, 0)
 		intro1_2Text2.isVisible = false
 		
 	end
 	
 	if leveldata.restartLevel == "1-3" then
-		intro1_3Text1 = display.newText(levelGroup, "black holes create gravitational attraction ", 20, 145, "Danube", 8 )
+		intro1_3Text1 = display.newText(levelGroup, "black holes create gravitational attraction ", 20, 145, "Danube", 24 )
+		intro1_3Text1.xScale = 0.5; intro1_3Text1.yScale = 0.5
+		intro1_3Text1.x = intro1_3Text1.width/4 + 10;
 		intro1_3Text1:setTextColor(0, 0, 0)
 	end
 	
 	if leveldata.restartLevel == "1-4" then
-		intro1_4Text1 = display.newText(levelGroup, "white holes create gravitational repulsion ", 20, 145, "Danube", 8 )
+		intro1_4Text1 = display.newText(levelGroup, "white holes create magnetostatic repulsion ", 20, 145, "Danube", 24 )
+		intro1_4Text1.xScale = 0.5; intro1_4Text1.yScale = 0.5
+		intro1_4Text1.x = intro1_4Text1.width/4 + 10;
 		intro1_4Text1:setTextColor(0, 0, 0)
 	end
 	
 	if leveldata.restartLevel == "1-5" then
-		intro1_5Text1 = display.newText(levelGroup, "and dynamite... well... ", 20, 130, "Danube", 8 )
+		intro1_5Text1 = display.newText(levelGroup, "and dynamite... well... ", 20, 130, "Danube", 24 )
+		intro1_5Text1.xScale = 0.5; intro1_5Text1.yScale = 0.5
+		intro1_5Text1.x = intro1_5Text1.width/4 + 10;
 		intro1_5Text1:setTextColor(0, 0, 0)
-		intro1_5Text4 = display.newText(levelGroup, "blows things up ", 20, 142, "Danube", 8 )
+		intro1_5Text4 = display.newText(levelGroup, "blows things up ", 20, 142, "Danube", 24 )
+		intro1_5Text4.xScale = 0.5; intro1_5Text4.yScale = 0.5
+		intro1_5Text4.x = intro1_5Text4.width/4 + 10;
 		intro1_5Text4:setTextColor(0, 0, 0)
-		intro1_5Text2 = display.newText(levelGroup, "now go through the portal and", 20, 130, "Danube", 8 )
+		intro1_5Text2 = display.newText(levelGroup, "now go through the portal and", 20, 140, "Danube", 24 )
+		intro1_5Text2.xScale = 0.5; intro1_5Text2.yScale = 0.5
+		intro1_5Text2.x = intro1_5Text2.width/4 + 10;
 		intro1_5Text2:setTextColor(0, 0, 0)
 		intro1_5Text2.isVisible = false
-		intro1_5Text3 = display.newText(levelGroup, "let the real adventures begin.... ", 20, 142, "Danube", 8 )
+		intro1_5Text3 = display.newText(levelGroup, "let the real adventures begin.... ", 20, 152, "Danube", 24 )
+		intro1_5Text3.xScale = 0.5; intro1_5Text3.yScale = 0.5
+		intro1_5Text3.x = intro1_5Text3.width/4 + 10;
 		intro1_5Text3:setTextColor(0, 0, 0)
 		intro1_5Text3.isVisible = false
 	end
 
 		
 	
-	
-	
-	-- local introInstructions = function()
-	-- 	 local startIntro = function()
-	-- 	 	if introText1.isVisible then
-	-- 	 		introText1.isVisible = false
-	-- 			introText2.isVisible = true
-	-- 	 	elseif introText2.isVisible then
-	-- 	 		introText2.isVisible = false
-	-- 			introText3.isVisible = true
-	-- 		elseif introText3.isVisible then
-	-- 	 		introText3.isVisible = false
-	-- 			introText1.isVisible = true
-	-- 	 	end
-	-- 	 end
-	-- 	 
-	-- 	 introTextTimer = timer.performWithDelay( 3500, startIntro, 0 )
-	-- end
-	
-	-- Main enterFrame Listener
+
 	
 	
 	local gameLoop = function()
@@ -1737,6 +1610,10 @@ function new()
 					timer.performWithDelay( 10000, callNewRound( true, "no" ), 0 )
 					characterBoolean = characterBoolean + 1
 				end
+			end
+			
+			if portalOpen == true then
+				switch_obj.isVisible = false
 			end
 				
 			if leveldata.restartLevel == "1-1" then
@@ -2002,16 +1879,29 @@ function new()
 		
 		--Create Wood
 		for key,data in pairs(leveldata.woods) do 
+			if data.myName == "switch" then
+				switch_obj = display.newImageRect(data.src, data.width, data.height)
+				switch_obj.x = data.x
+				switch_obj.y = data.y
+				if data.rotate ~= nil then
+				switch_obj:rotate(data.rotate)
+				end
 			
-			local obj = display.newImageRect(data.src, data.width, data.height)
-			obj.x = data.x
-			obj.y = data.y
-			if data.rotate ~= nil then
-			obj:rotate(data.rotate)
+				switch_obj.myName = data.myName
+				physics.addBody(switch_obj, data.bodyType, {density=properties[data.density], bounce=data.bounce, friction = data.friction, shape=properties[data.shape]})
+				gameGroup:insert(switch_obj)
+			else
+				local obj = display.newImageRect(data.src, data.width, data.height)
+				obj.x = data.x
+				obj.y = data.y
+				if data.rotate ~= nil then
+				obj:rotate(data.rotate)
+				end
+			
+				obj.myName = data.myName
+				physics.addBody(obj, data.bodyType, {density=properties[data.density], bounce=data.bounce, friction = data.friction, shape=properties[data.shape]})
+				gameGroup:insert(obj)
 			end
-			obj.myName = data.myName
-			physics.addBody(obj, data.bodyType, {density=properties[data.density], bounce=data.bounce, friction = data.friction, shape=properties[data.shape]})
-			gameGroup:insert(obj)
 			
 		end
 		

@@ -1,3 +1,15 @@
+-- 
+-- Abstract: Portal- Physics Game 
+-- Designed and created by Brad G Cordova 
+-- http://bcordova.com
+
+-- (This is easiest to play on iPad or other large devices, but should work on all iOS and Android devices)
+-- 
+-- Version: 1.0
+--
+
+--main file. 
+
 local ui = require("ui")
 -- LOAD PARTICLE LIB
 Particles	= require("lib_particle_candy")
@@ -41,39 +53,3 @@ main()
 
 
 
--- local displayGroup = display.newGroup()
---  
--- ---------------------------------------------------------
---  
--- local slideView = require("SimpleSlideView")
---  
--- local slides = {}
---  
--- local svTop = 100
--- local svLeft = 40
--- local svWidth = 400
--- local svHeight = 120
---  
--- -- Items to be displayed
--- slides = {
---     ch1 = "myPhotos1.png",
---     ch2 = "myPhotos2.png",
---     ch3 = "myPhotos3.png",
---     ch4 = "myPhotos4.png",
--- }
---  
--- -- Call back function to use when a selection is made
--- function onSelectSlideViewItem( slideViewItem )
---     print( "Clicked " .. slideViewItem.key )
--- end
---  
--- -- In this example the overlay image should be 480x120 with a window of 400x100 as a cutout
--- slideViewUI = SimpleSlideView:new( svTop, 
---                              svLeft, 
---                              svWidth, 
---                              svHeight, 
---                              slides, 
---                              "myPhotos1.png", 
---                              onSelectSlideViewItem )
---  
--- displayGroup:insert( slideViewUI )

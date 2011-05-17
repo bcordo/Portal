@@ -1,8 +1,16 @@
-module( ..., package.seeall )
+-- 
+-- Abstract: Portal- Physics Game 
+-- Designed and created by Brad G Cordova 
+-- http://bcordova.com
 
--- Slider, created by Microsheep, microsheep.com
--- You can see it working in my game - Fingerless 3D
--- Free to use, feel free to change, but please share it with the community
+-- (This is easiest to play on iPad or other large devices, but should work on all iOS and Android devices)
+-- 
+-- Version: 1.0
+--
+
+--creates slider capabilities. 
+
+module( ..., package.seeall )
 
 -- vars
 local slider_sprt		= nil

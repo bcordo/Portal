@@ -1,8 +1,17 @@
+-- 
+-- Abstract: Portal- Physics Game 
+-- Designed and created by Brad G Cordova 
+-- http://bcordova.com
+
+-- (This is easiest to play on iPad or other large devices, but should work on all iOS and Android devices)
+-- 
+-- Version: 1.0
+--
+
+--easing functions for director class and ui class. 
+
 module(..., package.seeall)
- 
--- Stuart Carnie, manomio | in retro we trust
--- These easing functions were derived from Sparrow / http://www.sparrow-framework.org (simplified BSD license)
- 
+  
 local _easeIn, _easeOut, _easeInOut, _easeOutIn
 local _easeInBack, _easeOutBack, _easeInOutBack, _easeOutInBack 
 local _easeInElastic, _easeOutElastic, _easeInOutElastic, _easeOutInElastic

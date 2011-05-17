@@ -1,20 +1,17 @@
+-- 
+-- Abstract: Portal- Physics Game 
+-- Designed and created by Brad G Cordova 
+-- http://bcordova.com
+
+-- (This is easiest to play on iPad or other large devices, but should work on all iOS and Android devices)
+-- 
+-- Version: 1.0
+--
+
+--particle definitions
+
 module (..., package.seeall)
 
---[[
-----------------------------------------------------------------
-PARTICLE CANDY EFFECTS LIBRARY VOL. I
-----------------------------------------------------------------
-PRODUCT  :		PARTICLE CANDY EFFECTS LIBRARY
-VERSION  :		1.0.1
-AUTHOR   :		MIKE DOGAN / X-PRESSIVE.COM
-WEB SITE :		http:www.x-pressive.com
-SUPPORT  :		info@x-pressive.com
-PUBLISHER:		X-PRESSIVE.COM
-COPYRIGHT:		(C)2010 MIKE DOGAN GAMES & ENTERTAINMENT
-
-----------------------------------------------------------------
-
-]]--
 
 
 -- ADJUST THIS TO YOUR NEEDS:

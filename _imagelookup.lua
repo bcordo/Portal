@@ -1,7 +1,14 @@
+-- 
+-- Abstract: Portal- Physics Game 
+-- Designed and created by Brad G Cordova 
+-- http://bcordova.com
 
--- _imagelookup.lua 2011-04-18T14:11:47.02-04:00
+-- (This is easiest to play on iPad or other large devices, but should work on all iOS and Android devices)
+-- 
+-- Version: 1.0
+--
 
--- This class is generated code. Please do not modify.
+-- This class is generated code used in level creation. Please do not modify.
 
 module(..., package.seeall)
 

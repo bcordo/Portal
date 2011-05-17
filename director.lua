@@ -1,33 +1,18 @@
+-- 
+-- Abstract: Portal- Physics Game 
+-- Designed and created by Brad G Cordova 
+-- http://bcordova.com
+
+-- (This is easiest to play on iPad or other large devices, but should work on all iOS and Android devices)
+-- 
+-- Version: 1.0
+--
+
 module(..., package.seeall)
  
 --====================================================================--        
 -- DIRECTOR CLASS
 --====================================================================--
---
--- Version: 1.2
--- Made by Ricardo Rauber Pereira @ 2010
--- Blog: http://rauberlabs.blogspot.com/
--- Mail: ricardorauber@gmail.com
---
--- This class is free to use, feel free to change but please send new versions
--- or new features like new effects to me and help us to make it better!
---
---====================================================================--        
--- CHANGES
---====================================================================--
---
--- 06-OCT-2010 - Ricardo Rauber - Created
--- 07-OCT-2010 - Ricardo Rauber - Functions loadScene and fxEnded were
---                                taken off from the changeScene function;
---                                Added function cleanGroups for best
---                                memory clean up;
---                                Added directorView and effectView groups
---                                for better and easier control;
---                                Please see INFORMATION to know how to use it
--- 14-NOV-2010 - Ricardo Rauber - Bux fixes and new getScene function to get
---                                the name of the active scene (lua file)
--- 14-FEB-2011 - Ricardo Rauber - General Bug Fixes
---
 --====================================================================--
 -- INFORMATION
 --====================================================================--
@@ -43,24 +28,6 @@ module(..., package.seeall)
 -- * To change scenes, use this command [use the effect of your choice]
 --
 --   director:changeScene("settings","moveFromLeft")
---
--- * Every scene is a lua module file and must have a new() function that
---   must return a local display group, like this: [see template.lua]
---
---   module(..., package.seeall)
---   local localGroup = display.newGroup()
---   function new()
---     ------ Your code here ------
---     return localGroup
---   end
---
--- * Every display object must be inserted on the local display group
---
---   local background = display.newImage( "background.png" )
---   localGroup:insert( background )
---
--- * This class doesn't clean timers! If you want to stop timers when
---   change scenes, you'll have to do it manually creating a clean() function.
 --
 --====================================================================--
  
