@@ -118,6 +118,7 @@ function new()
 	local ThroughExitPortal = false
 	local portalOpen = false
 	characterBoolean = 1
+	charactertouchdie = false
 	
 
 
@@ -339,7 +340,9 @@ function new()
 		
 		if continueTimer then timer.cancel( continueTimer ); end
 		continueText.isVisible = false
+		if leveldata.restartLevel == "1-1" or leveldata.restartLevel == "1-2" or leveldata.restartLevel == "1-3" or leveldata.restartLevel == "1-4" or leveldata.restartLevel == "1-5" then
 		trainingText.isVisible = true
+		end
 		
 		-- Create all game over objects and insert them into the HUD group
 		
@@ -357,7 +360,7 @@ function new()
 			gameOverDisplay = display.newImageRect( "images/youwin.png", 390, 154 )
 			
 			-- Give score bonus depending on how many characters left
-			local characterBonus = gameLives * 20000
+			local characterBonus = gameLives * 1000
 			local newScore = gameScore + characterBonus
 			setScore( newScore )
 			
@@ -510,7 +513,7 @@ function new()
 		-- Update Best Score
 		if gameScore > bestScore then
 			bestScore = gameScore
-			local bestScoreFilename = restartLevel .. ".data"
+			local bestScoreFilename = "level"..restartLevel .. ".data"
 			saveValue( bestScoreFilename, tostring(bestScore) )
 		end
 		
@@ -616,7 +619,9 @@ function new()
 					 		continueText.isVisible = false
 					 	else
 					 		continueText.isVisible = true
+							if leveldata.restartLevel == "1-1" or leveldata.restartLevel == "1-2" or leveldata.restartLevel == "1-3" or leveldata.restartLevel == "1-4" or leveldata.restartLevel == "1-5" then
 							trainingText.isVisible = false
+							end
 					 	end
 					 end
 					 
@@ -1051,30 +1056,33 @@ function new()
 						characterObject.isExited = true
 						print("isExited = true")	
 				end
-
-				if event.other.myName ~= "portal" and event.other.myName ~= "teleporter1" and event.other.myName ~= "teleporter2" then
+				
+				
+				if event.other.myName ~= "portal" and event.other.myName ~= "teleporter1" and event.other.myName ~= "teleporter2" then	
 					
 					if characterObject.isHit == false then
-				
+						
+						
 						if blastGlow.isVisible then
 							blastGlow.isVisible = false
 						end
 					
-					
+						
 						if dotTimer then timer.cancel( dotTimer ); end
 						characterObject.isHit = true
-
+						
 					
 						if event.other.myName == "wood" or event.other.myName == "stone" or event.other.myName == "switch" or event.other.myName == "metal" then
 							callNewRound( true, "yes" )
 							characterBoolean = characterBoolean + 1
+							local newScore = gameScore + 500
+							setScore( newScore )
 						else
 							callNewRound( true, "no" )
 							characterBoolean = characterBoolean + 1
 						end
 					
-						local newScore = gameScore + 500
-						setScore( newScore )
+						
 				
 					elseif characterObject.isHit then
 						return true
@@ -1178,6 +1186,8 @@ function new()
 	local function onBombTouch ( self, event )
 			
 			if(event.phase == "began" and self.bombArmedQ == "yes" and gameIsActive) then
+				local newScore = gameScore + 500
+				setScore( newScore )
 				print("bomb id " .. self.bombIndex)
 				local circle = ""
 				local explosion = ""
@@ -1208,6 +1218,9 @@ function new()
 	
 	local onExitPortalTouch = function( self, event )
 		if self.isHit == false and portalOpen == true and event.other.myName == "character" then
+			charactertouchdie = false
+			local newScore = gameScore + 1000
+			setScore( newScore )
 			audio.play( portalExitSound )
 			self.isHit = true
 			Particles.StopEmitter("PortalEmitter")
@@ -1238,15 +1251,14 @@ function new()
 			
 			self.parent:remove( self )
 			self = nil
-			
-			local newScore = gameScore + mCeil(5000)
-			setScore( newScore )
 		end
 	end
 	
 	onTeleporter1Touch = function( self, event )
 		print("teleporter 1 touch")
 		if event.other.myName == "character" then
+			local newScore = gameScore + 500
+			setScore( newScore )
 			-- audio.play( telporterSound )
 
 			Particles.StartEmitter("Teleporter1Emitter")
@@ -1267,6 +1279,8 @@ function new()
 	
 	onTeleporter2Touch = function( self, event )
 		if event.other.myName == "character" then
+			local newScore = gameScore + 500
+			setScore( newScore )
 			-- audio.play( telporterSound )
 
 			Particles.StartEmitter("Teleporter1Emitter")
@@ -1287,13 +1301,10 @@ function new()
 	
 	
 	local onScreenTouch = function( event )
+		if charactertouchdie == false then
 		if gameIsActive then
 			if event.phase == "began" and characterObject.inAir == false and event.xStart > 0 and event.xStart < 200 and event.yStart > 200 and event.yStart < 350 and screenPosition == "left" then
-				--
-				--
-				--
-				--
-				--
+
 				transition.cancel( characterTween )
 				characterObject.y = 255
 				characterObject.isReady = true
@@ -1312,7 +1323,9 @@ function new()
 				waitingForNewRound = false
 				if continueTimer then timer.cancel( continueTimer ); end
 				continueText.isVisible = false
+				if leveldata.restartLevel == "1-1" or leveldata.restartLevel == "1-2" or leveldata.restartLevel == "1-3" or leveldata.restartLevel == "1-4" or leveldata.restartLevel == "1-5" then
 				trainingText.isVisible = true
+				end
 				
 				if gameLives < 1 then
 					-- GAME OVER
@@ -1332,7 +1345,9 @@ function new()
 				
 				if continueTimer then timer.cancel( continueTimer ); end
 				continueText.isVisible = false
+				if leveldata.restartLevel == "1-1" or leveldata.restartLevel == "1-2" or leveldata.restartLevel == "1-3" or leveldata.restartLevel == "1-4" or leveldata.restartLevel == "1-5" then
 				trainingText.isVisible = true
+				end
 				
 				if gameLives < 1 then
 					-- GAME OVER
@@ -1421,6 +1436,7 @@ function new()
 					characterObject:applyForce( xForce, yForce, characterObject.x, characterObject.y )
 					characterObject.isReady = false
 					characterObject.inAir = true
+					charactertouchdie = true
 					
 					
 					-- START TRAILING DOTS BLOCK
@@ -1498,6 +1514,7 @@ function new()
 				
 				characterObject.rotation = angleBetween --+ 180
 				shotArrow.rotation = characterObject.rotation
+					
 			end
 			
 			if canSwipe == true then
@@ -1523,6 +1540,10 @@ function new()
 					end
 				end
 			end
+		end
+		else
+			print("character gon die bitch!!!")
+			charactertouchdie = false
 		end
 	end
 	
