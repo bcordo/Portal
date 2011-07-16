@@ -585,7 +585,7 @@ function new()
 			end
 					
 			local poofThecharacter = function()
-				local theDelay = 30
+				local theDelay = 280
 				
 				-- Make character disappear and show "poof" animation
 				characterObject:setLinearVelocity( 0, 0 )
@@ -629,6 +629,7 @@ function new()
 				end
 				
 				restartTimer = timer.performWithDelay( theDelay, function()
+					charactertouchdie = false
 					waitingForNewRound = true;
 					continueBlink();
 				end, 1 )
@@ -664,7 +665,7 @@ function new()
 			--restartTimer = timer.performWithDelay( 300, startNewRound, 1 )
 			
 			if not isGameOver then
-				restartTimer = timer.performWithDelay( 300, startNewRound, 1 )
+				restartTimer = timer.performWithDelay( 1, startNewRound, 1 )
 			else
 				if ThroughExitPortal == false then
 					restartTimer = timer.performWithDelay( 300, function() callGameOver( "no" ); end, 1 )
@@ -1304,7 +1305,7 @@ function new()
 		if charactertouchdie == false then
 		if gameIsActive then
 			if event.phase == "began" and characterObject.inAir == false and event.xStart > 0 and event.xStart < 200 and event.yStart > 200 and event.yStart < 350 and screenPosition == "left" then
-
+	
 				transition.cancel( characterTween )
 				characterObject.y = 255
 				characterObject.isReady = true
@@ -1317,29 +1318,6 @@ function new()
 				-- introText1:setTextColor(43, 43, 43)
 				
 				shotArrow.isVisible = true
-			
-			elseif event.phase == "began" and waitingForNewRound then
-				
-				waitingForNewRound = false
-				if continueTimer then timer.cancel( continueTimer ); end
-				continueText.isVisible = false
-				if leveldata.restartLevel == "1-1" or leveldata.restartLevel == "1-2" or leveldata.restartLevel == "1-3" or leveldata.restartLevel == "1-4" or leveldata.restartLevel == "1-5" then
-				trainingText.isVisible = true
-				end
-				
-				if gameLives < 1 then
-					-- GAME OVER
-					if ThroughExitPortal == true then
-						callGameOver( "yes" )
-					else
-						callGameOver( "no" )
-					end
-				elseif ThroughExitPortal == true and gameLives >= 1 then
-					
-					callGameOver( "yes" )
-				else
-					startNewRound()
-				end
 			
 			elseif event.phase == "began" and waitingForNewRound == false then
 				
@@ -1621,6 +1599,29 @@ function new()
 	local gameLoop = function()
 		if gameIsActive then
 			
+			if waitingForNewRound then
+				
+				waitingForNewRound = false
+				if continueTimer then timer.cancel( continueTimer ); end
+				continueText.isVisible = false
+				if leveldata.restartLevel == "1-1" or leveldata.restartLevel == "1-2" or leveldata.restartLevel == "1-3" or leveldata.restartLevel == "1-4" or leveldata.restartLevel == "1-5" then
+				trainingText.isVisible = true
+				end
+				
+				if gameLives < 1 then
+					-- GAME OVER
+					if ThroughExitPortal == true then
+						callGameOver( "yes" )
+					else
+						callGameOver( "no" )
+					end
+				elseif ThroughExitPortal == true and gameLives >= 1 then
+					
+					callGameOver( "yes" )
+				else
+					startNewRound()
+				end
+			end
 			
 			Particles.Update()
 			if leveldata.restartLevel == "1-1" or leveldata.restartLevel == "1-2" or leveldata.restartLevel == "1-4" or leveldata.restartLevel == "1-5" or leveldata.restartLevel == "1-3" then
@@ -2084,7 +2085,7 @@ function new()
 		Runtime:addEventListener( "enterFrame", gameLoop )
 		Runtime:addEventListener( "system", onSystem )
 		
-		local startTimer = timer.performWithDelay( 2000, function() startNewRound(); end, 1 )
+		local startTimer = timer.performWithDelay( 1, function() startNewRound(); end, 1 )
 	end
 	
 	clean = function()
