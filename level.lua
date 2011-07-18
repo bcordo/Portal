@@ -35,6 +35,7 @@ function new()
 
 	
 	local levelsetup = require("level_creator")
+	local easingx  = require("easing")
 	local leveldata = levelsetup.getData()
 
 	local hudGroup = display.newGroup()
@@ -152,6 +153,35 @@ function new()
 	properties.portalDensity = 1.0
 	properties.portalShape = { -12,-13, 12,-13, 12,13, -12,13 }
 	
+	local scoreAnimText1000 = display.newImage("images/1000.png")
+	scoreAnimText1000.alpha = 0
+	scoreAnimText1000.xScale = .01
+	scoreAnimText1000.yScale = .01
+	scoreAnimText1000.opacity = .6
+	gameGroup:insert(scoreAnimText1000)
+	
+	local scoreAnimText500 = display.newImage("images/500.png")
+	scoreAnimText500.alpha = 0
+	scoreAnimText500.xScale = .01
+	scoreAnimText500.yScale = .01
+	scoreAnimText500.opacity = .6
+	gameGroup:insert(scoreAnimText500)
+	
+	local scoreAnimText100 = display.newImage("images/100.png")
+	scoreAnimText100.alpha = 0
+	scoreAnimText100.xScale = .01
+	scoreAnimText100.yScale = .01
+	scoreAnimText100.opacity = .6
+	gameGroup:insert(scoreAnimText100)
+	
+	local scoreAnim2Text100 = display.newImage("images/100.png")
+	scoreAnim2Text100.alpha = 0
+	scoreAnim2Text100.xScale = .01
+	scoreAnim2Text100.yScale = .01
+	scoreAnim2Text100.opacity = .6
+	gameGroup:insert(scoreAnim2Text100)
+	
+	-- gameGroup:insert(scoreAnimText500)
 	
 	-- AUDIO
 	local explosionSound = media.newEventSound( "soundfx/explosion.mp3" )
@@ -189,6 +219,48 @@ function new()
 		   io.close( file )
 		end
 	end
+	
+	--***************************************************
+
+	-- animScore() --> for score animation
+	
+	--***************************************************
+	
+	local animScore =  function(scoreText) 
+	scoreText:toFront( )
+	if scoreText == scoreAnimText1000 then
+		scaleFactor = .8
+	else
+		scaleFactor = .45
+	end
+	scoreText.alpha = .80
+	transition.to(scoreText, {
+	                time = 250,
+	                x = scoreText.x,
+	                y = scoreText.y - 13,
+					xScale = scaleFactor,
+					yScale = scaleFactor,
+					delay = 0, 
+	                transition = easingx.easeInOut})
+	transition.to(scoreText, {
+					time = 250,
+	                delay = 380,
+					xScale = .001,
+					yScale = .001, 
+					alpha = 0,
+					x = scoreText.x,
+	                y = scoreText.y + 13,
+	                transition = easingx.easeInOut})
+	-- transition.to(scoreText, {
+	-- 					time = 500,
+	-- 	                delay = 400,
+	-- 					x = scoreText.x,
+	-- 	                y = scoreText.y - 100, 
+	-- 					alpha = 0,
+	-- 					rotation = math.random(-180,180),
+	-- 	                transition = easingx.easeOutExpo})
+	end
+	
 	
 	--***************************************************
 
@@ -578,11 +650,11 @@ function new()
 		
 		if shouldPoof and characterObject.isExited ~= true then
 			
-			if characterObject.isExited == true then
-				characterObject.isVisible = false
-				shouldPoof = false
-				instantPoof = "no"
-			end
+			-- if characterObject.isExited == true then
+			-- 				characterObject.isVisible = false
+			-- 				shouldPoof = false
+			-- 				instantPoof = "no"
+			-- 			end
 					
 			local poofThecharacter = function()
 				local theDelay = 280
@@ -669,8 +741,8 @@ function new()
 			else
 				if ThroughExitPortal == false then
 					restartTimer = timer.performWithDelay( 300, function() callGameOver( "no" ); end, 1 )
-				else
-					restartTimer = timer.performWithDelay( 300, function() callGameOver( "yes" ); end, 1 )
+				-- else
+				-- 					restartTimer = timer.performWithDelay( 1750, function() callGameOver( "yes" ); end, 1 )
 				end
 			end
 		end
@@ -1042,6 +1114,12 @@ function new()
 				
 				
 				if event.other.myName == "switch" and portalOpen ~= true then
+						local newScore = gameScore + 500
+						setScore( newScore )
+						scoreAnimText500.x = self.x
+						scoreAnimText500.y = self.y
+						animScore(scoreAnimText500)
+						
 						portalOpen = true
 						audio.play( switchSound )
 						-- PortalSound = audio.loadStream("soundfx/explosion_long.aac")
@@ -1076,8 +1154,9 @@ function new()
 						if event.other.myName == "wood" or event.other.myName == "stone" or event.other.myName == "switch" or event.other.myName == "metal" then
 							callNewRound( true, "yes" )
 							characterBoolean = characterBoolean + 1
-							local newScore = gameScore + 500
-							setScore( newScore )
+							-- scoreAnimText500.x = self.x
+							-- scoreAnimText500.y = self.y
+							-- animScore(scoreAnimText500)
 						else
 							callNewRound( true, "no" )
 							characterBoolean = characterBoolean + 1
@@ -1187,8 +1266,11 @@ function new()
 	local function onBombTouch ( self, event )
 			
 			if(event.phase == "began" and self.bombArmedQ == "yes" and gameIsActive) then
-				local newScore = gameScore + 500
+				local newScore = gameScore + 100
 				setScore( newScore )
+				scoreAnimText100.x = self.x
+				scoreAnimText100.y = self.y
+				animScore(scoreAnimText100)
 				print("bomb id " .. self.bombIndex)
 				local circle = ""
 				local explosion = ""
@@ -1222,44 +1304,51 @@ function new()
 			charactertouchdie = false
 			local newScore = gameScore + 1000
 			setScore( newScore )
+			scoreAnimText1000.x = self.x + 80
+			scoreAnimText1000.y = self.y
+			animScore(scoreAnimText1000)
 			audio.play( portalExitSound )
 			self.isHit = true
 			Particles.StopEmitter("PortalEmitter")
 			-- Particles.DeleteEmitter("PortalEmitter")
 			print( "Exited Portal!! " )
 			self.isVisible = false
-			self.isBodyActive = false
-			self.isBullet = false
-			characterObject:setLinearVelocity( 0, 0 )
-			characterObject.bodyType = "static"
-			characterObject.isVisible = false
-			characterObject.isBullet = false
-			characterObject.trailNum = 0
-			
-			-- Poof code below --
-			if poofTween then transition.cancel( poofTween ); end
-			
-			greenPoof.x = self.x; greenPoof.y = self.y
-			greenPoof.alpha = 0
-			greenPoof.isVisible = true
-			
-			local fadePoof = function()
-				transition.to( greenPoof, { time=500, alpha=0 } )	
-			end
-			poofTween = transition.to( greenPoof, { time=50, alpha=1.0, onComplete=fadePoof } )
+						self.isBodyActive = false
+						self.isBullet = false
+						characterObject:setLinearVelocity( 0, 0 )
+						characterObject.bodyType = "static"
+						characterObject.isVisible = false
+						characterObject.isBullet = false
+						characterObject.trailNum = 0
+						
+						-- Poof code below --
+						if poofTween then transition.cancel( poofTween ); end
+						
+						greenPoof.x = self.x; greenPoof.y = self.y
+						greenPoof.alpha = 0
+						greenPoof.isVisible = true
+						
+						local fadePoof = function()
+							transition.to( greenPoof, { time=500, alpha=0 } )	
+						end
+						poofTween = transition.to( greenPoof, { time=50, alpha=1.0, onComplete=fadePoof } )
 			
 			ThroughExitPortal = true
-			
+			characterObject.isExited = true
+			timer.performWithDelay( 1750, function() callGameOver( "yes" ); end, 1 )
 			self.parent:remove( self )
-			self = nil
+						self = nil
 		end
 	end
 	
 	onTeleporter1Touch = function( self, event )
 		print("teleporter 1 touch")
 		if event.other.myName == "character" then
-			local newScore = gameScore + 500
+			local newScore = gameScore + 100
 			setScore( newScore )
+			scoreAnimText100.x = self.x
+			scoreAnimText100.y = self.y
+			animScore(scoreAnimText100)
 			-- audio.play( telporterSound )
 
 			Particles.StartEmitter("Teleporter1Emitter")
@@ -1272,16 +1361,20 @@ function new()
 			rotateAngle1 = self.rotations 
 			rotateAngle2 = self.rotationo
 			print("rotations angles " .. self.rotations .. " " .. self.rotationo)
-			-- characterObject.x = 100
-			-- characterObject.y = 200
+			scoreAnim2Text100.x = self.xo
+			scoreAnim2Text100.y = self.yo
+			animScore(scoreAnim2Text100)
 			
 		end
 	end
 	
 	onTeleporter2Touch = function( self, event )
 		if event.other.myName == "character" then
-			local newScore = gameScore + 500
+			local newScore = gameScore + 100
 			setScore( newScore )
+			scoreAnimText100.x = self.x
+			scoreAnimText100.y = self.y
+			animScore(scoreAnimText100)
 			-- audio.play( telporterSound )
 
 			Particles.StartEmitter("Teleporter1Emitter")
@@ -1294,8 +1387,9 @@ function new()
 			rotateAngle2 = self.rotations 
 			rotateAngle1 = self.rotationo 
 			print("rotations angles " .. rotateAngle1 .. " " .. rotateAngle2)
-			-- characterObject.x = 100
-			-- characterObject.y = 200
+			scoreAnim2Text100.x = self.xo
+			scoreAnim2Text100.y = self.yo
+			animScore(scoreAnim2Text100)
 			
 		end
 	end
@@ -1327,17 +1421,17 @@ function new()
 				trainingText.isVisible = true
 				end
 				
-				if gameLives < 1 then
-					-- GAME OVER
-					if ThroughExitPortal == true then
-						callGameOver( "yes" )
-					else
-						callGameOver( "no" )
-					end
-				elseif ThroughExitPortal == true and gameLives >= 1 then
-					
-					callGameOver( "yes" )
-				end
+				-- if gameLives < 1 then
+				-- 					-- GAME OVER
+				-- 					if ThroughExitPortal == true then
+				-- 						callGameOver( "yes" )
+				-- 					else
+				-- 						callGameOver( "no" )
+				-- 					end
+				-- 				elseif ThroughExitPortal == true and gameLives >= 1 then
+				-- 					
+				-- 					callGameOver( "yes" )
+				-- 				end
 				
 			elseif event.phase == "ended" and characterObject.isReady == false and characterObject.inAir == false and canSwipe == true then
 				
@@ -1441,7 +1535,7 @@ function new()
 							else
 								trailDot:setFillColor( 255, 255, 255, 255 )
 							end
-							trailDot.alpha = 1.0
+							trailDot.alpha = .60
 							
 							trailGroup:insert( trailDot )
 							--gameGroup:insert( trailGroup )
@@ -1454,7 +1548,7 @@ function new()
 							end
 						end
 						
-						dotTimer = timer.performWithDelay( 50, createDot, 50 )
+						dotTimer = timer.performWithDelay( 10, createDot, 10000 )
 					end
 					
 					local startDotTimer = timer.performWithDelay( 50, startDotCreation, 1 )
@@ -1520,7 +1614,12 @@ function new()
 			end
 		end
 		else
-			print("character gon die bitch!!!")
+			if characterObject.isHit == false then
+				characterObject.isHit = true
+				if dotTimer then timer.cancel( dotTimer ); end
+				callNewRound( true, "yes" )
+				characterBoolean = characterBoolean + 1
+			end
 			charactertouchdie = false
 		end
 	end
