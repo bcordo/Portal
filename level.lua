@@ -86,6 +86,7 @@ function new()
 	local characterObject = {}
 	local poofObject
 	local greenPoof; local poofTween
+	local switch_obj
 
 	--New UI Elements
 	local portalObject
@@ -291,6 +292,7 @@ function new()
 	end
 	
 	local startNewRound = function()
+		charactertouchdie = false
 		createcharacter()
 		if characterObject then
 			
@@ -1121,6 +1123,7 @@ function new()
 						animScore(scoreAnimText500)
 						
 						portalOpen = true
+						event.other:removeSelf()
 						audio.play( switchSound )
 						-- PortalSound = audio.loadStream("soundfx/explosion_long.aac")
 						-- PortalMusicChannel = audio.play( PortalSound, { channel = 6, loops=-1 }  )
@@ -1586,7 +1589,6 @@ function new()
 				
 				characterObject.rotation = angleBetween --+ 180
 				shotArrow.rotation = characterObject.rotation
-					
 			end
 			
 			if canSwipe == true then
@@ -1614,7 +1616,7 @@ function new()
 			end
 		end
 		else
-			if characterObject.isHit == false then
+			if characterObject.isHit == false and characterObject.inAir == true and gameIsActive == true then
 				characterObject.isHit = true
 				if dotTimer then timer.cancel( dotTimer ); end
 				callNewRound( true, "yes" )
@@ -1733,9 +1735,6 @@ function new()
 				end
 			end
 			
-			if portalOpen == true then
-				switch_obj.isVisible = false
-			end
 				
 			if leveldata.restartLevel == "1-1" then
 				if characterObject.inAir == true then
@@ -1866,7 +1865,68 @@ function new()
 			if portalOpen == true then
 				portal.isVisible = true
 			end
-
+			
+			if characterObject.isHit == false and characterObject.x > 2*display.viewableContentWidth and characterObject.inAir == true then
+				if characterObject.y > display.viewableContentHeight then
+				shotArrow.isVisible = true
+				shotArrow.y = display.viewableContentHeight
+				shotArrow.x = 2*display.viewableContentWidth
+				shotArrow.rotation = math.atan2(characterObject.y - display.viewableContentHeight,characterObject.x - 2*display.viewableContentWidth) * ( 180 / math.pi) - 90
+						
+				elseif characterObject.y < 0 then
+				shotArrow.isVisible = true	
+				shotArrow.y = 0
+				shotArrow.x = 2*display.viewableContentWidth
+				shotArrow.rotation = math.atan2(characterObject.x - 2*display.viewableContentWidth, -characterObject.y) * ( 180 / math.pi) - 180 
+				
+				else
+					shotArrow.isVisible = true	
+					shotArrow.y = characterObject.y	
+					shotArrow.x = 2*display.viewableContentWidth
+					shotArrow.rotation = -90	
+				end
+			end
+			
+			if characterObject.isHit == false and characterObject.x < 0 and characterObject.inAir == true then
+				if characterObject.y > display.viewableContentHeight then
+				shotArrow.isVisible = true
+					shotArrow.y = display.viewableContentHeight
+					shotArrow.x = 0
+					shotArrow.rotation = math.atan2(-characterObject.x,characterObject.y - display.viewableContentHeight) * ( 180 / math.pi) - 0
+						
+				elseif characterObject.y < 0 then
+					shotArrow.isVisible = true	
+					shotArrow.y = 0
+					shotArrow.x = 0
+					shotArrow.rotation = math.atan2(-characterObject.y ,-characterObject.x) * ( 180 / math.pi) - 270
+				
+				else
+					shotArrow.isVisible = true	
+					shotArrow.y = characterObject.y	
+					shotArrow.x = 0
+					shotArrow.rotation = 90	
+				end
+			end
+			
+			if characterObject.isHit == false and characterObject.y > display.viewableContentHeight and characterObject.x > 0 and characterObject.x < 2*display.viewableContentWidth and characterObject.inAir == true then
+				shotArrow.isVisible = true
+				shotArrow.y = display.viewableContentHeight
+				shotArrow.x = characterObject.x
+				shotArrow.rotation = 0
+			end
+			
+			if characterObject.isHit == false and characterObject.y < 0 and characterObject.x > 0 and characterObject.x < 2*display.viewableContentWidth and characterObject.inAir == true then
+				shotArrow.isVisible = true
+				shotArrow.y = 0
+				shotArrow.x = characterObject.x
+				shotArrow.rotation = 180
+			end
+			
+			if characterObject.inAir == true and characterObject.y > 0 and characterObject.x > 0 and characterObject.x < 2*display.viewableContentWidth and characterObject.y < display.viewableContentHeight then
+				shotArrow.isVisible = false
+			end
+			
+			
 			
 			-- CHECK IF character GOES PAST SCREEN
 			if characterObject.isHit == false and characterObject.x >= 1800 then
