@@ -1871,18 +1871,21 @@ function new()
 				shotArrow.isVisible = true
 				shotArrow.y = display.viewableContentHeight
 				shotArrow.x = 2*display.viewableContentWidth
+				shotArrow.yScale = .1 + math.sqrt( (characterObject.x - 2*display.viewableContentWidth)^2 + (characterObject.y - display.viewableContentHeight)^2) * .01
 				shotArrow.rotation = math.atan2(characterObject.y - display.viewableContentHeight,characterObject.x - 2*display.viewableContentWidth) * ( 180 / math.pi) - 90
 						
 				elseif characterObject.y < 0 then
 				shotArrow.isVisible = true	
 				shotArrow.y = 0
 				shotArrow.x = 2*display.viewableContentWidth
+				shotArrow.yScale = .1 + math.sqrt( (characterObject.x - 2*display.viewableContentWidth)^2 + (viewableContentWidth -characterObject.y)^2) * .01
 				shotArrow.rotation = math.atan2(characterObject.x - 2*display.viewableContentWidth, -characterObject.y) * ( 180 / math.pi) - 180 
 				
 				else
 					shotArrow.isVisible = true	
 					shotArrow.y = characterObject.y	
 					shotArrow.x = 2*display.viewableContentWidth
+					shotArrow.yScale = .1 + math.abs(2*display.viewableContentWidth - characterObject.x) * .01
 					shotArrow.rotation = -90	
 				end
 			end
@@ -1892,18 +1895,21 @@ function new()
 				shotArrow.isVisible = true
 					shotArrow.y = display.viewableContentHeight
 					shotArrow.x = 0
+					shotArrow.yScale = .1 + math.sqrt( (-characterObject.x)^2 + (characterObject.y - display.viewableContentHeight)^2) * .01
 					shotArrow.rotation = math.atan2(-characterObject.x,characterObject.y - display.viewableContentHeight) * ( 180 / math.pi) - 0
 						
 				elseif characterObject.y < 0 then
 					shotArrow.isVisible = true	
 					shotArrow.y = 0
 					shotArrow.x = 0
+					shotArrow.yScale = .1 + math.sqrt( (-characterObject.y)^2 + (-characterObject.x)^2) * .01
 					shotArrow.rotation = math.atan2(-characterObject.y ,-characterObject.x) * ( 180 / math.pi) - 270
 				
 				else
 					shotArrow.isVisible = true	
 					shotArrow.y = characterObject.y	
 					shotArrow.x = 0
+					shotArrow.yScale = .1 + math.abs(-characterObject.x) * .01
 					shotArrow.rotation = 90	
 				end
 			end
@@ -1912,6 +1918,7 @@ function new()
 				shotArrow.isVisible = true
 				shotArrow.y = display.viewableContentHeight
 				shotArrow.x = characterObject.x
+				shotArrow.yScale = .1 + math.abs(display.viewableContentHeight - characterObject.y) * .01
 				shotArrow.rotation = 0
 			end
 			
@@ -1919,6 +1926,7 @@ function new()
 				shotArrow.isVisible = true
 				shotArrow.y = 0
 				shotArrow.x = characterObject.x
+				shotArrow.yScale = .1 + math.abs(-characterObject.y) * .01
 				shotArrow.rotation = 180
 			end
 			
