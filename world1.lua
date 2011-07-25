@@ -12,7 +12,6 @@
 
 module(..., package.seeall)
 
-require "saveit"
 
 
 
@@ -25,56 +24,7 @@ function new()
 	local ui = require("ui")
 	nLevelsComplete = 30
 	
-	local saveValue = function( strFilename, strValue )
-		-- will save specified value to specified file
-		local theFile = strFilename
-		local theValue = strValue
-		
-		local path = system.pathForFile( theFile, system.DocumentsDirectory )
-		
-		-- io.open opens a file at path. returns nil if no file found
-		local file = io.open( path, "w+" )
-		if file then
-		   -- write game score to the text file
-		   file:write( theValue )
-		   io.close( file )
-		end
-	end
 	
-	function explode(div,str)
-	  if (div=='') then return false end
-	  local pos,arr = 0,{}
-	  -- for each divider found
-	  for st,sp in function() return string.find(str,div,pos,true) end do
-	    table.insert(arr,string.sub(str,pos,st-1)) -- Attach chars left of current divider
-	    pos = sp + 1 -- Jump past current divider
-	  end
-	  table.insert(arr,string.sub(str,pos)) -- Attach chars right of last divider
-	  return arr
-	end
-	
-	local function resumeStart()
-				local path = system.pathForFile( "portalerData6.txt", system.DocumentsDirectory )                
-					local file = io.open( path, "r" )
-
-					if file then
-						print("Loading our data...")
-						local contents = file:read( "*a" )
-						-- Loads our data
-
-						local prevState = explode(", ", contents)
-
-	                        _G.highestLevel1 = prevState[1]
-							_G.levelTracker1 = prevState[2]
-
-
-						io.close( file )
-
-					else
-						_G.highestLevel1=1;
-						_G.levelTracker1=0;
-					end
-	end
 
 	-- forward declerations
 
@@ -83,7 +33,9 @@ function new()
 	----------------------------------------------------------------------------------------------------
 	local function init()
 		
-		resumeStart()
+		if tonumber(_G.levelTracker1) > tonumber(_G.highestLevel1) then
+			_G.highestLevel1 = _G.levelTracker1
+		end
 		
 		print("highest level var: ", _G.highestLevel1)
 		print("level tracker var: ", _G.levelTracker1)
@@ -215,22 +167,40 @@ function new()
 		-- end
 		
 		local crates = {}
+		local lockimage = {}
 		for j = 1,3 do
 		for k = 1,4 do
-		crates[index] = display.newImage("images/level_icon.png", -90 + (k*70), -115 + (j*70) )
+		crates[index] = display.newImage("images/level_icon.png", -90 + (k*70), -115 + (j*70) )	
+		if index > tonumber(_G.highestLevel1) then
+			lockimage[index] = display.newImage("images/level_icon_lock.png", -90 + (k*70), -115 + (j*70) )
+			lockimage[index].alpha = .8
+		end
+				
 		crates[index]:scale(.5,.5)
 		crates[index].id = index
 		slide_sprt:insert(crates[index])
+		
+		if index > tonumber(_G.highestLevel1) then
+		lockimage[index]:scale(.5,.5)
+		lockimage[index].id = index
+		slide_sprt:insert(lockimage[index])
+		end
 		
 		if index <= 9 then	
 			txt = display.newText( slide_sprt,"level " .. index, -50 + (k*70)-5, -80 + (j*70)+5, "Danube", 6.5 )
 		else
 			txt = display.newText( slide_sprt,"level " .. index, -50 + (k*70) - 8, -80 + (j*70)+5, "Danube", 6.5 )
 		end
-			
+		
+		if index > tonumber(_G.highestLevel1) then
+		lockimage[index]:toFront()
+		end
 		
 		if index > nLevelsComplete then
 			crates[index].alpha = 0
+			if index > tonumber(_G.highestLevel1) then
+			lockimage[index].alpha = 0
+			end
 			txt.alpha = 0
 		else 
 			crates[index]:addEventListener("tap",tapCb)
@@ -278,12 +248,14 @@ function new()
 	-- tapCb
 	----------------------------------------------------------------------------------------------------
 	function tapCb( evt )
-
-		local btnId = "1-" .. evt.target.id
-		print( "btnId = " .. btnId )
-		_G.loadLevel= btnId
-		_G.levelTracker1 = evt.target.id 
-		director:changeScene("loadlevel", "fade", 0,0,0)
+		
+		if evt.target.id <= tonumber(_G.highestLevel1) then
+			local btnId = "1-" .. evt.target.id
+			print( "btnId = " .. btnId )
+			_G.loadLevel= btnId
+			_G.levelTracker1 = evt.target.id 
+			director:changeScene("loadlevel", "fade", 0,0,0)
+		end
 
 	end
 

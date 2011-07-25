@@ -443,6 +443,7 @@ function new()
 		local isWin = isWin
 		
 		if isWin == "yes" then
+			_G.levelTracker1 = leveldata.tracker1Next
 			audio.play( youWinSound )
 		else
 			audio.play( youLoseSound )
@@ -475,7 +476,6 @@ function new()
 		
 		if isWin == "yes" then
 			gameOverDisplay = display.newImageRect( "images/youwin.png", 390, 154 )
-			
 			-- Give score bonus depending on how many characters left
 			local characterBonus = gameLives * 1000
 			local newScore = gameScore + characterBonus
@@ -528,7 +528,6 @@ function new()
 				--local theModule = "load" .. restartModule
 				
 				_G.loadLevel = restartLevel
-				_G.levelTracker1 = leveldata.tracker1Current
 				local theModule = "loadlevel"
 
 				director:changeScene( theModule )
@@ -559,7 +558,6 @@ function new()
 			if event.phase == "release" then
 				audio.play( tapSound )
 				_G.loadLevel = nextLevel
-				_G.levelTracker1 = leveldata.tracker1Next
 				local theModule = "loadlevel" 
 
 				director:changeScene( theModule )
@@ -1084,7 +1082,6 @@ function new()
 				--local theModule = "load" .. restartModule
 				
 				_G.loadLevel = restartLevel
-				_G.levelTracker1 = leveldata.tracker1Current
 				local theModule = "loadlevel"
 				Particles.WakeUp()
 
@@ -2229,7 +2226,7 @@ function new()
 			
 		elseif event.type == "applicationExit" then
 			--Saves data
-			local path = system.pathForFile( "portalerData6.txt", system.DocumentsDirectory )                
+			local path = system.pathForFile( _G.filesavepathname, system.DocumentsDirectory )                
 			local file = io.open( path, "w+b" )
 			-- Creates the file where we save our data
 			

@@ -34,9 +34,7 @@ function new()
 			end
 			_G.loadLevel = nil
 			
-			print("Hightest Level Var: ",_G.highestLevel1,"/n")
-			print("levelTracker Var: ",_G.levelTracker1,"/n")
-			
+					
 			director:changeScene( "level", "fade" )
 		end
 		
