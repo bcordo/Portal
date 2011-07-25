@@ -36,6 +36,8 @@ function new()
 	
 	local levelsetup = require("level_creator")
 	local easingx  = require("easing")
+	require "saveit"
+	
 	local leveldata = levelsetup.getData()
 
 	local hudGroup = display.newGroup()
@@ -219,6 +221,47 @@ function new()
 		   file:write( theValue )
 		   io.close( file )
 		end
+	end
+	
+	function explode(div,str)
+	  if (div=='') then return false end
+	  local pos,arr = 0,{}
+	  -- for each divider found
+	  for st,sp in function() return string.find(str,div,pos,true) end do
+	    table.insert(arr,string.sub(str,pos,st-1)) -- Attach chars left of current divider
+	    pos = sp + 1 -- Jump past current divider
+	  end
+	  table.insert(arr,string.sub(str,pos)) -- Attach chars right of last divider
+	  return arr
+	end
+	
+	--***************************************************
+
+	-- resumeStart() --> Function Loads data
+	
+	--***************************************************
+	
+	local function resumeStart()
+				local path = system.pathForFile( "portalerData1.txt", system.DocumentsDirectory )                
+					local file = io.open( path, "r" )
+	
+					if file then
+						print("Loading our data...")
+						local contents = file:read( "*a" )
+						-- Loads our data
+	
+						local prevState = explode(", ", contents)
+	
+	                        _G.highestLevel1 = prevState[1]
+							_G.levelTracker1 = prevState[2]
+	
+	
+						io.close( file )
+	
+					else
+						_G.highestLevel1=1;
+						_G.levelTracker1=0;
+					end
 	end
 	
 	--***************************************************
@@ -485,6 +528,7 @@ function new()
 				--local theModule = "load" .. restartModule
 				
 				_G.loadLevel = restartLevel
+				_G.levelTracker1 = leveldata.tracker1Current
 				local theModule = "loadlevel"
 
 				director:changeScene( theModule )
@@ -515,6 +559,7 @@ function new()
 			if event.phase == "release" then
 				audio.play( tapSound )
 				_G.loadLevel = nextLevel
+				_G.levelTracker1 = leveldata.tracker1Next
 				local theModule = "loadlevel" 
 
 				director:changeScene( theModule )
@@ -1039,6 +1084,7 @@ function new()
 				--local theModule = "load" .. restartModule
 				
 				_G.loadLevel = restartLevel
+				_G.levelTracker1 = leveldata.tracker1Current
 				local theModule = "loadlevel"
 				Particles.WakeUp()
 
@@ -1979,7 +2025,7 @@ function new()
 		
 		restartLevel = leveldata.restartLevel
 		nextLevel =  leveldata.nextLevel
-
+		
 		
 		for key,data in pairs(leveldata.teleporters) do
 			local tele1 = display.newImageRect(data.src, data.width, data.height)
@@ -2182,6 +2228,13 @@ function new()
 			end
 			
 		elseif event.type == "applicationExit" then
+			--Saves data
+			local path = system.pathForFile( "portalerData6.txt", system.DocumentsDirectory )                
+			local file = io.open( path, "w+b" )
+			-- Creates the file where we save our data
+			
+			file:write( _G.highestLevel1..", ".._G.levelTracker1)          
+			io.close( file )
 			if system.getInfo( "environment" ) == "device" then
 				-- prevents iOS 4+ multi-tasking crashes
 				os.exit()
@@ -2190,6 +2243,8 @@ function new()
 	end
 	
 	local gameInit = function()
+	
+		-- resumeStart() 
 			
 		-- PHYSICS
 		physics.start( true )

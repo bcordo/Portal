@@ -27,9 +27,15 @@ function new()
 		loadingImage.x = 240; loadingImage.y = 160
 		
 		local goToLevel = function()
-
+			
 			_G.currentLevel = _G.loadLevel
+			if _G.levelTracker1 > tonumber(_G.highestLevel1) then
+				_G.highestLevel1 = _G.levelTracker1
+			end
 			_G.loadLevel = nil
+			
+			print("Hightest Level Var: ",_G.highestLevel1,"/n")
+			print("levelTracker Var: ",_G.levelTracker1,"/n")
 			
 			director:changeScene( "level", "fade" )
 		end
