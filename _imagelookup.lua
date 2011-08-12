@@ -70,6 +70,10 @@ table['Gem'] = 'assets/gem.png'
 table['GemWidth'] = '40'
 table['GemHeight'] = '40'
 
+table['Lifegem'] = 'assets/lifegem.png'
+table['LifegemWidth'] = '40'
+table['LifegemHeight'] = '40'
+
 table['Switch'] = 'assets/switch.png'
 table['SwitchWidth'] = '30'
 table['SwitchHeight'] = '30'

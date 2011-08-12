@@ -1162,23 +1162,30 @@ function new()
 				audio.play( impactSound )
 				end
 				
-				if event.other.myName == "gem" and portalOpen ~= true then
+				if event.other.myName == "gem" then
 						local newScore = gameScore + 500
 						setScore( newScore )
 						scoreAnimText500.x = event.other.x
 						scoreAnimText500.y = event.other.y
 						animScore(scoreAnimText500)
 						
-						-- portalOpen = true
+
 						event.other:removeSelf()
 						audio.play( switchSound )
-						-- PortalSound = audio.loadStream("soundfx/explosion_long.aac")
-						-- PortalMusicChannel = audio.play( PortalSound, { channel = 6, loops=-1 }  )
-						-- audio.play( portalOpenSound )
 
-						-- Particles.StartEmitter("PortalEmitter")
-						-- Particles.StopEmitter("PortalEmitter")
-						-- Particles.DeleteEmitter("PortalEmitter")
+				end
+				
+				if event.other.myName == "lifegem" then
+						gameLives = gameLives + 1
+						
+						scoreAnimText500.x = event.other.x
+						scoreAnimText500.y = event.other.y
+						animScore(scoreAnimText500)
+						
+
+						event.other:removeSelf()
+						audio.play( switchSound )
+
 				end
 				
 				if event.other.myName == "switch" and portalOpen ~= true then
@@ -1206,7 +1213,7 @@ function new()
 				end
 				
 				
-				if event.other.myName ~= "portal" and event.other.myName ~= "teleporter1" and event.other.myName ~= "teleporter2" and event.other.myName ~= "gem" then	
+				if event.other.myName ~= "portal" and event.other.myName ~= "teleporter1" and event.other.myName ~= "teleporter2" and event.other.myName ~= "gem" and event.other.myName ~= "lifegem" then	
 					
 					if characterObject.isHit == false then
 						
@@ -2144,9 +2151,24 @@ function new()
 			
 				gem_obj.myName = data.myName
 				physics.addBody(gem_obj, data.bodyType)
+				gem_obj.isSensor = true
 				gameGroup:insert(gem_obj)
 		end
 		
+		for key,data in pairs(leveldata.lifegems) do 
+			
+				lifegem_obj = display.newImageRect(data.src, data.width, data.height)
+				lifegem_obj.x = data.x
+				lifegem_obj.y = data.y
+				if data.rotate ~= nil then
+				lifegem_obj:rotate(data.rotate)
+				end
+			
+				lifegem_obj.myName = data.myName
+				physics.addBody(lifegem_obj, data.bodyType)
+				lifegem_obj.isSensor = true
+				gameGroup:insert(lifegem_obj)
+		end
 		
 		--Create Wood
 		for key,data in pairs(leveldata.woods) do 

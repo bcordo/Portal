@@ -36,6 +36,302 @@ function getData()
 		bodyType = "static",				
 	}
 	
+	if lvl.lifegem_1 and lvl.lifegem_2 and lvl.lifegem_3 and lvl.lifegem_4 and lvl.lifegem_5 and lvl.lifegem_6 then
+	leveldata.lifegems = 
+	{
+		
+		Lifegem1 = 
+		 { 
+			id =  "Lifegem1",
+			src = "images/lifegem.png",
+			width = 25,
+			height = 25,
+		 	x = lvl.lifegem_1.x,
+			y = lvl.lifegem_1.y,
+			myName = "lifegem",
+			bodyType = "static"
+		},
+		
+		Lifegem2 = 
+		 { 
+			id =  "Lifegem2",
+			src = "images/lifegem.png",
+			width = 25,
+			height = 25,
+		 	x = lvl.lifegem_2.x,
+			y = lvl.lifegem_2.y,
+			myName = "lifegem",
+			bodyType = "static"
+		},
+		
+		Lifegem3 = 
+		 { 
+			id =  "Lifegem3",
+			src = "images/lifegem.png",
+			width = 25,
+			height = 25,
+		 	x = lvl.lifegem_3.x,
+			y = lvl.lifegem_3.y,
+			myName = "lifegem",
+			bodyType = "static"
+		},
+		
+		Lifegem4 = 
+		 { 
+			id =  "Lifegem4",
+			src = "images/lifegem.png",
+			width = 25,
+			height = 25,
+		 	x = lvl.lifegem_4.x,
+			y = lvl.lifegem_4.y,
+			myName = "lifegem",
+			bodyType = "static"
+		},
+		
+		Lifegem5 = 
+		 { 
+			id =  "Lifegem5",
+			src = "images/lifegem.png",
+			width = 25,
+			height = 25,
+		 	x = lvl.lifegem_5.x,
+			y = lvl.lifegem_5.y,
+			myName = "lifegem",
+			bodyType = "static"
+		},
+		
+		Lifegem6 = 
+		 { 
+			id =  "Lifegem6",
+			src = "images/lifegem.png",
+			width = 25,
+			height = 25,
+		 	x = lvl.lifegem_6.x,
+			y = lvl.lifegem_6.y,
+			myName = "lifegem",
+			bodyType = "static"
+		},
+	}
+	
+	elseif lvl.lifegem_1 and lvl.lifegem_2 and lvl.lifegem_3 and lvl.lifegem_4 and lvl.lifegem_5 then
+	leveldata.lifegems = 
+	{
+		
+		Lifegem1 = 
+		 { 
+			id =  "Lifegem1",
+			src = "images/lifegem.png",
+			width = 25,
+			height = 25,
+		 	x = lvl.lifegem_1.x,
+			y = lvl.lifegem_1.y,
+			myName = "lifegem",
+			bodyType = "static"
+		},
+		
+		Lifegem2 = 
+		 { 
+			id =  "Lifegem2",
+			src = "images/lifegem.png",
+			width = 25,
+			height = 25,
+		 	x = lvl.lifegem_2.x,
+			y = lvl.lifegem_2.y,
+			myName = "lifegem",
+			bodyType = "static"
+		},
+		
+		Lifegem3 = 
+		 { 
+			id =  "Lifegem3",
+			src = "images/lifegem.png",
+			width = 25,
+			height = 25,
+		 	x = lvl.lifegem_3.x,
+			y = lvl.lifegem_3.y,
+			myName = "lifegem",
+			bodyType = "static"
+		},
+		
+		Lifegem4 = 
+		 { 
+			id =  "Lifegem4",
+			src = "images/lifegem.png",
+			width = 25,
+			height = 25,
+		 	x = lvl.lifegem_4.x,
+			y = lvl.lifegem_4.y,
+			myName = "lifegem",
+			bodyType = "static"
+		},
+		
+		Lifegem5 = 
+		 { 
+			id =  "Lifegem5",
+			src = "images/lifegem.png",
+			width = 25,
+			height = 25,
+		 	x = lvl.lifegem_5.x,
+			y = lvl.lifegem_5.y,
+			myName = "lifegem",
+			bodyType = "static"
+		},
+	}
+	
+	elseif lvl.lifegem_1 and lvl.lifegem_2 and lvl.lifegem_3 and lvl.lifegem_4 then
+	leveldata.lifegems = 
+	{
+		
+		Lifegem1 = 
+		 { 
+			id =  "Lifegem1",
+			src = "images/lifegem.png",
+			width = 25,
+			height = 25,
+		 	x = lvl.lifegem_1.x,
+			y = lvl.lifegem_1.y,
+			myName = "lifegem",
+			bodyType = "static"
+		},
+		
+		Lifegem2 = 
+		 { 
+			id =  "Lifegem2",
+			src = "images/lifegem.png",
+			width = 25,
+			height = 25,
+		 	x = lvl.lifegem_2.x,
+			y = lvl.lifegem_2.y,
+			myName = "lifegem",
+			bodyType = "static"
+		},
+		
+		Lifegem3 = 
+		 { 
+			id =  "Lifegem3",
+			src = "images/lifegem.png",
+			width = 25,
+			height = 25,
+		 	x = lvl.lifegem_3.x,
+			y = lvl.lifegem_3.y,
+			myName = "lifegem",
+			bodyType = "static"
+		},
+		
+		Lifegem4 = 
+		 { 
+			id =  "Lifegem4",
+			src = "images/lifegem.png",
+			width = 25,
+			height = 25,
+		 	x = lvl.lifegem_4.x,
+			y = lvl.lifegem_4.y,
+			myName = "lifegem",
+			bodyType = "static"
+		},
+		
+
+	}
+	
+	elseif lvl.lifegem_1 and lvl.lifegem_2 and lvl.lifegem_3 then
+	leveldata.lifegems = 
+	{
+		
+		Lifegem1 = 
+		 { 
+			id =  "Lifegem1",
+			src = "images/lifegem.png",
+			width = 25,
+			height = 25,
+		 	x = lvl.lifegem_1.x,
+			y = lvl.lifegem_1.y,
+			myName = "lifegem",
+			bodyType = "static"
+		},
+		
+		Lifegem2 = 
+		 { 
+			id =  "Lifegem2",
+			src = "images/lifegem.png",
+			width = 25,
+			height = 25,
+		 	x = lvl.lifegem_2.x,
+			y = lvl.lifegem_2.y,
+			myName = "lifegem",
+			bodyType = "static"
+		},
+		
+		Lifegem3 = 
+		 { 
+			id =  "Lifegem3",
+			src = "images/lifegem.png",
+			width = 25,
+			height = 25,
+		 	x = lvl.lifegem_3.x,
+			y = lvl.lifegem_3.y,
+			myName = "lifegem",
+			bodyType = "static"
+		},
+		
+
+	}
+
+	elseif lvl.lifegem_1 and lvl.lifegem_2 then
+	leveldata.lifegems = 
+	{
+		
+		Lifegem1 = 
+		 { 
+			id =  "Lifegem1",
+			src = "images/lifegem.png",
+			width = 25,
+			height = 25,
+		 	x = lvl.lifegem_1.x,
+			y = lvl.lifegem_1.y,
+			myName = "lifegem",
+			bodyType = "static"
+		},
+		
+		Lifegem2 = 
+		 { 
+			id =  "Lifegem2",
+			src = "images/lifegem.png",
+			width = 25,
+			height = 25,
+		 	x = lvl.lifegem_2.x,
+			y = lvl.lifegem_2.y,
+			myName = "lifegem",
+			bodyType = "static"
+		},
+		
+
+	}
+	
+	elseif lvl.lifegem_1 then
+	leveldata.lifegems = 
+	{
+		
+		Lifegem1 = 
+		 { 
+			id =  "Lifegem1",
+			src = "images/lifegem.png",
+			width = 25,
+			height = 25,
+		 	x = lvl.lifegem_1.x,
+			y = lvl.lifegem_1.y,
+			myName = "lifegem",
+			bodyType = "static"
+		},
+		
+
+	}
+	else
+		leveldata.lifegems = 
+		{
+			
+		}
+	end
+	
 	if lvl.gem_1 and lvl.gem_2 and lvl.gem_3 and lvl.gem_4 and lvl.gem_5 and lvl.gem_6 then
 	leveldata.gems = 
 	{
