@@ -82,6 +82,7 @@ function new()
 	local groundObject2
 	local shotOrb
 	local shotArrow
+	local outArrow
 	local blastGlow
 	local characterObject = {}
 	local poofObject
@@ -1182,6 +1183,12 @@ function new()
 		
 		gameGroup:insert( shotArrow )
 		
+		outArrow = display.newImageRect( "images/arrow.png", 240, 136.5 )
+		outArrow.x = 52; outArrow.y = 255
+		outArrow.isVisible = false
+		
+		gameGroup:insert( outArrow )
+		
 		i = 1
 		characterTable = {}
 		for key,data in pairs(leveldata.characters) do 
@@ -1497,6 +1504,7 @@ function new()
 					transition.cancel( characterTween )
 					shotOrb.isVisible = false
 					shotArrow.isVisible = false
+					outArrow.isVisible = false
 					canSwipe = false
 					
 					local x = event.x
@@ -1868,70 +1876,70 @@ function new()
 			
 			if characterObject.isHit == false and characterObject.x > 2*display.viewableContentWidth and characterObject.inAir == true then
 				if characterObject.y > display.viewableContentHeight then
-				shotArrow.isVisible = true
-				shotArrow.y = display.viewableContentHeight
-				shotArrow.x = 2*display.viewableContentWidth
-				shotArrow.yScale = .1 + math.sqrt( (characterObject.x - 2*display.viewableContentWidth)^2 + (characterObject.y - display.viewableContentHeight)^2) * .01
-				shotArrow.rotation = math.atan2(characterObject.y - display.viewableContentHeight,characterObject.x - 2*display.viewableContentWidth) * ( 180 / math.pi) - 90
+				outArrow.isVisible = true
+				outArrow.y = display.viewableContentHeight
+				outArrow.x = 2*display.viewableContentWidth
+				outArrow.yScale = .1 + math.sqrt( (characterObject.x - 2*display.viewableContentWidth)^2 + (characterObject.y - display.viewableContentHeight)^2) * .01
+				outArrow.rotation = math.atan2(characterObject.y - display.viewableContentHeight,characterObject.x - 2*display.viewableContentWidth) * ( 180 / math.pi) - 90
 						
 				elseif characterObject.y < 0 then
-				shotArrow.isVisible = true	
-				shotArrow.y = 0
-				shotArrow.x = 2*display.viewableContentWidth
-				shotArrow.yScale = .1 + math.sqrt( (characterObject.x - 2*display.viewableContentWidth)^2 + (viewableContentWidth -characterObject.y)^2) * .01
-				shotArrow.rotation = math.atan2(characterObject.x - 2*display.viewableContentWidth, -characterObject.y) * ( 180 / math.pi) - 180 
+				outArrow.isVisible = true	
+				outArrow.y = 0
+				outArrow.x = 2*display.viewableContentWidth
+				outArrow.yScale = .1 + math.sqrt( (characterObject.x - 2*display.viewableContentWidth)^2 + (display.viewableContentWidth -characterObject.y)^2) * .01
+				outArrow.rotation = math.atan2(characterObject.x - 2*display.viewableContentWidth, -characterObject.y) * ( 180 / math.pi) - 180 
 				
 				else
-					shotArrow.isVisible = true	
-					shotArrow.y = characterObject.y	
-					shotArrow.x = 2*display.viewableContentWidth
-					shotArrow.yScale = .1 + math.abs(2*display.viewableContentWidth - characterObject.x) * .01
-					shotArrow.rotation = -90	
+					outArrow.isVisible = true	
+					outArrow.y = characterObject.y	
+					outArrow.x = 2*display.viewableContentWidth
+					outArrow.yScale = .1 + math.abs(2*display.viewableContentWidth - characterObject.x) * .01
+					outArrow.rotation = -90	
 				end
 			end
 			
 			if characterObject.isHit == false and characterObject.x < 0 and characterObject.inAir == true then
 				if characterObject.y > display.viewableContentHeight then
-				shotArrow.isVisible = true
-					shotArrow.y = display.viewableContentHeight
-					shotArrow.x = 0
-					shotArrow.yScale = .1 + math.sqrt( (-characterObject.x)^2 + (characterObject.y - display.viewableContentHeight)^2) * .01
-					shotArrow.rotation = math.atan2(-characterObject.x,characterObject.y - display.viewableContentHeight) * ( 180 / math.pi) - 0
+				outArrow.isVisible = true
+					outArrow.y = display.viewableContentHeight
+					outArrow.x = 0
+					outArrow.yScale = .1 + math.sqrt( (-characterObject.x)^2 + (characterObject.y - display.viewableContentHeight)^2) * .01
+					outArrow.rotation = math.atan2(-characterObject.x,characterObject.y - display.viewableContentHeight) * ( 180 / math.pi) - 0
 						
 				elseif characterObject.y < 0 then
-					shotArrow.isVisible = true	
-					shotArrow.y = 0
-					shotArrow.x = 0
-					shotArrow.yScale = .1 + math.sqrt( (-characterObject.y)^2 + (-characterObject.x)^2) * .01
-					shotArrow.rotation = math.atan2(-characterObject.y ,-characterObject.x) * ( 180 / math.pi) - 270
+					outArrow.isVisible = true	
+					outArrow.y = 0
+					outArrow.x = 0
+					outArrow.yScale = .1 + math.sqrt( (-characterObject.y)^2 + (-characterObject.x)^2) * .01
+					outArrow.rotation = math.atan2(-characterObject.y ,-characterObject.x) * ( 180 / math.pi) - 270
 				
 				else
-					shotArrow.isVisible = true	
-					shotArrow.y = characterObject.y	
-					shotArrow.x = 0
-					shotArrow.yScale = .1 + math.abs(-characterObject.x) * .01
-					shotArrow.rotation = 90	
+					outArrow.isVisible = true	
+					outArrow.y = characterObject.y	
+					outArrow.x = 0
+					outArrow.yScale = .1 + math.abs(-characterObject.x) * .01
+					outArrow.rotation = 90	
 				end
 			end
 			
 			if characterObject.isHit == false and characterObject.y > display.viewableContentHeight and characterObject.x > 0 and characterObject.x < 2*display.viewableContentWidth and characterObject.inAir == true then
-				shotArrow.isVisible = true
-				shotArrow.y = display.viewableContentHeight
-				shotArrow.x = characterObject.x
-				shotArrow.yScale = .1 + math.abs(display.viewableContentHeight - characterObject.y) * .01
-				shotArrow.rotation = 0
+				outArrow.isVisible = true
+				outArrow.y = display.viewableContentHeight
+				outArrow.x = characterObject.x
+				outArrow.yScale = .1 + math.abs(display.viewableContentHeight - characterObject.y) * .01
+				outArrow.rotation = 0
 			end
 			
 			if characterObject.isHit == false and characterObject.y < 0 and characterObject.x > 0 and characterObject.x < 2*display.viewableContentWidth and characterObject.inAir == true then
-				shotArrow.isVisible = true
-				shotArrow.y = 0
-				shotArrow.x = characterObject.x
-				shotArrow.yScale = .1 + math.abs(-characterObject.y) * .01
-				shotArrow.rotation = 180
+				outArrow.isVisible = true
+				outArrow.y = 0
+				outArrow.x = characterObject.x
+				outArrow.yScale = .1 + math.abs(-characterObject.y) * .01
+				outArrow.rotation = 180
 			end
 			
 			if characterObject.inAir == true and characterObject.y > 0 and characterObject.x > 0 and characterObject.x < 2*display.viewableContentWidth and characterObject.y < display.viewableContentHeight then
-				shotArrow.isVisible = false
+				outArrow.isVisible = false
 			end
 			
 			
