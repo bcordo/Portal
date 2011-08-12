@@ -14,8 +14,10 @@ display.setStatusBar(display.HiddenStatusBar)
 function newMain ()
 	local this = display.newGroup()
 	
-	this.currentLevel = "1-" .. "10"
-	this.next_level = "1-" .. "11"
+	this.trackerCurrent = 10
+	this.trackerNext = this.trackerCurrent + 1   
+	this.currentLevel = "1-" .. this.trackerCurrent
+	this.next_level = "1-" .. this.trackerNext
 		
 	this.background = 
 	{

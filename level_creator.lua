@@ -19,7 +19,7 @@ function getData()
 	currentLevel = lvl.currentLevel
 	next_level = lvl.next_level
 
-	print("this is level " .. currentLevel .. " setup" .. "the next level is: " .. next_level)	
+	print("this is level " .. currentLevel .. " setup" .. " the next level is: " .. next_level)	
 	
 	local leveldata = {}
 	
@@ -3194,6 +3194,8 @@ function getData()
 	
 	leveldata.restartLevel = currentLevel
 	leveldata.nextLevel = next_level
+	leveldata.tracker1Current = lvl.trackerCurrent
+	leveldata.tracker1Next = lvl.trackerNext
 	
 	leveldata.characters = 
 	{

@@ -14,6 +14,7 @@ module(..., package.seeall)
 
 
 
+
 -- Main function - MUST return a display.newGroup()
 function new()
 	local main_sprt 		= nil
@@ -22,6 +23,8 @@ function new()
 	local slider_sprt		= nil
 	local ui = require("ui")
 	nLevelsComplete = 30
+	
+	
 
 	-- forward declerations
 
@@ -29,6 +32,13 @@ function new()
 	-- init
 	----------------------------------------------------------------------------------------------------
 	local function init()
+		
+		if tonumber(_G.levelTracker1) > tonumber(_G.highestLevel1) then
+			_G.highestLevel1 = _G.levelTracker1
+		end
+		
+		print("highest level var: ", _G.highestLevel1)
+		print("level tracker var: ", _G.levelTracker1)
 
 		-- main_sprt
 		main_sprt = display.newGroup()
@@ -157,22 +167,40 @@ function new()
 		-- end
 		
 		local crates = {}
+		local lockimage = {}
 		for j = 1,3 do
 		for k = 1,4 do
-		crates[index] = display.newImage("images/level_icon.png", -90 + (k*70), -115 + (j*70) )
+		crates[index] = display.newImage("images/level_icon.png", -90 + (k*70), -115 + (j*70) )	
+		if index > tonumber(_G.highestLevel1) then
+			lockimage[index] = display.newImage("images/level_icon_lock.png", -90 + (k*70), -115 + (j*70) )
+			lockimage[index].alpha = .8
+		end
+				
 		crates[index]:scale(.5,.5)
 		crates[index].id = index
 		slide_sprt:insert(crates[index])
+		
+		if index > tonumber(_G.highestLevel1) then
+		lockimage[index]:scale(.5,.5)
+		lockimage[index].id = index
+		slide_sprt:insert(lockimage[index])
+		end
 		
 		if index <= 9 then	
 			txt = display.newText( slide_sprt,"level " .. index, -50 + (k*70)-5, -80 + (j*70)+5, "Danube", 6.5 )
 		else
 			txt = display.newText( slide_sprt,"level " .. index, -50 + (k*70) - 8, -80 + (j*70)+5, "Danube", 6.5 )
 		end
-			
+		
+		if index > tonumber(_G.highestLevel1) then
+		lockimage[index]:toFront()
+		end
 		
 		if index > nLevelsComplete then
 			crates[index].alpha = 0
+			if index > tonumber(_G.highestLevel1) then
+			lockimage[index].alpha = 0
+			end
 			txt.alpha = 0
 		else 
 			crates[index]:addEventListener("tap",tapCb)
@@ -220,11 +248,14 @@ function new()
 	-- tapCb
 	----------------------------------------------------------------------------------------------------
 	function tapCb( evt )
-
-		local btnId = "1-" .. evt.target.id
-		print( "btnId = " .. btnId )
-		_G.loadLevel= btnId
-		director:changeScene("loadlevel", "fade", 0,0,0)
+		
+		if evt.target.id <= tonumber(_G.highestLevel1) then
+			local btnId = "1-" .. evt.target.id
+			print( "btnId = " .. btnId )
+			_G.loadLevel= btnId
+			_G.levelTracker1 = evt.target.id 
+			director:changeScene("loadlevel", "fade", 0,0,0)
+		end
 
 	end
 
