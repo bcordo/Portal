@@ -1162,6 +1162,24 @@ function new()
 				audio.play( impactSound )
 				end
 				
+				if event.other.myName == "gem" and portalOpen ~= true then
+						local newScore = gameScore + 500
+						setScore( newScore )
+						scoreAnimText500.x = event.other.x
+						scoreAnimText500.y = event.other.y
+						animScore(scoreAnimText500)
+						
+						-- portalOpen = true
+						event.other:removeSelf()
+						audio.play( switchSound )
+						-- PortalSound = audio.loadStream("soundfx/explosion_long.aac")
+						-- PortalMusicChannel = audio.play( PortalSound, { channel = 6, loops=-1 }  )
+						-- audio.play( portalOpenSound )
+
+						-- Particles.StartEmitter("PortalEmitter")
+						-- Particles.StopEmitter("PortalEmitter")
+						-- Particles.DeleteEmitter("PortalEmitter")
+				end
 				
 				if event.other.myName == "switch" and portalOpen ~= true then
 						local newScore = gameScore + 500
@@ -1188,7 +1206,7 @@ function new()
 				end
 				
 				
-				if event.other.myName ~= "portal" and event.other.myName ~= "teleporter1" and event.other.myName ~= "teleporter2" then	
+				if event.other.myName ~= "portal" and event.other.myName ~= "teleporter1" and event.other.myName ~= "teleporter2" and event.other.myName ~= "gem" then	
 					
 					if characterObject.isHit == false then
 						
@@ -2114,6 +2132,22 @@ function new()
 			
 		end
 		
+		--Create Gem
+		for key,data in pairs(leveldata.gems) do 
+			
+				gem_obj = display.newImageRect(data.src, data.width, data.height)
+				gem_obj.x = data.x
+				gem_obj.y = data.y
+				if data.rotate ~= nil then
+				gem_obj:rotate(data.rotate)
+				end
+			
+				gem_obj.myName = data.myName
+				physics.addBody(gem_obj, data.bodyType)
+				gameGroup:insert(gem_obj)
+		end
+		
+		
 		--Create Wood
 		for key,data in pairs(leveldata.woods) do 
 			if data.myName == "switch" then
@@ -2157,6 +2191,7 @@ function new()
 		portal.isHit=false
 		portal.collision = onExitPortalTouch
 		portal:addEventListener("collision",portal)
+		
 		
 		for key,data in pairs(leveldata.blackHoles) do 
 		

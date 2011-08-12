@@ -46,6 +46,16 @@ function newMain ()
 
 	this:insert(switch_1)
 	this.switch_1 = switch_1
+	
+	local gem_1 = display.newImageRect(imagelookup.table["Gem"],imagelookup.table["GemWidth"],imagelookup.table["GemHeight"])
+	gem_1.x = 200
+	gem_1.y = 150.92272727272731
+	gem_1.xScale = 1
+	gem_1.yScale = 1
+	gem_1.isVisible = false
+
+	this:insert(gem_1)
+	this.gem_1 = gem_1
 
 	local blackhole_1 = display.newImageRect(imagelookup.table["Blackhole"],imagelookup.table["BlackholeWidth"],imagelookup.table["BlackholeHeight"])
 	blackhole_1.x = 115.5454545454545

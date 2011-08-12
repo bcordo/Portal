@@ -36,6 +36,302 @@ function getData()
 		bodyType = "static",				
 	}
 	
+	if lvl.gem_1 and lvl.gem_2 and lvl.gem_3 and lvl.gem_4 and lvl.gem_5 and lvl.gem_6 then
+	leveldata.gems = 
+	{
+		
+		Gem1 = 
+		 { 
+			id =  "Gem1",
+			src = "images/gem.png",
+			width = 25,
+			height = 25,
+		 	x = lvl.gem_1.x,
+			y = lvl.gem_1.y,
+			myName = "gem",
+			bodyType = "static"
+		},
+		
+		Gem2 = 
+		 { 
+			id =  "Gem2",
+			src = "images/gem.png",
+			width = 25,
+			height = 25,
+		 	x = lvl.gem_2.x,
+			y = lvl.gem_2.y,
+			myName = "gem",
+			bodyType = "static"
+		},
+		
+		Gem3 = 
+		 { 
+			id =  "Gem3",
+			src = "images/gem.png",
+			width = 25,
+			height = 25,
+		 	x = lvl.gem_3.x,
+			y = lvl.gem_3.y,
+			myName = "gem",
+			bodyType = "static"
+		},
+		
+		Gem4 = 
+		 { 
+			id =  "Gem4",
+			src = "images/gem.png",
+			width = 25,
+			height = 25,
+		 	x = lvl.gem_4.x,
+			y = lvl.gem_4.y,
+			myName = "gem",
+			bodyType = "static"
+		},
+		
+		Gem5 = 
+		 { 
+			id =  "Gem5",
+			src = "images/gem.png",
+			width = 25,
+			height = 25,
+		 	x = lvl.gem_5.x,
+			y = lvl.gem_5.y,
+			myName = "gem",
+			bodyType = "static"
+		},
+		
+		Gem6 = 
+		 { 
+			id =  "Gem6",
+			src = "images/gem.png",
+			width = 25,
+			height = 25,
+		 	x = lvl.gem_6.x,
+			y = lvl.gem_6.y,
+			myName = "gem",
+			bodyType = "static"
+		},
+	}
+	
+	elseif lvl.gem_1 and lvl.gem_2 and lvl.gem_3 and lvl.gem_4 and lvl.gem_5 then
+	leveldata.gems = 
+	{
+		
+		Gem1 = 
+		 { 
+			id =  "Gem1",
+			src = "images/gem.png",
+			width = 25,
+			height = 25,
+		 	x = lvl.gem_1.x,
+			y = lvl.gem_1.y,
+			myName = "gem",
+			bodyType = "static"
+		},
+		
+		Gem2 = 
+		 { 
+			id =  "Gem2",
+			src = "images/gem.png",
+			width = 25,
+			height = 25,
+		 	x = lvl.gem_2.x,
+			y = lvl.gem_2.y,
+			myName = "gem",
+			bodyType = "static"
+		},
+		
+		Gem3 = 
+		 { 
+			id =  "Gem3",
+			src = "images/gem.png",
+			width = 25,
+			height = 25,
+		 	x = lvl.gem_3.x,
+			y = lvl.gem_3.y,
+			myName = "gem",
+			bodyType = "static"
+		},
+		
+		Gem4 = 
+		 { 
+			id =  "Gem4",
+			src = "images/gem.png",
+			width = 25,
+			height = 25,
+		 	x = lvl.gem_4.x,
+			y = lvl.gem_4.y,
+			myName = "gem",
+			bodyType = "static"
+		},
+		
+		Gem5 = 
+		 { 
+			id =  "Gem5",
+			src = "images/gem.png",
+			width = 25,
+			height = 25,
+		 	x = lvl.gem_5.x,
+			y = lvl.gem_5.y,
+			myName = "gem",
+			bodyType = "static"
+		},
+	}
+	
+	elseif lvl.gem_1 and lvl.gem_2 and lvl.gem_3 and lvl.gem_4 then
+	leveldata.gems = 
+	{
+		
+		Gem1 = 
+		 { 
+			id =  "Gem1",
+			src = "images/gem.png",
+			width = 25,
+			height = 25,
+		 	x = lvl.gem_1.x,
+			y = lvl.gem_1.y,
+			myName = "gem",
+			bodyType = "static"
+		},
+		
+		Gem2 = 
+		 { 
+			id =  "Gem2",
+			src = "images/gem.png",
+			width = 25,
+			height = 25,
+		 	x = lvl.gem_2.x,
+			y = lvl.gem_2.y,
+			myName = "gem",
+			bodyType = "static"
+		},
+		
+		Gem3 = 
+		 { 
+			id =  "Gem3",
+			src = "images/gem.png",
+			width = 25,
+			height = 25,
+		 	x = lvl.gem_3.x,
+			y = lvl.gem_3.y,
+			myName = "gem",
+			bodyType = "static"
+		},
+		
+		Gem4 = 
+		 { 
+			id =  "Gem4",
+			src = "images/gem.png",
+			width = 25,
+			height = 25,
+		 	x = lvl.gem_4.x,
+			y = lvl.gem_4.y,
+			myName = "gem",
+			bodyType = "static"
+		},
+		
+
+	}
+	
+	elseif lvl.gem_1 and lvl.gem_2 and lvl.gem_3 then
+	leveldata.gems = 
+	{
+		
+		Gem1 = 
+		 { 
+			id =  "Gem1",
+			src = "images/gem.png",
+			width = 25,
+			height = 25,
+		 	x = lvl.gem_1.x,
+			y = lvl.gem_1.y,
+			myName = "gem",
+			bodyType = "static"
+		},
+		
+		Gem2 = 
+		 { 
+			id =  "Gem2",
+			src = "images/gem.png",
+			width = 25,
+			height = 25,
+		 	x = lvl.gem_2.x,
+			y = lvl.gem_2.y,
+			myName = "gem",
+			bodyType = "static"
+		},
+		
+		Gem3 = 
+		 { 
+			id =  "Gem3",
+			src = "images/gem.png",
+			width = 25,
+			height = 25,
+		 	x = lvl.gem_3.x,
+			y = lvl.gem_3.y,
+			myName = "gem",
+			bodyType = "static"
+		},
+		
+
+	}
+
+	elseif lvl.gem_1 and lvl.gem_2 then
+	leveldata.gems = 
+	{
+		
+		Gem1 = 
+		 { 
+			id =  "Gem1",
+			src = "images/gem.png",
+			width = 25,
+			height = 25,
+		 	x = lvl.gem_1.x,
+			y = lvl.gem_1.y,
+			myName = "gem",
+			bodyType = "static"
+		},
+		
+		Gem2 = 
+		 { 
+			id =  "Gem2",
+			src = "images/gem.png",
+			width = 25,
+			height = 25,
+		 	x = lvl.gem_2.x,
+			y = lvl.gem_2.y,
+			myName = "gem",
+			bodyType = "static"
+		},
+		
+
+	}
+	
+	elseif lvl.gem_1 then
+	leveldata.gems = 
+	{
+		
+		Gem1 = 
+		 { 
+			id =  "Gem1",
+			src = "images/gem.png",
+			width = 25,
+			height = 25,
+		 	x = lvl.gem_1.x,
+			y = lvl.gem_1.y,
+			myName = "gem",
+			bodyType = "static"
+		},
+		
+
+	}
+	else
+		leveldata.gems = 
+		{
+			
+		}
+	end
+	
 	if lvl.blackhole_1 and lvl.blackhole_2 and lvl.blackhole_3 and lvl.blackhole_4 and lvl.blackhole_5 and lvl.blackhole_6 then
 	leveldata.blackHoles = 
 	{
