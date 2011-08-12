@@ -477,6 +477,11 @@ function new()
 		if isWin == "yes" then
 			gameOverDisplay = display.newImageRect( "images/youwin.png", 390, 154 )
 			-- Give score bonus depending on how many characters left
+			-- winText = display.newText("TRAINING LEVEL " .. string.sub(leveldata.restartLevel,-1), 240, 18, "Danube", 36)
+			-- winText:setTextColor( 254, 113, 2, 200 )
+			-- winText.xScale = 0.5; trainingText.yScale = 0.5
+			-- winText.x = 240; winText.y = 18
+			-- hudGroup:insert(trainingText)
 			local characterBonus = gameLives * 1000
 			local newScore = gameScore + characterBonus
 			setScore( newScore )
