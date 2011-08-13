@@ -478,6 +478,11 @@ function new()
 		if isWin == "yes" then
 			gameOverDisplay = display.newImageRect( "images/youwin.png", 390, 154 )
 			-- Give score bonus depending on how many characters left
+			-- winText = display.newText("TRAINING LEVEL " .. string.sub(leveldata.restartLevel,-1), 240, 18, "Danube", 36)
+			-- winText:setTextColor( 254, 113, 2, 200 )
+			-- winText.xScale = 0.5; trainingText.yScale = 0.5
+			-- winText.x = 240; winText.y = 18
+			-- hudGroup:insert(trainingText)
 			local characterBonus = gameLives * 1000
 			local newScore = gameScore + characterBonus
 			setScore( newScore )
@@ -1158,6 +1163,31 @@ function new()
 				audio.play( impactSound )
 				end
 				
+				if event.other.myName == "gem" then
+						local newScore = gameScore + 500
+						setScore( newScore )
+						scoreAnimText500.x = event.other.x
+						scoreAnimText500.y = event.other.y
+						animScore(scoreAnimText500)
+						
+
+						event.other:removeSelf()
+						audio.play( switchSound )
+
+				end
+				
+				if event.other.myName == "lifegem" then
+						gameLives = gameLives + 1
+						
+						scoreAnimText500.x = event.other.x
+						scoreAnimText500.y = event.other.y
+						animScore(scoreAnimText500)
+						
+
+						event.other:removeSelf()
+						audio.play( switchSound )
+
+				end
 				
 				if event.other.myName == "switch" and portalOpen ~= true then
 						local newScore = gameScore + 500
@@ -1184,7 +1214,7 @@ function new()
 				end
 				
 				
-				if event.other.myName ~= "portal" and event.other.myName ~= "teleporter1" and event.other.myName ~= "teleporter2" then	
+				if event.other.myName ~= "portal" and event.other.myName ~= "teleporter1" and event.other.myName ~= "teleporter2" and event.other.myName ~= "gem" and event.other.myName ~= "lifegem" then	
 					
 					if characterObject.isHit == false then
 						
@@ -2117,6 +2147,37 @@ function new()
 			
 		end
 		
+		--Create Gem
+		for key,data in pairs(leveldata.gems) do 
+			
+				gem_obj = display.newImageRect(data.src, data.width, data.height)
+				gem_obj.x = data.x
+				gem_obj.y = data.y
+				if data.rotate ~= nil then
+				gem_obj:rotate(data.rotate)
+				end
+			
+				gem_obj.myName = data.myName
+				physics.addBody(gem_obj, data.bodyType)
+				gem_obj.isSensor = true
+				gameGroup:insert(gem_obj)
+		end
+		
+		for key,data in pairs(leveldata.lifegems) do 
+			
+				lifegem_obj = display.newImageRect(data.src, data.width, data.height)
+				lifegem_obj.x = data.x
+				lifegem_obj.y = data.y
+				if data.rotate ~= nil then
+				lifegem_obj:rotate(data.rotate)
+				end
+			
+				lifegem_obj.myName = data.myName
+				physics.addBody(lifegem_obj, data.bodyType)
+				lifegem_obj.isSensor = true
+				gameGroup:insert(lifegem_obj)
+		end
+		
 		--Create Wood
 		for key,data in pairs(leveldata.woods) do 
 			if data.myName == "switch" then
@@ -2160,6 +2221,7 @@ function new()
 		portal.isHit=false
 		portal.collision = onExitPortalTouch
 		portal:addEventListener("collision",portal)
+		
 		
 		for key,data in pairs(leveldata.blackHoles) do 
 		
