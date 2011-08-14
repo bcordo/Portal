@@ -535,25 +535,25 @@ function new()
 		
 		-- GAME OVER WINDOW
 		local gameOverDisplay
-		local textObject1
-		local textObject2
+		-- local textObject1
+		-- local textObject2
 		
 		if isWin == "yes" then
 			gameOverDisplay = display.newImageRect( "images/youwin.png", 390, 154 )
-			testTable = {{"a nigga gonna hate on foods with lettuce, if I do say so myself son...","wee.wav"},{"biotches aren't shit so aren't hoes, if I do say my self son","wee.wav"}}
+			winTextSoundTable = {{"a nigga gonna hate on foods with lettuce, if I do say so myself son...","win.wav"},{"biotches aren't shit so aren't hoes, if I do say my self son","win.wav"}}
 
-			index = math.random(#testTable)
-			testText1 = testTable[index][1]
-			soundText = testTable[index][2]
+			indexOfTableWin = math.random(#winTextSoundTable)
+			winText = winTextSoundTable[indexOfTableWin][1]
+			winSoundText = winTextSoundTable[indexOfTableWin][2]
 			
-			currentSound = audio.loadSound( "soundfx/" .. soundText )
-			audio.play( currentSound )
+			currentSoundWin = audio.loadSound( "soundfx/" .. winSoundText )
+			audio.play( currentSoundWin )
 	
-			local textObject1 = autoWrappedText( testText1, "Danube", 14*2, {255,255,255}, 480 );
+			local textWinObject = autoWrappedText( winText, "Danube", 14*2, {255,255,255}, 480 );
 			-- textObject1:setReferencePoint(display.TopLeftReferencePoint)
-			textObject1.xScale = 0.5; textObject1.yScale = 0.5;
-			textObject1.x = 190
-			textObject1.y = 90
+			textWinObject.xScale = 0.5; textWinObject.yScale = 0.5;
+			textWinObject.x = 190
+			textWinObject.y = 90
 
 			local characterBonus = gameLives * 1000
 			local newScore = gameScore + characterBonus
@@ -561,6 +561,20 @@ function new()
 			
 		else
 			gameOverDisplay = display.newImageRect( "images/youlose.png", 390, 154 )
+			loseTextSoundTable = {{"You lose bitch... Hahaha you are a faggot!!","lose.wav"},{"Hahahah you suck. I can't believe you lost. GO kill yourself!!","lose.wav"}}
+
+			indexOfTableLose = math.random(#loseTextSoundTable)
+			loseText = loseTextSoundTable[indexOfTableLose][1]
+			loseSoundText = loseTextSoundTable[indexOfTableLose][2]
+			
+			currentSoundLose = audio.loadSound( "soundfx/" .. loseSoundText )
+			audio.play( currentSoundLose )
+	
+			local textLoseObject = autoWrappedText( loseText, "Danube", 14*2, {255,255,255}, 480 );
+			-- textObject1:setReferencePoint(display.TopLeftReferencePoint)
+			textLoseObject.xScale = 0.5; textLoseObject.yScale = 0.5;
+			textLoseObject.x = 190
+			textLoseObject.y = 90
 		end
 		
 		gameOverDisplay.x = 240; gameOverDisplay.y = 165
