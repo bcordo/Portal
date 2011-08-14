@@ -202,6 +202,68 @@ function new()
 	local youLoseSound = audio.loadSound( "soundfx/lose.wav" )
 	local switchSound = audio.loadSound( "soundfx/switch_activate.wav" )
 	
+	------------------Text Wrapping Functions -----------------------
+	-- Wrap text
+	local function autoWrappedText(text, font, size, color, width)
+	--print("text: " .. text)
+	  if text == '' then return false end
+	  font = font or native.systemFont
+	  size = tonumber(size) or 12
+	  color = color or {255, 255, 255}
+	  width = width or display.stageWidth
+
+	  result = display.newGroup()
+	  local lineCount = 0
+	  -- do each line separately
+	  for line in string.gmatch(text, "[^\n]+") do
+	    local currentLine = ''
+	    local currentLineLength = 0 -- the current length of the string in chars
+	    local currentLineWidth = 0 -- the current width of the string in pixs
+	    local testLineLength = 0 -- the target length of the string (starts at 0)
+	    -- iterate by each word
+	    for word, spacer in string.gmatch(line, "([^%s%-]+)([%s%-]*)") do
+	      local tempLine = currentLine..word..spacer
+	      local tempLineLength = string.len(tempLine)
+	      -- test to see if we are at a point to try to render the string
+	      if testLineLength > tempLineLength then
+	        currentLine = tempLine
+	        currentLineLength = tempLineLength
+	      else
+	        -- line could be long enough, try to render and compare against the max width
+	        local tempDisplayLine = display.newText(tempLine, 0, 0, font, size)
+	        local tempDisplayWidth = tempDisplayLine.width
+	        tempDisplayLine:removeSelf();
+	        tempDisplayLine=nil;
+	        if tempDisplayWidth <= width then
+	          -- line not long enough yet, save line and recalculate for the next render test
+	          currentLine = tempLine
+	          currentLineLength = tempLineLength
+	          testLineLength = math.floor((width*0.9) / (tempDisplayWidth/currentLineLength))
+	        else
+	          -- line long enough, show the old line then start the new one
+	          local newDisplayLine = display.newText(currentLine, 0, (size * 1.3) * (lineCount - 1), font, size)
+	          newDisplayLine:setTextColor(color[1], color[2], color[3])
+	          result:insert(newDisplayLine)
+	          lineCount = lineCount + 1
+	          currentLine = word..spacer
+	          currentLineLength = string.len(word)
+	        end
+	      end
+	    end
+	    -- finally display any remaining text for the current line
+	    local newDisplayLine = display.newText(currentLine, 0, (size * 1.3) * (lineCount - 1), font, size)
+	    newDisplayLine:setTextColor(color[1], color[2], color[3])
+		result:insert(newDisplayLine)
+	    lineCount = lineCount + 1
+	    currentLine = ''
+	    currentLineLength = 0
+	  end
+	  result:setReferencePoint(display.TopLeftReferencePoint)
+	  return result
+	end
+
+	------------------End Text Wrapping Functions -----------------------
+	
 	--***************************************************
 
 	-- saveValue() --> used for saving high score, etc.
@@ -473,15 +535,26 @@ function new()
 		
 		-- GAME OVER WINDOW
 		local gameOverDisplay
+		local textObject1
+		local textObject2
 		
 		if isWin == "yes" then
 			gameOverDisplay = display.newImageRect( "images/youwin.png", 390, 154 )
-			-- Give score bonus depending on how many characters left
-			-- winText = display.newText("TRAINING LEVEL " .. string.sub(leveldata.restartLevel,-1), 240, 18, "Danube", 36)
-			-- winText:setTextColor( 254, 113, 2, 200 )
-			-- winText.xScale = 0.5; trainingText.yScale = 0.5
-			-- winText.x = 240; winText.y = 18
-			-- hudGroup:insert(trainingText)
+			testTable = {{"a nigga gonna hate on foods with lettuce, if I do say so myself son...","wee.wav"},{"biotches aren't shit so aren't hoes, if I do say my self son","wee.wav"}}
+
+			index = math.random(#testTable)
+			testText1 = testTable[index][1]
+			soundText = testTable[index][2]
+			
+			currentSound = audio.loadSound( "soundfx/" .. soundText )
+			audio.play( currentSound )
+	
+			local textObject1 = autoWrappedText( testText1, "Danube", 14*2, {255,255,255}, 480 );
+			-- textObject1:setReferencePoint(display.TopLeftReferencePoint)
+			textObject1.xScale = 0.5; textObject1.yScale = 0.5;
+			textObject1.x = 190
+			textObject1.y = 90
+
 			local characterBonus = gameLives * 1000
 			local newScore = gameScore + characterBonus
 			setScore( newScore )
@@ -492,11 +565,18 @@ function new()
 		
 		gameOverDisplay.x = 240; gameOverDisplay.y = 165
 		gameOverDisplay.alpha = 0
+		-- textObject1.alpha = 0
+		-- textObject2.alpha = 0
 		
 		-- MENU BUTTON
 		local onMenuTouch = function( event )
 			if event.phase == "release" then
 				audio.play( tapSound )
+				for i = result.numChildren,1,-1 do
+					local child = result[i]
+					child.parent:remove( child )
+					child = nil
+				end
 				director:changeScene( "world_select" )
 			end
 		end
@@ -534,7 +614,11 @@ function new()
 				
 				_G.loadLevel = restartLevel
 				local theModule = "loadlevel"
-
+				for i = result.numChildren,1,-1 do
+					local child = result[i]
+					child.parent:remove( child )
+					child = nil
+				end
 				director:changeScene( theModule )
 			end
 		end
@@ -564,7 +648,11 @@ function new()
 				audio.play( tapSound )
 				_G.loadLevel = nextLevel
 				local theModule = "loadlevel" 
-
+				for i = result.numChildren,1,-1 do
+					local child = result[i]
+					child.parent:remove( child )
+					child = nil
+				end
 				director:changeScene( theModule )
 			end
 		end
@@ -604,6 +692,8 @@ function new()
 		-- hudGroup:insert( ofBtn )
 		-- hudGroup:insert( fbBtn )
 		hudGroup:insert( gameOverDisplay )
+		-- hudGroup:insert( textObject1 )
+		-- hudGroup:insert( textObject2 )
 		hudGroup:insert( menuBtn )
 		hudGroup:insert( restartBtn )
 		if isWin == "yes" then hudGroup:insert( nextBtn ); end
@@ -611,6 +701,8 @@ function new()
 		-- FADE IN ALL GAME OVER ELEMENTS
 		transition.to( shadeRect, { time=200, alpha=0.65 } )
 		transition.to( gameOverDisplay, { time=500, alpha=1 } )
+		transition.to( textObject1, { time=500, alpha=1 } )
+		transition.to( textObject2, { time=500, alpha=1 } )
 		transition.to( menuBtn, { time=500, alpha=1 } )
 		transition.to( restartBtn, { time=500, alpha=1 } )
 		if isWin == "yes" then transition.to( nextBtn, { time=500, alpha=1 } ); end
@@ -1600,7 +1692,7 @@ function new()
 					local startDotCreation = function()
 						local createDot = function()
 							local trailDot
-							
+							if gameIsActive == true then
 							if characterObject.trailNum == 0 then
 								trailDot = display.newCircle( gameGroup, characterObject.x, characterObject.y, 2.5 )
 							else
@@ -1621,6 +1713,7 @@ function new()
 								characterObject.trailNum = 1
 							else
 								characterObject.trailNum = 0
+							end
 							end
 						end
 						
