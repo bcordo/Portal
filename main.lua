@@ -67,14 +67,14 @@ local function resumeStart()
 
 					local prevState = explode(", ", contents)
 
-                        _G.highestLevel1 = prevState[1]
-						_G.levelTracker1 = prevState[2]
+                        _G.highestLevel1 = 10--prevState[1]
+						_G.levelTracker1 = 10--prevState[2]
 
 
 					io.close( file )
 
 				else
-					_G.highestLevel1=1;
+					_G.highestLevel1=10;
 					_G.levelTracker1=0;
 				end
 end
