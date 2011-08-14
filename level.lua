@@ -1362,7 +1362,7 @@ function new()
 		
 		gameGroup:insert( shotArrow )
 		
-		outArrow = display.newImageRect( "images/arrow.png", 240, 136.5 )
+		outArrow = display.newImageRect( "images/outArrow.png", 240, 240 )
 		outArrow.x = 52; outArrow.y = 255
 		outArrow.isVisible = false
 		
@@ -1683,7 +1683,6 @@ function new()
 					transition.cancel( characterTween )
 					shotOrb.isVisible = false
 					shotArrow.isVisible = false
-					outArrow.isVisible = false
 					canSwipe = false
 					
 					local x = event.x
@@ -2066,7 +2065,7 @@ function new()
 				outArrow.isVisible = true	
 				outArrow.y = 0
 				outArrow.x = 2*display.viewableContentWidth
-				outArrow.yScale = .1 + math.sqrt( (characterObject.x - 2*display.viewableContentWidth)^2 + (display.viewableContentWidth -characterObject.y)^2) * .01
+				outArrow.yScale = .1 + math.sqrt( (characterObject.x - 2*display.viewableContentWidth)^2 + (viewableContentWidth -characterObject.y)^2) * .01
 				outArrow.rotation = math.atan2(characterObject.x - 2*display.viewableContentWidth, -characterObject.y) * ( 180 / math.pi) - 180 
 				
 				else
@@ -2130,6 +2129,9 @@ function new()
 				if dotTimer then timer.cancel( dotTimer ); end
 				callNewRound( false, "no" )
 				characterBoolean = characterBoolean + 1
+				if outArrow.isVisible == true then
+					outArrow.isVisible = false
+				end
 			end
 			
 			if characterObject.isHit == false and characterObject.x < -800 then
@@ -2138,6 +2140,9 @@ function new()
 				if dotTimer then timer.cancel( dotTimer ); end
 				callNewRound( false, "no" )
 				characterBoolean = characterBoolean + 1
+				if outArrow.isVisible == true then
+					outArrow.isVisible = false
+				end
 			end
 		end
 	end
