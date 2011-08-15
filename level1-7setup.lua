@@ -57,6 +57,16 @@ function newMain ()
 	this:insert(gem_1)
 	this.gem_1 = gem_1
 	
+	local gem_2 = display.newImageRect(imagelookup.table["Gem"],imagelookup.table["GemWidth"],imagelookup.table["GemHeight"])
+	gem_2.x = 200
+	gem_2.y = 200
+	gem_2.xScale = 1
+	gem_2.yScale = 1
+	gem_2.isVisible = false
+
+	this:insert(gem_2)
+	this.gem_2 = gem_2
+	
 	
 	local lifegem_1 = display.newImageRect(imagelookup.table["Lifegem"],imagelookup.table["LifegemWidth"],imagelookup.table["LifegemHeight"])
 	lifegem_1.x = 300

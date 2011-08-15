@@ -344,8 +344,10 @@ function new()
 	scoreText:toFront( )
 	if scoreText == scoreAnimText1000 then
 		scaleFactor = .8
+	elseif scoreText == lifeAnimText1 then
+		scaleFactor = .6
 	else
-		scaleFactor = .45
+		scaleFactor = .5
 	end
 	scoreText.alpha = .80
 	transition.to(scoreText, {
