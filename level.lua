@@ -185,6 +185,13 @@ function new()
 	scoreAnim2Text100.opacity = .6
 	gameGroup:insert(scoreAnim2Text100)
 	
+	local lifeAnimText1 = display.newImage("images/pluslife.png")
+	lifeAnimText1.alpha = 0
+	lifeAnimText1.xScale = .01
+	lifeAnimText1.yScale = .01
+	lifeAnimText1.opacity = .6
+	gameGroup:insert(lifeAnimText1)
+	
 	-- gameGroup:insert(scoreAnimText500)
 	
 	-- AUDIO
@@ -1285,9 +1292,9 @@ function new()
 				if event.other.myName == "lifegem" then
 						gameLives = gameLives + 1
 						
-						scoreAnimText500.x = event.other.x
-						scoreAnimText500.y = event.other.y
-						animScore(scoreAnimText500)
+						lifeAnimText1.x = event.other.x
+						lifeAnimText1.y = event.other.y
+						animScore(lifeAnimText1)
 						
 
 						event.other:removeSelf()
@@ -2065,7 +2072,7 @@ function new()
 				outArrow.isVisible = true	
 				outArrow.y = 0
 				outArrow.x = 2*display.viewableContentWidth
-				outArrow.yScale = .1 + math.sqrt( (characterObject.x - 2*display.viewableContentWidth)^2 + (viewableContentWidth -characterObject.y)^2) * .01
+				outArrow.yScale = .1 + math.sqrt( (characterObject.x - 2*display.viewableContentWidth)^2 + (display.viewableContentWidth -characterObject.y)^2) * .01
 				outArrow.rotation = math.atan2(characterObject.x - 2*display.viewableContentWidth, -characterObject.y) * ( 180 / math.pi) - 180 
 				
 				else
@@ -2135,7 +2142,26 @@ function new()
 			end
 			
 			if characterObject.isHit == false and characterObject.x < -800 then
+				characterObject.isHit = true
 				if dotTimer then timer.cancel( dotTimer ); end
+				callNewRound( false, "no" )
+				characterBoolean = characterBoolean + 1
+				if outArrow.isVisible == true then
+					outArrow.isVisible = false
+				end
+			end
+			
+			if characterObject.isHit == false and characterObject.y >= 1200 then
+				characterObject.isHit = true
+				if dotTimer then timer.cancel( dotTimer ); end
+				callNewRound( false, "no" )
+				characterBoolean = characterBoolean + 1
+				if outArrow.isVisible == true then
+					outArrow.isVisible = false
+				end
+			end
+			
+			if characterObject.isHit == false and characterObject.y < -800 then
 				characterObject.isHit = true
 				if dotTimer then timer.cancel( dotTimer ); end
 				callNewRound( false, "no" )
