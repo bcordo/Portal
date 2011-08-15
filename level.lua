@@ -2265,10 +2265,9 @@ function new()
 				gem_obj = display.newImageRect(data.src, data.width, data.height)
 				gem_obj.x = data.x
 				gem_obj.y = data.y
-				if data.rotate ~= nil then
-				gem_obj:rotate(data.rotate)
-				end
-			
+				gem_obj:rotate(math.random(0, 360))
+				gem_obj.alpha = .85
+				
 				gem_obj.myName = data.myName
 				physics.addBody(gem_obj, data.bodyType)
 				gem_obj.isSensor = true
@@ -2280,9 +2279,8 @@ function new()
 				lifegem_obj = display.newImageRect(data.src, data.width, data.height)
 				lifegem_obj.x = data.x
 				lifegem_obj.y = data.y
-				if data.rotate ~= nil then
-				lifegem_obj:rotate(data.rotate)
-				end
+				lifegem_obj:rotate(math.random(0, 360))
+				lifegem_obj.alpha = .85
 			
 				lifegem_obj.myName = data.myName
 				physics.addBody(lifegem_obj, data.bodyType)
