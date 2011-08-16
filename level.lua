@@ -856,6 +856,12 @@ function new()
 						transition.to( poofObject, { time=2000, alpha=0 } )	
 					end
 					transition.to( poofObject, { time=10, alpha=1.0, onComplete=fadePoof } )
+					
+				else
+					local fadePoof = function()
+						transition.to( poofObject, { time=10, alpha=0 } )	
+					end
+					transition.to( poofObject, { time=10, alpha=1.0, onComplete=fadePoof } )
 				end
 				
 				-- Move camera to far right to see effect
@@ -891,13 +897,10 @@ function new()
 				local poofTimer = timer.performWithDelay( 10, poofThecharacter, 1 ) --makes the character last longer 
 			else
 				if leveldata.restartLevel == "1-1" then
-					if characterObject.isHit == false and characterObject.inAir then
+					if characterObject.isHit == false and characterObject.inAir and gameIsActive then
 						characterObject.isHit = true
 						local poofTimer = timer.performWithDelay( 3000, poofThecharacter, 1 )
 						print("real timer")
-					else 
-						local poofTimer = timer.performWithDelay( 1500, poofThecharacter, 1 )
-						print("fake timer")
 					end
 				else
 					local poofTimer = timer.performWithDelay( 1500, poofThecharacter, 1 )
@@ -1324,8 +1327,8 @@ function new()
 						animScore(scoreAnimText500)
 						
 						portalOpen = true
-						event.other:removeSelf()
 						audio.play( switchSound )
+						
 						-- PortalSound = audio.loadStream("soundfx/explosion_long.aac")
 						-- PortalMusicChannel = audio.play( PortalSound, { channel = 6, loops=-1 }  )
 						-- audio.play( portalOpenSound )
@@ -1335,6 +1338,7 @@ function new()
 						characterBoolean = characterBoolean + 1
 						-- Particles.StopEmitter("PortalEmitter")
 						-- Particles.DeleteEmitter("PortalEmitter")
+						timer.performWithDelay(100,event.other:removeSelf(),1)
 				end
 				
 				if event.other.myName == "portal" and portalOpen == true then
@@ -1343,7 +1347,7 @@ function new()
 				end
 				
 				
-				if event.other.myName ~= "portal" and event.other.myName ~= "teleporter1" and event.other.myName ~= "teleporter2" and event.other.myName ~= "gem" and event.other.myName ~= "lifegem" then	
+				if event.other.myName ~= "portal" and event.other.myName ~= "teleporter1" and event.other.myName ~= "teleporter2" and event.other.myName ~= "gem" and event.other.myName ~= "lifegem" and event.other.myName ~= "switch" then	
 					
 					if characterObject.isHit == false then
 						
@@ -1357,13 +1361,16 @@ function new()
 						characterObject.isHit = true
 						
 					
-						if event.other.myName == "wood" or event.other.myName == "stone" or event.other.myName == "switch" or event.other.myName == "metal" then
+						if event.other.myName == "wood" or event.other.myName == "stone" or event.other.myName == "metal" then
 							callNewRound( true, "yes" )
 							characterBoolean = characterBoolean + 1
+							-- if event.other.myName == "switch" then
+							-- 								event.other:removeSelf()
+							-- 							end
 							-- scoreAnimText500.x = self.x
 							-- scoreAnimText500.y = self.y
 							-- animScore(scoreAnimText500)
-						else
+						elseif event.other.myName ~= "switch" then
 							callNewRound( true, "no" )
 							characterBoolean = characterBoolean + 1
 						end
