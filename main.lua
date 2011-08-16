@@ -15,7 +15,7 @@ local ui = require("ui")
 Particles	= require("lib_particle_candy")
 FXLibrary	= require("lib_particleEffects_01")
 require "saveit"
-_G.filesavepathname = "portalerData7.txt"
+_G.filesavepathname = "portalerData8.txt"
 
 -- INITIALIZE THE FX LIBRARY. THIS PRELOADS IMAGES FOR BETTER 
 -- PERFORMANCE & CREATES THE PARTICLE TYPES USED.
@@ -69,6 +69,7 @@ local function resumeStart()
 
                         _G.highestLevel1 = prevState[1]
 						_G.levelTracker1 = prevState[2]
+						_G.highestWorld = prevState[3]
 
 
 					io.close( file )
@@ -76,6 +77,7 @@ local function resumeStart()
 				else
 					_G.highestLevel1=1;
 					_G.levelTracker1=0;
+					_G.highestWorld=1;
 				end
 end
 
@@ -87,7 +89,7 @@ if event.type == "applicationExit" then
 	local file = io.open( path, "w+b" )
 	-- Creates the file where we save our data
 	
-	file:write( _G.highestLevel1..", ".._G.levelTracker1)          
+	file:write( _G.highestLevel1..", ".._G.levelTracker1..", ".._G.highestWorld)          
 	io.close( file )
 	if system.getInfo( "environment" ) == "device" then
 		-- prevents iOS 4+ multi-tasking crashes

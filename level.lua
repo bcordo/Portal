@@ -103,7 +103,7 @@ function new()
 	local gear
 	
 	
-	local life1; local life2; local life3; local life4
+	local life1; local life2; local life3; local life4; local life5; local life6; local life7; local life8;
 	local scoreText; local bestScoreText
 	local continueText; local continueTimer
 	local pauseMenuBtn; local pauseRestartBtn; local pauseBtn; local pauseShade
@@ -117,11 +117,7 @@ function new()
 	local screenPosition = "left"	--> "left" or "right"
 	local canSwipe = true
 	local swipeTween
-	if leveldata.restartLevel == "1-1" then
-	gameLives = 1000	
-	else
-	gameLives = 4
-	end
+	local gameLives = 4
 	local gameScore = 0
 	local bestScore
 	local ThroughExitPortal = false
@@ -197,6 +193,7 @@ function new()
 	lifeAnimText1.yScale = .01
 	lifeAnimText1.opacity = .6
 	gameGroup:insert(lifeAnimText1)
+		
 	
 	-- gameGroup:insert(scoreAnimText500)
 	
@@ -318,25 +315,27 @@ function new()
 	--***************************************************
 	
 	local function resumeStart()
-				local path = system.pathForFile( "portalerData1.txt", system.DocumentsDirectory )                
+				local path = system.pathForFile( _G.filesavepathname, system.DocumentsDirectory )                
 					local file = io.open( path, "r" )
-	
+
 					if file then
 						print("Loading our data...")
 						local contents = file:read( "*a" )
 						-- Loads our data
-	
+
 						local prevState = explode(", ", contents)
-	
+
 	                        _G.highestLevel1 = prevState[1]
 							_G.levelTracker1 = prevState[2]
-	
-	
+							_G.highestWorld = prevState[3]
+
+
 						io.close( file )
-	
+
 					else
 						_G.highestLevel1=1;
 						_G.levelTracker1=0;
+						_G.highestWorld=1;
 					end
 	end
 	
@@ -348,6 +347,7 @@ function new()
 	
 	local animScore =  function(scoreText) 
 	scoreText:toFront( )
+		
 	if scoreText == scoreAnimText1000 then
 		scaleFactor = .8
 	elseif scoreText == lifeAnimText1 then
@@ -382,6 +382,93 @@ function new()
 	-- 					rotation = math.random(-180,180),
 	-- 	                transition = easingx.easeOutExpo})
 	end
+	
+	
+	--***************************************************
+
+	-- animLife() --> for life animation
+	
+	--***************************************************
+	
+	local animLife =  function(lifeText) 
+	lifeText:toFront( )
+	if ThroughExitPortal == true then
+		scaleFactor = 2.1
+		endScale = 1
+		durationOf = 400
+	else
+		scaleFactor = 1.7
+		endScale = 1
+		durationOf = 250
+	end
+	
+	lifeText.alpha = 1
+	transition.to(lifeText, {
+	                time = durationOf,
+	                x = lifeText.x,
+	                y = lifeText.y + 18,
+					xScale = scaleFactor,
+					yScale = scaleFactor,
+					delay = 0, 
+	                transition = easingx.easeInOut})
+	transition.to(lifeText, {
+					time = durationOf,
+	                delay = durationOf+120,
+					xScale = endScale,
+					yScale = endScale, 
+					alpha = 1,
+					x = lifeText.x,
+	                y = lifeText.y,
+	                transition = easingx.easeInOut})
+	-- transition.to(lifeText, {
+	-- 					time = 500,
+	-- 	                delay = 400,
+	-- 					x = lifeText.x,
+	-- 	                y = lifeText.y - 100, 
+	-- 					alpha = 0,
+	-- 					rotation = math.random(-180,180),
+	-- 	                transition = easingx.easeOutExpo})
+	end
+	
+	local animEndScore =  function(lifeText) 
+	lifeText:toFront( )
+	
+	scaleFactor = 1.05
+	endScale = .5
+	durationOf = 400
+	
+	lifeText.alpha = 1
+	transition.to(lifeText, {
+	                time = durationOf,
+	                x = lifeText.x,
+	                y = lifeText.y + 18,
+					xScale = scaleFactor,
+					yScale = scaleFactor,
+					delay = 0, 
+	                transition = easingx.easeInOut})
+	transition.to(lifeText, {
+					time = durationOf,
+	                delay = durationOf +120,
+					xScale = endScale,
+					yScale = endScale, 
+					alpha = 1,
+					x = lifeText.x,
+	                y = lifeText.y,
+	                transition = easingx.easeInOut})
+	-- transition.to(lifeText, {
+	-- 					time = 500,
+	-- 	                delay = 400,
+	-- 					x = lifeText.x,
+	-- 	                y = lifeText.y - 100, 
+	-- 					alpha = 0,
+	-- 					rotation = math.random(-180,180),
+	-- 	                transition = easingx.easeOutExpo})
+	end
+	
+	
+
+	--***************************************************
+	
 	
 	
 	--***************************************************
@@ -528,10 +615,173 @@ function new()
 		
 		if isWin == "yes" then
 			_G.levelTracker1 = leveldata.tracker1Next
-			audio.play( youWinSound )
+			-- audio.play( youWinSound )
+			
+			
+			endScoreText = display.newText( "+"..tostring(gameLives*1000).." life bonus", 20, 25, "Helvetica Neue", 28 )
+			endScoreText:setReferencePoint(display.TopLeftReferencePoint)
+			endScoreText.xScale = .5
+			endScoreText.yScale = .5
+			endScoreText:setTextColor(255, 255, 255)
+			endScoreText.alpha = 0
+			delayOfEndScore = 700
+			
+			if gameLives >= 8 then
+				local animEndScore8 = function()
+				animEndScore(endScoreText)
+				animLife(life8)
+				animLife(life7)
+				animLife(life6)
+				animLife(life5)
+				animLife(life4)
+				animLife(life3)
+				animLife(life2)
+				animLife(life1)
+				end
+				timer.performWithDelay(delayOfEndScore,animEndScore8,1)
+				life8.alpha = 1
+				life7.alpha = 1
+				life6.alpha = 1
+				life5.alpha = 1
+				life4.alpha = 1
+				life3.alpha = 1
+				life2.alpha = 1
+				life1.alpha = 1
+			elseif gameLives == 7 then
+				local animEndScore7 = function()
+				animEndScore(endScoreText)
+				animLife(life7)
+				animLife(life6)
+				animLife(life5)
+				animLife(life4)
+				animLife(life3)
+				animLife(life2)
+				animLife(life1)
+				end
+				timer.performWithDelay(delayOfEndScore,animEndScore7,1)
+				life8.alpha = 0
+				life7.alpha = 1
+				life6.alpha = 1
+				life5.alpha = 1
+				life4.alpha = 1
+				life3.alpha = 1
+				life2.alpha = 1
+				life1.alpha = 1
+			elseif gameLives == 6 then
+				local animEndScore6 = function()
+				animEndScore(endScoreText)
+				animLife(life6)
+				animLife(life5)
+				animLife(life4)
+				animLife(life3)
+				animLife(life2)
+				animLife(life1)
+				end
+				timer.performWithDelay(delayOfEndScore,animEndScore6,1)
+				life8.alpha = 0
+				life7.alpha = 0
+				life6.alpha = 1
+				life5.alpha = 1
+				life4.alpha = 1
+				life3.alpha = 1
+				life2.alpha = 1
+				life1.alpha = 1
+			elseif gameLives == 5 then
+				local animEndScore5 = function()
+				animEndScore(endScoreText)
+				animLife(life5)
+				animLife(life4)
+				animLife(life3)
+				animLife(life2)
+				animLife(life1)
+				end
+				timer.performWithDelay(delayOfEndScore,animEndScore5,1)
+				life8.alpha = 0
+				life7.alpha = 0
+				life6.alpha = 0
+				life5.alpha = 1
+				life4.alpha = 1
+				life3.alpha = 1
+				life2.alpha = 1
+				life1.alpha = 1
+			elseif gameLives == 4 then
+				local animEndScore4 = function()
+				animEndScore(endScoreText)
+				animLife(life4)
+				animLife(life3)
+				animLife(life2)
+				animLife(life1)
+				end
+				timer.performWithDelay(delayOfEndScore,animEndScore4,1)
+				life8.alpha = 0
+				life7.alpha = 0
+				life6.alpha = 0
+				life5.alpha = 0
+				life4.alpha = 1
+				life3.alpha = 1
+				life2.alpha = 1
+				life1.alpha = 1
+			elseif gameLives == 3 then
+				local animEndScore3 = function()
+				animEndScore(endScoreText)
+				animLife(life3)
+				animLife(life2)
+				animLife(life1)
+				end
+				timer.performWithDelay(delayOfEndScore,animEndScore3,1)
+				life8.alpha = 0
+				life7.alpha = 0
+				life6.alpha = 0
+				life5.alpha = 0
+				life4.alpha = 0.3
+				life3.alpha = 1
+				life2.alpha = 1
+				life1.alpha = 1
+			elseif gameLives == 2 then
+				local animEndScore2 = function()
+				animEndScore(endScoreText)
+				animLife(life2)
+				animLife(life1)
+				end
+				timer.performWithDelay(delayOfEndScore,animEndScore2,1)
+				life8.alpha = 0
+				life7.alpha = 0
+				life6.alpha = 0
+				life5.alpha = 0
+				life4.alpha = 0.3
+				life3.alpha = 0.3
+				life2.alpha = 1
+				life1.alpha = 1
+			elseif gameLives == 1 then
+				local animEndScore1 = function()
+				animEndScore(endScoreText)
+				animLife(life1)
+				end
+				timer.performWithDelay(delayOfEndScore,animEndScore1,1)
+				life8.alpha = 0
+				life7.alpha = 0
+				life6.alpha = 0
+				life5.alpha = 0
+				life4.alpha = 0.3
+				life3.alpha = 0.3
+				life2.alpha = 0.3
+				life1.alpha = 1
+			elseif gameLives <= 0 then
+				life8.alpha = 0
+				life7.alpha = 0
+				life6.alpha = 0
+				life5.alpha = 0
+				life4.alpha = 0.3
+				life3.alpha = 0.3
+				life2.alpha = 0.3
+				life1.alpha = 0.3
+			end
+			
 		else
 			audio.play( youLoseSound )
 		end
+		
+		local callEndOfGame = function()
 		
 		gameIsActive = false	--> temporarily disable gameplay touches, enterFrame listener, etc.
 		physics.pause()
@@ -560,7 +810,14 @@ function new()
 		-- local textObject1
 		-- local textObject2
 		
+		if endScoreText ~= nil then
+		local getRidofScoreText = function()
+		endScoreText.alpha = 0
+		end
+		timer.performWithDelay(900,getRidofScoreText,1)
+		end
 		if isWin == "yes" then
+			
 			gameOverDisplay = display.newImageRect( "images/youwin.png", 390, 154 )
 			winTextSoundTable = {{"a nigga gonna hate on foods with lettuce, if I do say so myself son...","win.wav"},{"biotches aren't shit so aren't hoes, if I do say my self son","win.wav"}}
 
@@ -607,6 +864,9 @@ function new()
 		-- MENU BUTTON
 		local onMenuTouch = function( event )
 			if event.phase == "release" then
+				if endScoreText ~= nil then
+				endScoreText.alpha = 0
+				end
 				audio.play( tapSound )
 				for i = result.numChildren,1,-1 do
 					local child = result[i]
@@ -645,6 +905,9 @@ function new()
 		-- RESTART BUTTON
 		local onRestartTouch = function( event )
 			if event.phase == "release" then
+				if endScoreText ~= nil then
+				endScoreText.alpha = 0
+				end
 				audio.play( tapSound )
 				--local theModule = "load" .. restartModule
 				
@@ -681,6 +944,9 @@ function new()
 		-- NEXT BUTTON
 		local onNextTouch = function( event )
 			if event.phase == "release" then
+				if endScoreText ~= nil then
+				endScoreText.alpha = 0
+				end
 				audio.play( tapSound )
 				_G.loadLevel = nextLevel
 				local theModule = "loadlevel" 
@@ -768,7 +1034,7 @@ function new()
 		end
 		
 		-- MAKE SURE BEST SCORE TEXT IS VISIBLE
-		bestScoreText = display.newText( "0", 10, 300, "Helvetica-Bold", 32 )
+		bestScoreText = display.newText( "0", 10, 300, "Helvetica Neue", 32 )
 		bestScoreText:setTextColor( 228, 228, 228, 255 )	--> white
 		bestScoreText.text = "Best Score For This Level: " .. comma_value( bestScore )
 		bestScoreText.xScale = 0.5; bestScoreText.yScale = 0.5	--> for clear retina display text
@@ -777,7 +1043,9 @@ function new()
 		
 		hudGroup:insert( bestScoreText )
 		
-
+		end
+		
+		timer.performWithDelay(1800,callEndOfGame,1) -- time it takes after exiting portal to displaying end of game dialogue
 	end
 	
 	local callNewRound = function( shouldPoof, instantPoof )
@@ -789,22 +1057,100 @@ function new()
 			blastGlow.isVisible = false
 		end
 		
+		print("Game Lives:" .. gameLives)
+		
 		if gameLives >= 1 then
-			gameLives = gameLives - 1
-			
-			if gameLives == 3 then
+			if leveldata.restartLevel == "1-1" then
+			gameLives = gameLives
+			else
+			gameLives = gameLives - 1	
+			end
+				
+			if gameLives >= 8 then
+				life8.alpha = 1
+				life7.alpha = 1
+				life6.alpha = 1
+				life5.alpha = 1
+				life4.alpha = 1
+				life3.alpha = 1
+				life2.alpha = 1
+				life1.alpha = 1
+				if ThroughExitPortal == true then isGameOver = true; end
+			elseif gameLives == 7 then
+				life8.alpha = 0
+				life7.alpha = 1
+				life6.alpha = 1
+				life5.alpha = 1
+				life4.alpha = 1
+				life3.alpha = 1
+				life2.alpha = 1
+				life1.alpha = 1
+				if ThroughExitPortal == true then isGameOver = true; end
+			elseif gameLives == 6 then
+				life8.alpha = 0
+				life7.alpha = 0
+				life6.alpha = 1
+				life5.alpha = 1
+				life4.alpha = 1
+				life3.alpha = 1
+				life2.alpha = 1
+				life1.alpha = 1
+				if ThroughExitPortal == true then isGameOver = true; end
+			elseif gameLives == 5 then
+				life8.alpha = 0
+				life7.alpha = 0
+				life6.alpha = 0
+				life5.alpha = 1
+				life4.alpha = 1
+				life3.alpha = 1
+				life2.alpha = 1
+				life1.alpha = 1
+				if ThroughExitPortal == true then isGameOver = true; end
+			elseif gameLives == 4 then
+				life8.alpha = 0
+				life7.alpha = 0
+				life6.alpha = 0
+				life5.alpha = 0
+				life4.alpha = 1
+				life3.alpha = 1
+				life2.alpha = 1
+				life1.alpha = 1
+				if ThroughExitPortal == true then isGameOver = true; end
+			elseif gameLives == 3 then
+				life8.alpha = 0
+				life7.alpha = 0
+				life6.alpha = 0
+				life5.alpha = 0
 				life4.alpha = 0.3
+				life3.alpha = 1
+				life2.alpha = 1
+				life1.alpha = 1
 				if ThroughExitPortal == true then isGameOver = true; end
 			elseif gameLives == 2 then
+				life8.alpha = 0
+				life7.alpha = 0
+				life6.alpha = 0
+				life5.alpha = 0
 				life4.alpha = 0.3
 				life3.alpha = 0.3
+				life2.alpha = 1
+				life1.alpha = 1
 				if ThroughExitPortal == true then isGameOver = true; end
 			elseif gameLives == 1 then
+				life8.alpha = 0
+				life7.alpha = 0
+				life6.alpha = 0
+				life5.alpha = 0
 				life4.alpha = 0.3
 				life3.alpha = 0.3
 				life2.alpha = 0.3
+				life1.alpha = 1
 				if ThroughExitPortal == true then isGameOver = true; end
 			elseif gameLives == 0 then
+				life8.alpha = 0
+				life7.alpha = 0
+				life6.alpha = 0
+				life5.alpha = 0
 				life4.alpha = 0.3
 				life3.alpha = 0.3
 				life2.alpha = 0.3
@@ -813,12 +1159,20 @@ function new()
 			end
 		elseif gameLives < 0 then
 			gameLives = 0
+			life8.alpha = 0
+			life7.alpha = 0
+			life6.alpha = 0
+			life5.alpha = 0
 			life4.alpha = 0.3
 			life3.alpha = 0.3
 			life2.alpha = 0.3
 			life1.alpha = 0.3
 			isGameOver = true
 		else
+			life8.alpha = 0
+			life7.alpha = 0
+			life6.alpha = 0
+			life5.alpha = 0
 			life4.alpha = 0.3
 			life3.alpha = 0.3
 			life2.alpha = 0.3
@@ -826,7 +1180,7 @@ function new()
 			isGameOver = true
 		end	
 		
-		if shouldPoof and characterObject.isExited ~= true then
+		if shouldPoof then
 			
 			-- if characterObject.isExited == true then
 			-- 				characterObject.isVisible = false
@@ -896,15 +1250,15 @@ function new()
 			if instantPoof == "yes" then
 				local poofTimer = timer.performWithDelay( 10, poofThecharacter, 1 ) --makes the character last longer 
 			else
-				if leveldata.restartLevel == "1-1" then
-					if characterObject.isHit == false and characterObject.inAir and gameIsActive then
-						characterObject.isHit = true
-						local poofTimer = timer.performWithDelay( 3000, poofThecharacter, 1 )
-						print("real timer")
-					end
-				else
+				-- if leveldata.restartLevel == "1-1" then
+				-- 					if characterObject.isHit == false and characterObject.inAir and gameIsActive then
+				-- 						characterObject.isHit = true
+				-- 						local poofTimer = timer.performWithDelay( 3000, poofThecharacter, 1 )
+				-- 						print("real timer")
+				-- 					end
+				-- 				else
 					local poofTimer = timer.performWithDelay( 1500, poofThecharacter, 1 )
-				end
+				-- end
 			end
 		else
 			
@@ -1006,13 +1360,33 @@ function new()
 		life4 = display.newImageRect( "images/lifeicon.png", 22, 22 )
 		life4.x = life3.x + 25; life4.y = 18
 		
+		life5 = display.newImageRect( "images/lifeicon.png", 22, 22 )
+		life5.x = life4.x + 25; life5.y = 18
+		life5.alpha = 0
+		
+		life6 = display.newImageRect( "images/lifeicon.png", 22, 22 )
+		life6.x = life5.x + 25; life6.y = 18
+		life6.alpha = 0
+		
+		life7 = display.newImageRect( "images/lifeicon.png", 22, 22 )
+		life7.x = life6.x + 25; life7.y = 18
+		life7.alpha = 0
+		
+		life8 = display.newImageRect( "images/lifeicon.png", 22, 22 )
+		life8.x = life7.x + 25; life8.y = 18
+		life8.alpha = 0
+		
 		hudGroup:insert( life1 )
 		hudGroup:insert( life2 )
 		hudGroup:insert( life3 )
 		hudGroup:insert( life4 )
+		hudGroup:insert( life5 )
+		hudGroup:insert( life6 )
+		hudGroup:insert( life7 )
+		hudGroup:insert( life8 )
 		
 		-- SCORE DISPLAY
-		scoreText = display.newText( "0", 470, 22, "Helvetica-Bold", 52 )
+		scoreText = display.newText( "0", 470, 22, "Helvetica Neue", 52 )
 		scoreText:setTextColor( 255, 255, 255, 255 )	--> white
 		scoreText.text = gameScore
 		scoreText.xScale = 0.5; scoreText.yScale = 0.5	--> for clear retina display text
@@ -1289,10 +1663,7 @@ function new()
 		local oncharacterCollision = function( self, event )
 			if event.phase == "began" then
 				
-				if event.other.myName ~= "portal" then
-				audio.play( impactSound )
-				end
-				
+							
 				if event.other.myName == "gem" then
 						local newScore = gameScore + 500
 						setScore( newScore )
@@ -1307,11 +1678,109 @@ function new()
 				end
 				
 				if event.other.myName == "lifegem" then
+
 						gameLives = gameLives + 1
+						
+						
+						if gameLives >= 8 then
+							animLife(life8)
+							life8.alpha = 1
+							life7.alpha = 1
+							life6.alpha = 1
+							life5.alpha = 1
+							life4.alpha = 1
+							life3.alpha = 1
+							life2.alpha = 1
+							life1.alpha = 1
+						elseif gameLives == 7 then
+							animLife(life7)
+							life8.alpha = 0
+							life7.alpha = 1
+							life6.alpha = 1
+							life5.alpha = 1
+							life4.alpha = 1
+							life3.alpha = 1
+							life2.alpha = 1
+							life1.alpha = 1
+						elseif gameLives == 6 then
+							animLife(life6)
+							life8.alpha = 0
+							life7.alpha = 0
+							life6.alpha = 1
+							life5.alpha = 1
+							life4.alpha = 1
+							life3.alpha = 1
+							life2.alpha = 1
+							life1.alpha = 1
+						elseif gameLives == 5 then
+							animLife(life5)
+							life8.alpha = 0
+							life7.alpha = 0
+							life6.alpha = 0
+							life5.alpha = 1
+							life4.alpha = 1
+							life3.alpha = 1
+							life2.alpha = 1
+							life1.alpha = 1
+						elseif gameLives == 4 then
+							animLife(life4)
+							life8.alpha = 0
+							life7.alpha = 0
+							life6.alpha = 0
+							life5.alpha = 0
+							life4.alpha = 1
+							life3.alpha = 1
+							life2.alpha = 1
+							life1.alpha = 1
+						elseif gameLives == 3 then
+							animLife(life3)
+							life8.alpha = 0
+							life7.alpha = 0
+							life6.alpha = 0
+							life5.alpha = 0
+							life4.alpha = 0.3
+							life3.alpha = 1
+							life2.alpha = 1
+							life1.alpha = 1
+						elseif gameLives == 2 then
+							animLife(life2)
+							life8.alpha = 0
+							life7.alpha = 0
+							life6.alpha = 0
+							life5.alpha = 0
+							life4.alpha = 0.3
+							life3.alpha = 0.3
+							life2.alpha = 1
+							life1.alpha = 1
+						elseif gameLives == 1 then
+							animLife(life1)
+							life8.alpha = 0
+							life7.alpha = 0
+							life6.alpha = 0
+							life5.alpha = 0
+							life4.alpha = 0.3
+							life3.alpha = 0.3
+							life2.alpha = 0.3
+							life1.alpha = 1
+						elseif gameLives <= 0 then
+							life8.alpha = 0
+							life7.alpha = 0
+							life6.alpha = 0
+							life5.alpha = 0
+							life4.alpha = 0.3
+							life3.alpha = 0.3
+							life2.alpha = 0.3
+							life1.alpha = 0.3
+						end
+					
+						
+												
 						
 						lifeAnimText1.x = event.other.x
 						lifeAnimText1.y = event.other.y
 						animScore(lifeAnimText1)
+						
+						
 						
 
 						event.other:removeSelf()
@@ -1319,35 +1788,16 @@ function new()
 
 				end
 				
-				if event.other.myName == "switch" and portalOpen ~= true then
-						local newScore = gameScore + 500
-						setScore( newScore )
-						scoreAnimText500.x = self.x
-						scoreAnimText500.y = self.y
-						animScore(scoreAnimText500)
-						
-						portalOpen = true
-						audio.play( switchSound )
-						
-						-- PortalSound = audio.loadStream("soundfx/explosion_long.aac")
-						-- PortalMusicChannel = audio.play( PortalSound, { channel = 6, loops=-1 }  )
-						-- audio.play( portalOpenSound )
-
-						Particles.StartEmitter("PortalEmitter")
-						callNewRound( true, "yes" )
-						characterBoolean = characterBoolean + 1
-						-- Particles.StopEmitter("PortalEmitter")
-						-- Particles.DeleteEmitter("PortalEmitter")
-						timer.performWithDelay(100,event.other:removeSelf(),1)
-				end
-				
-				if event.other.myName == "portal" and portalOpen == true then
-						characterObject.isExited = true
-						print("isExited = true")	
-				end
 				
 				
-				if event.other.myName ~= "portal" and event.other.myName ~= "teleporter1" and event.other.myName ~= "teleporter2" and event.other.myName ~= "gem" and event.other.myName ~= "lifegem" and event.other.myName ~= "switch" then	
+				-- if event.other.myName == "portal" and portalOpen == true then
+				-- 						characterObject.isExited = true
+				-- 						audio.play( impactSound )
+				-- 						print("isExited = true")	
+				-- 				end
+				
+				
+				if event.other.myName ~= "portal" and event.other.myName ~= "teleporter1" and event.other.myName ~= "teleporter2" and event.other.myName ~= "gem" and event.other.myName ~= "lifegem" then	
 					
 					if characterObject.isHit == false then
 						
@@ -1361,7 +1811,30 @@ function new()
 						characterObject.isHit = true
 						
 					
-						if event.other.myName == "wood" or event.other.myName == "stone" or event.other.myName == "metal" then
+						if event.other.myName == "wood" or event.other.myName == "stone" or event.other.myName == "metal" or event.other.myName == "switch" then
+							
+							if event.other.myName == "switch" and portalOpen ~= true then
+									local newScore = gameScore + 500
+									setScore( newScore )
+									scoreAnimText500.x = self.x
+									scoreAnimText500.y = self.y
+									animScore(scoreAnimText500)
+
+									portalOpen = true
+									audio.play( switchSound )
+									event.other:removeSelf()
+
+									-- PortalSound = audio.loadStream("soundfx/explosion_long.aac")
+									-- PortalMusicChannel = audio.play( PortalSound, { channel = 6, loodps=-1 }  )
+									-- audio.play( portalOpenSound )
+
+									Particles.StartEmitter("PortalEmitter")
+									-- callNewRound( true, "yes" )
+									-- 						characterBoolean = characterBoolean + 1
+									-- Particles.StopEmitter("PortalEmitter")
+									-- Particles.DeleteEmitter("PortalEmitter")
+									-- timer.performWithDelay(100,event.other:removeSelf(),1)
+							end
 							callNewRound( true, "yes" )
 							characterBoolean = characterBoolean + 1
 							-- if event.other.myName == "switch" then
@@ -1370,7 +1843,7 @@ function new()
 							-- scoreAnimText500.x = self.x
 							-- scoreAnimText500.y = self.y
 							-- animScore(scoreAnimText500)
-						elseif event.other.myName ~= "switch" then
+						else
 							callNewRound( true, "no" )
 							characterBoolean = characterBoolean + 1
 						end
@@ -1523,6 +1996,7 @@ function new()
 	
 	local onExitPortalTouch = function( self, event )
 		if self.isHit == false and portalOpen == true and event.other.myName == "character" then
+			audio.play( impactSound )
 			charactertouchdie = false
 			local newScore = gameScore + 1000
 			setScore( newScore )
@@ -1557,7 +2031,7 @@ function new()
 			
 			ThroughExitPortal = true
 			characterObject.isExited = true
-			timer.performWithDelay( 1750, function() callGameOver( "yes" ); end, 1 )
+			timer.performWithDelay( 5000, callNewRound( true, "yes" ), 1 )
 			self.parent:remove( self )
 						self = nil
 		end
@@ -1853,6 +2327,11 @@ function new()
 		trainingText1.xScale = 0.5; trainingText1.yScale = 0.5
 		trainingText1.x = trainingText1.width/4 + 10; 
 		trainingText1:setTextColor(0, 0, 0)
+		
+		trainingText1_1 = display.newText(levelGroup, "tap screen again to vaporize him ", 20, 198, "Danube", 24 )
+		trainingText1_1.xScale = 0.5; trainingText1_1.yScale = 0.5
+		trainingText1_1.x = trainingText1_1.width/4 + 10; 
+		trainingText1_1:setTextColor(0, 0, 0)
 		-- introText1.isVisible = false
 		
 		trainingText2 = display.newText(levelGroup, "send him through the purple transporter to continue", 20, 170, "Danube", 24 )
@@ -1922,58 +2401,13 @@ function new()
 		trainingText10_1.isVisible = false
 		
 		
-		
-		
-		-- intro1_1Text3 = display.newText(levelGroup, "Great! send him through the portal to progress ", 10, 170, "Danube", 24 )
-		-- intro1_1Text3.xScale = 0.5; intro1_1Text3.yScale = 0.5
-		-- intro1_1Text3.x = intro1_1Text3.width/4 + 10;
-		-- intro1_1Text3:setTextColor(0, 0, 0)
-		-- intro1_1Text3.isVisible = false
-		-- 
-		-- intro1_2Text1 = display.newText(levelGroup, "send him through the purple transporter ", 20, 170, "Danube", 24 )
-		-- intro1_2Text1.xScale = 0.5; intro1_2Text1.yScale = 0.5
-		-- intro1_2Text1.x = intro1_2Text1.width/4 + 10;
-		-- intro1_2Text1:setTextColor(0, 0, 0)
-		-- intro1_2Text2 = display.newText(levelGroup, "now launch him into the portal... into the unknown... ", 20, 170, "Danube", 24 )
-		-- intro1_2Text2.xScale = 0.5; intro1_2Text2.yScale = 0.5
-		-- intro1_2Text2.x = intro1_2Text2.width/4 + 10;
-		-- intro1_2Text2:setTextColor(0, 0, 0)
-		-- intro1_2Text2.isVisible = false
-		-- 
-		-- intro1_3Text1 = display.newText(levelGroup, "black holes create gravitational attraction ", 20, 145, "Danube", 24 )
-		-- intro1_3Text1.xScale = 0.5; intro1_3Text1.yScale = 0.5
-		-- intro1_3Text1.x = intro1_3Text1.width/4 + 10;
-		-- intro1_3Text1:setTextColor(0, 0, 0)
-		-- 
-		-- intro1_4Text1 = display.newText(levelGroup, "white holes create magnetostatic repulsion ", 20, 145, "Danube", 24 )
-		-- intro1_4Text1.xScale = 0.5; intro1_4Text1.yScale = 0.5
-		-- intro1_4Text1.x = intro1_4Text1.width/4 + 10;
-		-- intro1_4Text1:setTextColor(0, 0, 0)
-		-- 
-		-- intro1_5Text1 = display.newText(levelGroup, "and dynamite... well... ", 20, 130, "Danube", 24 )
-		-- intro1_5Text1.xScale = 0.5; intro1_5Text1.yScale = 0.5
-		-- intro1_5Text1.x = intro1_5Text1.width/4 + 10;
-		-- intro1_5Text1:setTextColor(0, 0, 0)
-		-- intro1_5Text4 = display.newText(levelGroup, "blows things up ", 20, 142, "Danube", 24 )
-		-- intro1_5Text4.xScale = 0.5; intro1_5Text4.yScale = 0.5
-		-- intro1_5Text4.x = intro1_5Text4.width/4 + 10;
-		-- intro1_5Text4:setTextColor(0, 0, 0)
-		-- intro1_5Text2 = display.newText(levelGroup, "now go through the portal and", 20, 140, "Danube", 24 )
-		-- intro1_5Text2.xScale = 0.5; intro1_5Text2.yScale = 0.5
-		-- intro1_5Text2.x = intro1_5Text2.width/4 + 10;
-		-- intro1_5Text2:setTextColor(0, 0, 0)
-		-- intro1_5Text2.isVisible = false
-		-- intro1_5Text3 = display.newText(levelGroup, "let the real adventures begin.... ", 20, 152, "Danube", 24 )
-		-- intro1_5Text3.xScale = 0.5; intro1_5Text3.yScale = 0.5
-		-- intro1_5Text3.x = intro1_5Text3.width/4 + 10;
-		-- intro1_5Text3:setTextColor(0, 0, 0)
-		-- intro1_5Text3.isVisible = false
 	end
 
 	
 	
 	local gameLoop = function()
 		if gameIsActive then
+			
 			
 			-------------------------------------------------------------------------------------------------------------------- 
 			-- This is the code for the Text of the training level
@@ -1983,13 +2417,13 @@ function new()
 				
 				
 				
-				if characterObject.isHit == false and characterObject.inAir and characterTrainingDeath == true then
-					-- characterObject.isHit = true
-					print("something is working!")
-					if dotTimer then timer.cancel( dotTimer ); end
-					timer.performWithDelay( 10000, callNewRound( true, "no" ), 0 )
-					characterBoolean = characterBoolean + 1
-				end
+				-- if characterObject.isHit == false and characterObject.inAir and characterTrainingDeath == true then
+				-- 					-- characterObject.isHit = true
+				-- 					print("something is working!")
+				-- 					if dotTimer then timer.cancel( dotTimer ); end
+				-- 					timer.performWithDelay( 10000, callNewRound( true, "no" ), 0 )
+				-- 					characterBoolean = characterBoolean + 1
+				-- 				end
 				
 				
 				
@@ -2003,6 +2437,7 @@ function new()
 						local training1 = function()
 							trainingStep = 2
 							trainingText1.isVisible = false
+							trainingText1_1.isVisible = false
 							trainingText2.isVisible = true
 						end
 						timer.performWithDelay( 3700, training1, 1 )
@@ -2938,8 +3373,8 @@ function new()
 			local path = system.pathForFile( _G.filesavepathname, system.DocumentsDirectory )                
 			local file = io.open( path, "w+b" )
 			-- Creates the file where we save our data
-			
-			file:write( _G.highestLevel1..", ".._G.levelTracker1)          
+
+			file:write( _G.highestLevel1..", ".._G.levelTracker1..", ".._G.highestWorld)          
 			io.close( file )
 			if system.getInfo( "environment" ) == "device" then
 				-- prevents iOS 4+ multi-tasking crashes

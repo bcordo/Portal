@@ -39,6 +39,7 @@ function new()
 		
 		print("highest level var: ", _G.highestLevel1)
 		print("level tracker var: ", _G.levelTracker1)
+		print("highest world var: ", _G.highestWorld)
 
 		-- main_sprt
 		main_sprt = display.newGroup()

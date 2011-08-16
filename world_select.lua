@@ -31,7 +31,7 @@ function new()
 	-- init
 	----------------------------------------------------------------------------------------------------
 	local function init()
-
+		print("highest world var: ", _G.highestWorld)
 		-- main_sprt
 		main_sprt = display.newGroup()
 
@@ -57,6 +57,7 @@ function new()
 
 		-- slide 1
 		textInfo_tbl = {}
+		
 		btnInfo_tbl = { "level_orb1" }
 		slide_sprt = renderSlide( 1, textInfo_tbl, btnInfo_tbl )
 		btn_sprt = renderSlideBtn( 1, 256 )
@@ -65,7 +66,12 @@ function new()
 
 		-- slide 2
 		textInfo_tbl = {}
-		btnInfo_tbl = {"level_orb2"}
+		if tonumber(_G.highestWorld) < 2 then
+			btnInfo_tbl = {"level_orb2_lock"}
+		elseif tonumber(_G.highestWorld) >= 2 then
+			btnInfo_tbl = {"level_orb2"}
+		end
+		
 		slide_sprt = renderSlide( 2, textInfo_tbl, btnInfo_tbl )
 		btn_sprt = renderSlideBtn( 2, 256 )
 		-- slider
@@ -73,7 +79,12 @@ function new()
 
 		-- slide 3
 		textInfo_tbl = {}
-		btnInfo_tbl = {"level_orb3"}
+		if tonumber(_G.highestWorld) < 3 then
+			btnInfo_tbl = {"level_orb3_lock"}
+		elseif tonumber(_G.highestWorld) >= 3 then
+			btnInfo_tbl = {"level_orb3"}
+		end
+		
 		slide_sprt = renderSlide( 3, textInfo_tbl, btnInfo_tbl )
 		btn_sprt = renderSlideBtn( 3, 256 )
 		-- slider
@@ -172,10 +183,19 @@ function new()
 			director:changeScene("world1", "fade", 0,0,0)
 		elseif ( 2 == btnId ) then
 			_G.loadLevel=2
-			director:changeScene("world2", "fade", 0,0,0)
+			if tonumber(_G.highestWorld) < 2 then
+				print("world 2 locked")
+			elseif tonumber(_G.highestWorld) >= 2 then
+				director:changeScene("world2", "fade", 0,0,0)
+			end
 		elseif ( 3 == btnId ) then
 			_G.loadLevel=2
-			director:changeScene("world3", "fade", 0,0,0)
+			if tonumber(_G.highestWorld) < 3 then
+				print("world 3 locked")
+			elseif tonumber(_G.highestWorld) >= 3 then
+				director:changeScene("world3", "fade", 0,0,0)
+			end
+			
 		end
 
 	end
