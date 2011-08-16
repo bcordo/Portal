@@ -35,18 +35,7 @@ function newMain ()
 	
 	this:insert(teleporterpurple_1)
 	this.teleporterpurple_1 = teleporterpurple_1
-	
-	local teleporterwhite_1 = display.newImageRect(imagelookup.table["Teleporterwhite"],imagelookup.table["TeleporterwhiteWidth"],imagelookup.table["TeleporterwhiteHeight"])
-	teleporterwhite_1.x = 145.98181818181823
-	teleporterwhite_1.y = 200.02727272727276
-	teleporterwhite_1.xScale = 1
-	teleporterwhite_1.yScale = 1
-	teleporterwhite_1.rotation = -45
-	teleporterwhite_1.isVisible = false
-	
-	this:insert(teleporterwhite_1)
-	this.teleporterwhite_1 = teleporterwhite_1
-	
+
 	local teleporteryellow_1 = display.newImageRect(imagelookup.table["Teleporteryellow"],imagelookup.table["TeleporteryellowWidth"],imagelookup.table["TeleporteryellowHeight"])
 	teleporteryellow_1.x = 193.6909090909091
 	teleporteryellow_1.y = 280.94999999999993
@@ -56,18 +45,7 @@ function newMain ()
 	
 	this:insert(teleporteryellow_1)
 	this.teleporteryellow_1 = teleporteryellow_1
-	
-	local teleporterwhite_2 = display.newImageRect(imagelookup.table["Teleporterwhite"],imagelookup.table["TeleporterwhiteWidth"],imagelookup.table["TeleporterwhiteHeight"])
-	teleporterwhite_2.x = 79 + 480
-	teleporterwhite_2.y = 125.06363636363636
-	teleporterwhite_2.xScale = 1
-	teleporterwhite_2.yScale = 1
-	teleporterwhite_2.rotation = -90
-	teleporterwhite_2.isVisible = false
-	
-	this:insert(teleporterwhite_2)
-	this.teleporterwhite_2 = teleporterwhite_2
-	
+
 	local teleporteryellow_2 = display.newImageRect(imagelookup.table["Teleporteryellow"],imagelookup.table["TeleporteryellowWidth"],imagelookup.table["TeleporteryellowHeight"])
 	teleporteryellow_2.x = 79 + 480
 	teleporteryellow_2.y = 214.19090909090917

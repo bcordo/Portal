@@ -979,7 +979,7 @@ function getData()
 		}
 	end
 	
-	if lvl.teleporterpurple_1 and lvl.teleporterpurple_2 and lvl.teleporterwhite_1 and lvl.teleporterwhite_2 and lvl.teleporteryellow_1 and lvl.teleporteryellow_2 and lvl.teleporterblue_1 and lvl.teleporterblue_2 and lvl.teleporterred_1 and lvl.teleporterred_2 and lvl.teleportergreen_1 and lvl.teleportergreen_2 and lvl.teleporterorange_1 and lvl.teleporterorange_2 then
+	if lvl.tegreeneporterpurple_1 and lvl.teleporterpurple_2 and lvl.teleportergreen_1 and lvl.teleportergreen_2 and lvl.teleporteryellow_1 and lvl.teleporteryellow_2 and lvl.teleporterblue_1 and lvl.teleporterblue_2 and lvl.teleporterred_1 and lvl.teleporterred_2 and lvl.teleporterorange_1 and lvl.teleporterorange_2 then
 	leveldata.teleporters = 
 	{
 		teleporterpurple = 
@@ -1000,21 +1000,21 @@ function getData()
 			
 		},
 		
-		teleporterwhite = 
+		teleportergreen = 
 		{
-			id1 = "teleporterwhite-1",
-			id2 = "teleporterwhite-2",
+			id1 = "teleportergreen-1",
+			id2 = "teleportergreen-2",
 			myName1 = "teleporter1",
 			myName2 = "teleporter2",
-			src = "images/teleporterwhite.png",
+			src = "images/teleportergreen.png",
 			width = 15,
 			height = 70,
-			x1 = lvl.teleporterwhite_1.x,
-			y1 = lvl.teleporterwhite_1.y,
-			rotateAngle1 = -lvl.teleporterwhite_1.rotation,
-			x2 = lvl.teleporterwhite_2.x,
-			y2 = lvl.teleporterwhite_2.y,
-			rotateAngle2 = -lvl.teleporterwhite_2.rotation,
+			x1 = lvl.teleportergreen_1.x,
+			y1 = lvl.teleportergreen_1.y,
+			rotateAngle1 = -lvl.teleportergreen_1.rotation,
+			x2 = lvl.teleportergreen_2.x,
+			y2 = lvl.teleportergreen_2.y,
+			rotateAngle2 = -lvl.teleportergreen_2.rotation,
 			
 		},
 		
@@ -1069,24 +1069,6 @@ function getData()
 			x2 = lvl.teleporterred_2.x,
 			y2 = lvl.teleporterred_2.y,
 			rotateAngle2 = -lvl.teleporterred_2.rotation,
-			
-		},
-		
-		teleportergreen = 
-		{
-			id1 = "teleportergreen-1",
-			id2 = "teleportergreen-2",
-			myName1 = "teleporter1",
-			myName2 = "teleporter2",
-			src = "images/teleportergreen.png",
-			width = 15,
-			height = 70,
-			x1 = lvl.teleportergreen_1.x,
-			y1 = lvl.teleportergreen_1.y,
-			rotateAngle1 = -lvl.teleportergreen_1.rotation,
-			x2 = lvl.teleportergreen_2.x,
-			y2 = lvl.teleportergreen_2.y,
-			rotateAngle2 = -lvl.teleportergreen_2.rotation,
 			
 		},
 		
@@ -1109,7 +1091,7 @@ function getData()
 		},
 	}
 	
-	elseif lvl.teleporterpurple_1 and lvl.teleporterpurple_2 and lvl.teleporterwhite_1 and lvl.teleporterwhite_2 and lvl.teleporteryellow_1 and lvl.teleporteryellow_2 and lvl.teleporterblue_1 and lvl.teleporterblue_2 and lvl.teleporterred_1 and lvl.teleporterred_2 and lvl.teleportergreen_1 and lvl.teleportergreen_2 then
+	elseif lvl.teleporterpurple_1 and lvl.teleporterpurple_2 and lvl.teleportergreen_1 and lvl.teleportergreen_2 and lvl.teleporteryellow_1 and lvl.teleporteryellow_2 and lvl.teleporterblue_1 and lvl.teleporterblue_2 and lvl.teleporterred_1 and lvl.teleporterred_2 then
 	leveldata.teleporters = 
 	{
 		teleporterpurple = 
@@ -1127,78 +1109,6 @@ function getData()
 			x2 = lvl.teleporterpurple_2.x,
 			y2 = lvl.teleporterpurple_2.y,
 			rotateAngle2 = -lvl.teleporterpurple_2.rotation,
-			
-		},
-		
-		teleporterwhite = 
-		{
-			id1 = "teleporterwhite-1",
-			id2 = "teleporterwhite-2",
-			myName1 = "teleporter1",
-			myName2 = "teleporter2",
-			src = "images/teleporterwhite.png",
-			width = 15,
-			height = 70,
-			x1 = lvl.teleporterwhite_1.x,
-			y1 = lvl.teleporterwhite_1.y,
-			rotateAngle1 = -lvl.teleporterwhite_1.rotation,
-			x2 = lvl.teleporterwhite_2.x,
-			y2 = lvl.teleporterwhite_2.y,
-			rotateAngle2 = -lvl.teleporterwhite_2.rotation,
-			
-		},
-		
-		teleporteryellow = 
-		{
-			id1 = "teleporteryellow-1",
-			id2 = "teleporteryellow-2",
-			myName1 = "teleporter1",
-			myName2 = "teleporter2",
-			src = "images/teleporteryellow.png",
-			width = 15,
-			height = 70,
-			x1 = lvl.teleporteryellow_1.x,
-			y1 = lvl.teleporteryellow_1.y,
-			rotateAngle1 = -lvl.teleporteryellow_1.rotation,
-			x2 = lvl.teleporteryellow_2.x,
-			y2 = lvl.teleporteryellow_2.y,
-			rotateAngle2 = -lvl.teleporteryellow_2.rotation,
-			
-		},
-		
-		teleporterblue = 
-		{
-			id1 = "teleporterblue-1",
-			id2 = "teleporterblue-2",
-			myName1 = "teleporter1",
-			myName2 = "teleporter2",
-			src = "images/teleporterblue.png",
-			width = 15,
-			height = 70,
-			x1 = lvl.teleporterblue_1.x,
-			y1 = lvl.teleporterblue_1.y,
-			rotateAngle1 = -lvl.teleporterblue_1.rotation,
-			x2 = lvl.teleporterblue_2.x,
-			y2 = lvl.teleporterblue_2.y,
-			rotateAngle2 = -lvl.teleporterblue_2.rotation,
-			
-		},
-		
-		teleporterred = 
-		{
-			id1 = "teleporterred-1",
-			id2 = "teleporterred-2",
-			myName1 = "teleporter1",
-			myName2 = "teleporter2",
-			src = "images/teleporterred.png",
-			width = 15,
-			height = 70,
-			x1 = lvl.teleporterred_1.x,
-			y1 = lvl.teleporterred_1.y,
-			rotateAngle1 = -lvl.teleporterred_1.rotation,
-			x2 = lvl.teleporterred_2.x,
-			y2 = lvl.teleporterred_2.y,
-			rotateAngle2 = -lvl.teleporterred_2.rotation,
 			
 		},
 		
@@ -1219,9 +1129,63 @@ function getData()
 			rotateAngle2 = -lvl.teleportergreen_2.rotation,
 			
 		},
+		
+		teleporteryellow = 
+		{
+			id1 = "teleporteryellow-1",
+			id2 = "teleporteryellow-2",
+			myName1 = "teleporter1",
+			myName2 = "teleporter2",
+			src = "images/teleporteryellow.png",
+			width = 15,
+			height = 70,
+			x1 = lvl.teleporteryellow_1.x,
+			y1 = lvl.teleporteryellow_1.y,
+			rotateAngle1 = -lvl.teleporteryellow_1.rotation,
+			x2 = lvl.teleporteryellow_2.x,
+			y2 = lvl.teleporteryellow_2.y,
+			rotateAngle2 = -lvl.teleporteryellow_2.rotation,
+			
+		},
+		
+		teleporterblue = 
+		{
+			id1 = "teleporterblue-1",
+			id2 = "teleporterblue-2",
+			myName1 = "teleporter1",
+			myName2 = "teleporter2",
+			src = "images/teleporterblue.png",
+			width = 15,
+			height = 70,
+			x1 = lvl.teleporterblue_1.x,
+			y1 = lvl.teleporterblue_1.y,
+			rotateAngle1 = -lvl.teleporterblue_1.rotation,
+			x2 = lvl.teleporterblue_2.x,
+			y2 = lvl.teleporterblue_2.y,
+			rotateAngle2 = -lvl.teleporterblue_2.rotation,
+			
+		},
+		
+		teleporterred = 
+		{
+			id1 = "teleporterred-1",
+			id2 = "teleporterred-2",
+			myName1 = "teleporter1",
+			myName2 = "teleporter2",
+			src = "images/teleporterred.png",
+			width = 15,
+			height = 70,
+			x1 = lvl.teleporterred_1.x,
+			y1 = lvl.teleporterred_1.y,
+			rotateAngle1 = -lvl.teleporterred_1.rotation,
+			x2 = lvl.teleporterred_2.x,
+			y2 = lvl.teleporterred_2.y,
+			rotateAngle2 = -lvl.teleporterred_2.rotation,
+			
+		},
 	}
 	
-	elseif lvl.teleporterpurple_1 and lvl.teleporterpurple_2 and lvl.teleporterwhite_1 and lvl.teleporterwhite_2 and lvl.teleporteryellow_1 and lvl.teleporteryellow_2 and lvl.teleporterblue_1 and lvl.teleporterblue_2 and lvl.teleporterred_1 and lvl.teleporterred_2 then
+	elseif lvl.teleporterpurple_1 and lvl.teleporterpurple_2 and lvl.teleportergreen_1 and lvl.teleportergreen_2 and lvl.teleporteryellow_1 and lvl.teleporteryellow_2 and lvl.teleporterblue_1 and lvl.teleporterblue_2 and lvl.teleporterred_1 and lvl.teleporterred_2 then
 	leveldata.teleporters = 
 	{
 		teleporterpurple = 
@@ -1242,21 +1206,21 @@ function getData()
 			
 		},
 		
-		teleporterwhite = 
+		teleportergreen = 
 		{
-			id1 = "teleporterwhite-1",
-			id2 = "teleporterwhite-2",
+			id1 = "teleportergreen-1",
+			id2 = "teleportergreen-2",
 			myName1 = "teleporter1",
 			myName2 = "teleporter2",
-			src = "images/teleporterwhite.png",
+			src = "images/teleportergreen.png",
 			width = 15,
 			height = 70,
-			x1 = lvl.teleporterwhite_1.x,
-			y1 = lvl.teleporterwhite_1.y,
-			rotateAngle1 = -lvl.teleporterwhite_1.rotation,
-			x2 = lvl.teleporterwhite_2.x,
-			y2 = lvl.teleporterwhite_2.y,
-			rotateAngle2 = -lvl.teleporterwhite_2.rotation,
+			x1 = lvl.teleportergreen_1.x,
+			y1 = lvl.teleportergreen_1.y,
+			rotateAngle1 = -lvl.teleportergreen_1.rotation,
+			x2 = lvl.teleportergreen_2.x,
+			y2 = lvl.teleportergreen_2.y,
+			rotateAngle2 = -lvl.teleportergreen_2.rotation,
 			
 		},
 		
@@ -1315,7 +1279,7 @@ function getData()
 		},
 	}
 	
-	elseif lvl.teleporterpurple_1 and lvl.teleporterpurple_2 and lvl.teleporterwhite_1 and lvl.teleporterwhite_2 and lvl.teleporteryellow_1 and lvl.teleporteryellow_2 and lvl.teleporterblue_1 and lvl.teleporterblue_2 then
+	elseif lvl.teleporterpurple_1 and lvl.teleporterpurple_2 and lvl.teleportergreen_1 and lvl.teleportergreen_2 and lvl.teleporteryellow_1 and lvl.teleporteryellow_2 and lvl.teleporterblue_1 and lvl.teleporterblue_2 then
 	leveldata.teleporters = 
 	{
 		teleporterpurple = 
@@ -1336,21 +1300,21 @@ function getData()
 			
 		},
 		
-		teleporterwhite = 
+		teleportergreen = 
 		{
-			id1 = "teleporterwhite-1",
-			id2 = "teleporterwhite-2",
+			id1 = "teleportergreen-1",
+			id2 = "teleportergreen-2",
 			myName1 = "teleporter1",
 			myName2 = "teleporter2",
-			src = "images/teleporterwhite.png",
+			src = "images/teleportergreen.png",
 			width = 15,
 			height = 70,
-			x1 = lvl.teleporterwhite_1.x,
-			y1 = lvl.teleporterwhite_1.y,
-			rotateAngle1 = -lvl.teleporterwhite_1.rotation,
-			x2 = lvl.teleporterwhite_2.x,
-			y2 = lvl.teleporterwhite_2.y,
-			rotateAngle2 = -lvl.teleporterwhite_2.rotation,
+			x1 = lvl.teleportergreen_1.x,
+			y1 = lvl.teleportergreen_1.y,
+			rotateAngle1 = -lvl.teleportergreen_1.rotation,
+			x2 = lvl.teleportergreen_2.x,
+			y2 = lvl.teleportergreen_2.y,
+			rotateAngle2 = -lvl.teleportergreen_2.rotation,
 			
 		},
 		
@@ -1391,7 +1355,7 @@ function getData()
 		},
 	}
 	
-	elseif lvl.teleporterpurple_1 and lvl.teleporterpurple_2 and lvl.teleporterwhite_1 and lvl.teleporterwhite_2 and lvl.teleporteryellow_1 and lvl.teleporteryellow_2 then
+	elseif lvl.teleporterpurple_1 and lvl.teleporterpurple_2 and lvl.teleportergreen_1 and lvl.teleportergreen_2 and lvl.teleporteryellow_1 and lvl.teleporteryellow_2 then
 	leveldata.teleporters = 
 	{
 		teleporterpurple = 
@@ -1412,21 +1376,21 @@ function getData()
 			
 		},
 		
-		teleporterwhite = 
+		teleportergreen = 
 		{
-			id1 = "teleporterwhite-1",
-			id2 = "teleporterwhite-2",
+			id1 = "teleportergreen-1",
+			id2 = "teleportergreen-2",
 			myName1 = "teleporter1",
 			myName2 = "teleporter2",
-			src = "images/teleporterwhite.png",
+			src = "images/teleportergreen.png",
 			width = 15,
 			height = 70,
-			x1 = lvl.teleporterwhite_1.x,
-			y1 = lvl.teleporterwhite_1.y,
-			rotateAngle1 = -lvl.teleporterwhite_1.rotation,
-			x2 = lvl.teleporterwhite_2.x,
-			y2 = lvl.teleporterwhite_2.y,
-			rotateAngle2 = -lvl.teleporterwhite_2.rotation,
+			x1 = lvl.teleportergreen_1.x,
+			y1 = lvl.teleportergreen_1.y,
+			rotateAngle1 = -lvl.teleportergreen_1.rotation,
+			x2 = lvl.teleportergreen_2.x,
+			y2 = lvl.teleportergreen_2.y,
+			rotateAngle2 = -lvl.teleportergreen_2.rotation,
 			
 		},
 		
@@ -1449,7 +1413,7 @@ function getData()
 		},
 	}
 	
-	elseif lvl.teleporterpurple_1 and lvl.teleporterpurple_2 and lvl.teleporterwhite_1 and lvl.teleporterwhite_2 then
+	elseif lvl.teleporterpurple_1 and lvl.teleporterpurple_2 and lvl.teleportergreen_1 and lvl.teleportergreen_2 then
 	leveldata.teleporters = 
 	{
 		teleporterpurple = 
@@ -1470,21 +1434,21 @@ function getData()
 			
 		},
 		
-		teleporterwhite = 
+		teleportergreen = 
 		{
-			id1 = "teleporterwhite-1",
-			id2 = "teleporterwhite-2",
+			id1 = "teleportergreen-1",
+			id2 = "teleportergreen-2",
 			myName1 = "teleporter1",
 			myName2 = "teleporter2",
-			src = "images/teleporterwhite.png",
+			src = "images/teleportergreen.png",
 			width = 15,
 			height = 70,
-			x1 = lvl.teleporterwhite_1.x,
-			y1 = lvl.teleporterwhite_1.y,
-			rotateAngle1 = -lvl.teleporterwhite_1.rotation,
-			x2 = lvl.teleporterwhite_2.x,
-			y2 = lvl.teleporterwhite_2.y,
-			rotateAngle2 = -lvl.teleporterwhite_2.rotation,
+			x1 = lvl.teleportergreen_1.x,
+			y1 = lvl.teleportergreen_1.y,
+			rotateAngle1 = -lvl.teleportergreen_1.rotation,
+			x2 = lvl.teleportergreen_2.x,
+			y2 = lvl.teleportergreen_2.y,
+			rotateAngle2 = -lvl.teleportergreen_2.rotation,
 			
 		},
 	}

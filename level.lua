@@ -624,7 +624,7 @@ function new()
 			endScoreText.yScale = .5
 			endScoreText:setTextColor(255, 255, 255)
 			endScoreText.alpha = 0
-			delayOfEndScore = 700
+			delayOfEndScore = 400
 			
 			if gameLives >= 8 then
 				local animEndScore8 = function()
@@ -3088,6 +3088,7 @@ function new()
 					tele1.rotationo = data.rotateAngle2
 					tele1.myName = data.myName1
 					tele1:rotate(-data.rotateAngle1)
+					tele1.isVisible = true
 					physics.addBody(tele1,"static",{isSensor = true})
 					gameGroup:insert(tele1)
 					teletouch = false
@@ -3106,6 +3107,7 @@ function new()
 					tele2.rotationo = data.rotateAngle1
 					tele2.myName = data.myName2
 					tele2:rotate(-data.rotateAngle2)
+					tele2.isVisible = true
 					physics.addBody(tele2,"static",{isSensor = true})
 					gameGroup:insert(tele2)
 					tele2.collision = onTeleporter2Touch

@@ -53,13 +53,13 @@ function Initialize()
 
 	-- PRELOAD USED SOUNDS TO AVOID SLOW DOWNS  SOUNDS WILL STAY 
 	-- IN MEMORY UNTIL EFFECT LIBRARIES CLEANUP FUNCTION IS CALLED.
-	Sounds[1] = audio.loadSound("Sounds/explosion1.aac")
-	Sounds[2] = audio.loadSound("Sounds/sparks.aac")
-	Sounds[3] = audio.loadSound("Sounds/explosion_long.aac")
-	Sounds[4] = audio.loadSound("Sounds/fire.aac")
-	Sounds[5] = audio.loadSound("Sounds/waterfall.aac")
-	Sounds[6] = audio.loadSound("Sounds/rain.aac")
-	Sounds[7] = audio.loadSound("Sounds/wind.aac")
+	Sounds[1] = audio.loadSound("soundfx/explosion1.wav")
+	Sounds[2] = audio.loadSound("soundfx/sparks.wav")
+	Sounds[3] = audio.loadSound("soundfx/explosion_long.wav")
+	Sounds[4] = audio.loadSound("soundfx/fire.wav")
+	Sounds[5] = audio.loadSound("soundfx/waterfall.wav")
+	Sounds[6] = audio.loadSound("soundfx/rain.wav")
+	Sounds[7] = audio.loadSound("soundfx/wind.wav")
 
 
 	-- HIDE THE IMAGES ON STAGE
