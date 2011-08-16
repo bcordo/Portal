@@ -117,14 +117,20 @@ function new()
 	local screenPosition = "left"	--> "left" or "right"
 	local canSwipe = true
 	local swipeTween
-	local gameLives = 4
+	if leveldata.restartLevel == "1-1" then
+	gameLives = 1000	
+	else
+	gameLives = 4
+	end
 	local gameScore = 0
 	local bestScore
 	local ThroughExitPortal = false
 	local portalOpen = false
-	characterBoolean = 1
-	charactertouchdie = false
-	
+	local characterBoolean = 1
+	local charactertouchdie = false
+	local trainingStep = 1 
+	local characterTrainingDeath = true
+	local bombArmedQ 
 
 
 	
@@ -408,6 +414,12 @@ function new()
 	
 	local startNewRound = function()
 		charactertouchdie = false
+		characterTrainingDeath = true
+		
+		if leveldata.restartLevel == "1-1" then
+			bomb.x = -10000
+			bomb.y = 10000
+		end
 		createcharacter()
 		if characterObject then
 			
@@ -529,8 +541,8 @@ function new()
 		pauseBtn.isActive = false
 		
 		if continueTimer then timer.cancel( continueTimer ); end
-		continueText.isVisible = false
-		if leveldata.restartLevel == "1-1" or leveldata.restartLevel == "1-2" or leveldata.restartLevel == "1-3" or leveldata.restartLevel == "1-4" or leveldata.restartLevel == "1-5" then
+		-- continueText.isVisible = false
+		if leveldata.restartLevel == "1-1" then
 		trainingText.isVisible = true
 		end
 		
@@ -851,25 +863,25 @@ function new()
 				-- 					local camTween = transition.to( gameGroup, { time=500, x=-480 } )
 				-- 				end
 				
-				local continueBlink = function()
-					 local startBlinking = function()
-					 	if continueText.isVisible then
-					 		continueText.isVisible = false
-					 	else
-					 		continueText.isVisible = true
-							if leveldata.restartLevel == "1-1" or leveldata.restartLevel == "1-2" or leveldata.restartLevel == "1-3" or leveldata.restartLevel == "1-4" or leveldata.restartLevel == "1-5" then
-							trainingText.isVisible = false
-							end
-					 	end
-					 end
-					 
-					 continueTimer = timer.performWithDelay( 350, startBlinking, 0 )
-				end
+				-- local continueBlink = function()
+				-- 					 local startBlinking = function()
+				-- 					 	if continueText.isVisible then
+				-- 					 		continueText.isVisible = false
+				-- 					 	else
+				-- 					 		continueText.isVisible = true
+				-- 							if leveldata.restartLevel == "1-1" then
+				-- 							trainingText.isVisible = false
+				-- 							end
+				-- 					 	end
+				-- 					 end
+				-- 					 
+				-- 					 continueTimer = timer.performWithDelay( 350, startBlinking, 0 )
+				-- 				end
 				
 				restartTimer = timer.performWithDelay( theDelay, function()
 					charactertouchdie = false
 					waitingForNewRound = true;
-					continueBlink();
+					-- continueBlink();
 				end, 1 )
 				
 	
@@ -878,7 +890,7 @@ function new()
 			if instantPoof == "yes" then
 				local poofTimer = timer.performWithDelay( 10, poofThecharacter, 1 ) --makes the character last longer 
 			else
-				if leveldata.restartLevel == "1-1" or leveldata.restartLevel == "1-2" or leveldata.restartLevel == "1-4" or leveldata.restartLevel == "1-5" or leveldata.restartLevel == "1-3" then
+				if leveldata.restartLevel == "1-1" then
 					if characterObject.isHit == false and characterObject.inAir then
 						characterObject.isHit = true
 						local poofTimer = timer.performWithDelay( 3000, poofThecharacter, 1 )
@@ -1007,23 +1019,23 @@ function new()
 		hudGroup:insert( scoreText )
 		
 		-- TAP TO CONTINUE DISPLAY
-		continueText = display.newText( "TAP TO CONTINUE", 240, 18, "Helvetica", 36 )
-		if leveldata.restartLevel == "1-1" or leveldata.restartLevel == "1-2" or leveldata.restartLevel == "1-3" or leveldata.restartLevel == "1-4" or leveldata.restartLevel == "1-5" then
-			continueText:setTextColor( 254, 113, 2, 200 ) --( 0, 0, 0, 255 )
-			trainingText = display.newText("TRAINING LEVEL " .. string.sub(leveldata.restartLevel,-1), 240, 18, "Danube", 36)
+		-- continueText = display.newText( "TAP TO CONTINUE", 240, 18, "Helvetica", 36 )
+		if leveldata.restartLevel == "1-1" then
+			-- continueText:setTextColor( 254, 113, 2, 200 ) --( 0, 0, 0, 255 )
+			trainingText = display.newText("TRAINING LEVEL ", 240, 18, "Danube", 36)
 			trainingText:setTextColor( 254, 113, 2, 200 )
 			trainingText.xScale = 0.5; trainingText.yScale = 0.5
 			trainingText.x = 240; trainingText.y = 18
 			hudGroup:insert(trainingText)
 		else
-			continueText:setTextColor( 249, 203, 64, 255 )
+			-- continueText:setTextColor( 249, 203, 64, 255 )
 			
 		end
-		continueText.xScale = 0.5; continueText.yScale = 0.5
-		continueText.x = 240; continueText.y = 18
-		continueText.isVisible = false
-		
-		hudGroup:insert( continueText )
+		-- continueText.xScale = 0.5; continueText.yScale = 0.5
+		-- continueText.x = 240; continueText.y = 18
+		-- continueText.isVisible = false
+		-- 
+		-- hudGroup:insert( continueText )
 		
 		-- PAUSE BUTTON
 		local onPauseTouch = function( event )
@@ -1319,6 +1331,8 @@ function new()
 						-- audio.play( portalOpenSound )
 
 						Particles.StartEmitter("PortalEmitter")
+						callNewRound( true, "yes" )
+						characterBoolean = characterBoolean + 1
 						-- Particles.StopEmitter("PortalEmitter")
 						-- Particles.DeleteEmitter("PortalEmitter")
 				end
@@ -1386,6 +1400,9 @@ function new()
 		end
 	
 		print(characterBoolean)
+		if characterBoolean > 4 then
+			characterBoolean = 4
+		end
 		characterObject = movieclip.newAnim({ characterTable[characterBoolean].src2, characterTable[characterBoolean].src1 }, characterTable[characterBoolean].width, characterTable[characterBoolean].height )
 		characterObject.x = -500; characterObject.y = -500
 		characterObject.isVisible = false
@@ -1463,7 +1480,7 @@ function new()
 
 	local function onBombTouch ( self, event )
 			
-			if(event.phase == "began" and self.bombArmedQ == "yes" and gameIsActive) then
+			if(event.phase == "began" and self.bombArmedQ == "yes" and gameIsActive and self.isBodyActive == true) then
 				local newScore = gameScore + 100
 				setScore( newScore )
 				scoreAnimText100.x = self.x
@@ -1554,6 +1571,7 @@ function new()
 		
 			needToTeleport1 = true
 			needToTeleport2 = false
+			teletouch = true
 			c2x = self.xo
 			c2y = self.yo
 			rotateAngle1 = self.rotations 
@@ -1580,6 +1598,7 @@ function new()
 			
 			needToTeleport1 = false
 			needToTeleport2 = true
+			teletouch = true
 			c1x = self.xo
 			c1y = self.yo
 			rotateAngle2 = self.rotations 
@@ -1614,8 +1633,8 @@ function new()
 			elseif event.phase == "began" and waitingForNewRound == false then
 				
 				if continueTimer then timer.cancel( continueTimer ); end
-				continueText.isVisible = false
-				if leveldata.restartLevel == "1-1" or leveldata.restartLevel == "1-2" or leveldata.restartLevel == "1-3" or leveldata.restartLevel == "1-4" or leveldata.restartLevel == "1-5" then
+				-- continueText.isVisible = false
+				if leveldata.restartLevel == "1-1" then
 				trainingText.isVisible = true
 				end
 				
@@ -1728,7 +1747,7 @@ function new()
 							else
 								trailDot = display.newCircle( gameGroup, characterObject.x, characterObject.y, 1.5 )
 							end
-							if leveldata.restartLevel == "1-1" or leveldata.restartLevel == "1-2" or leveldata.restartLevel == "1-3" or leveldata.restartLevel == "1-4" or leveldata.restartLevel == "1-5" then
+							if leveldata.restartLevel == "1-1" then
 								trailDot:setFillColor( 0, 0, 0, 0 )
 							else
 								trailDot:setFillColor( 255, 255, 255, 255 )
@@ -1823,85 +1842,386 @@ function new()
 	end
 	
 	if leveldata.restartLevel == "1-1" then
-	intro1_1Text1 = display.newText(levelGroup, "drag the character in any direction to lauch him ", 20, 170, "Danube", 24 )
-	intro1_1Text1.xScale = 0.5; intro1_1Text1.yScale = 0.5
-	intro1_1Text1.x = intro1_1Text1.width/4 + 10; 
-	intro1_1Text1:setTextColor(0, 0, 0)
-	-- introText1.isVisible = false
-	intro1_1Text2 = display.newText(levelGroup, "now launch him towards the red button ", 20, 170, "Danube", 24 )
-	intro1_1Text2.xScale = 0.5; intro1_1Text2.yScale = 0.5
-	intro1_1Text2.x = intro1_1Text2.width/4 + 10;
-	intro1_1Text2:setTextColor(0, 0, 0)
-	intro1_1Text2.isVisible = false
-	intro1_1Text3 = display.newText(levelGroup, "Great! send him through the portal to progress ", 10, 170, "Danube", 24 )
-	intro1_1Text3.xScale = 0.5; intro1_1Text3.yScale = 0.5
-	intro1_1Text3.x = intro1_1Text3.width/4 + 10;
-	intro1_1Text3:setTextColor(0, 0, 0)
-	intro1_1Text3.isVisible = false
-	end
-	
-	if leveldata.restartLevel == "1-2" then
-		intro1_2Text1 = display.newText(levelGroup, "send him through the purple transporter ", 20, 170, "Danube", 24 )
-		intro1_2Text1.xScale = 0.5; intro1_2Text1.yScale = 0.5
-		intro1_2Text1.x = intro1_2Text1.width/4 + 10;
-		intro1_2Text1:setTextColor(0, 0, 0)
-		intro1_2Text2 = display.newText(levelGroup, "now launch him into the portal... into the unknown... ", 20, 170, "Danube", 24 )
-		intro1_2Text2.xScale = 0.5; intro1_2Text2.yScale = 0.5
-		intro1_2Text2.x = intro1_2Text2.width/4 + 10;
-		intro1_2Text2:setTextColor(0, 0, 0)
-		intro1_2Text2.isVisible = false
+		trainingText1 = display.newText(levelGroup, "drag the character in any direction to lauch him ", 20, 170, "Danube", 24 )
+		trainingText1.xScale = 0.5; trainingText1.yScale = 0.5
+		trainingText1.x = trainingText1.width/4 + 10; 
+		trainingText1:setTextColor(0, 0, 0)
+		-- introText1.isVisible = false
 		
-	end
-	
-	if leveldata.restartLevel == "1-3" then
-		intro1_3Text1 = display.newText(levelGroup, "black holes create gravitational attraction ", 20, 145, "Danube", 24 )
-		intro1_3Text1.xScale = 0.5; intro1_3Text1.yScale = 0.5
-		intro1_3Text1.x = intro1_3Text1.width/4 + 10;
-		intro1_3Text1:setTextColor(0, 0, 0)
-	end
-	
-	if leveldata.restartLevel == "1-4" then
-		intro1_4Text1 = display.newText(levelGroup, "white holes create magnetostatic repulsion ", 20, 145, "Danube", 24 )
-		intro1_4Text1.xScale = 0.5; intro1_4Text1.yScale = 0.5
-		intro1_4Text1.x = intro1_4Text1.width/4 + 10;
-		intro1_4Text1:setTextColor(0, 0, 0)
-	end
-	
-	if leveldata.restartLevel == "1-5" then
-		intro1_5Text1 = display.newText(levelGroup, "and dynamite... well... ", 20, 130, "Danube", 24 )
-		intro1_5Text1.xScale = 0.5; intro1_5Text1.yScale = 0.5
-		intro1_5Text1.x = intro1_5Text1.width/4 + 10;
-		intro1_5Text1:setTextColor(0, 0, 0)
-		intro1_5Text4 = display.newText(levelGroup, "blows things up ", 20, 142, "Danube", 24 )
-		intro1_5Text4.xScale = 0.5; intro1_5Text4.yScale = 0.5
-		intro1_5Text4.x = intro1_5Text4.width/4 + 10;
-		intro1_5Text4:setTextColor(0, 0, 0)
-		intro1_5Text2 = display.newText(levelGroup, "now go through the portal and", 20, 140, "Danube", 24 )
-		intro1_5Text2.xScale = 0.5; intro1_5Text2.yScale = 0.5
-		intro1_5Text2.x = intro1_5Text2.width/4 + 10;
-		intro1_5Text2:setTextColor(0, 0, 0)
-		intro1_5Text2.isVisible = false
-		intro1_5Text3 = display.newText(levelGroup, "let the real adventures begin.... ", 20, 152, "Danube", 24 )
-		intro1_5Text3.xScale = 0.5; intro1_5Text3.yScale = 0.5
-		intro1_5Text3.x = intro1_5Text3.width/4 + 10;
-		intro1_5Text3:setTextColor(0, 0, 0)
-		intro1_5Text3.isVisible = false
-	end
-
+		trainingText2 = display.newText(levelGroup, "send him through the purple transporter to continue", 20, 170, "Danube", 24 )
+		trainingText2.xScale = 0.5; trainingText2.yScale = 0.5
+		trainingText2.x = trainingText2.width/4 + 10;
+		trainingText2:setTextColor(0, 0, 0)
+		trainingText2.isVisible = false
 		
-	
+		trainingText3 = display.newText(levelGroup, "transporters of the same color are linked... send through white transporter to continue", 20, 170, "Danube", 24 )
+		trainingText3.xScale = 0.5; trainingText3.yScale = 0.5
+		trainingText3.x = trainingText3.width/4 + 10;
+		trainingText3:setTextColor(0, 0, 0)
+		trainingText3.isVisible = false
+		
+		trainingText4 = display.newText(levelGroup, "black holes create relativistic gravitational attraction ", 20, 145, "Danube", 24 )
+		trainingText4.xScale = 0.5; trainingText4.yScale = 0.5
+		trainingText4.x = trainingText4.width/4 + 10;
+		trainingText4:setTextColor(0, 0, 0)
+		trainingText4.isVisible = false
+		
+		trainingText5 = display.newText(levelGroup, "white holes create magnetostatic repulsion ", 20, 145, "Danube", 24 )
+		trainingText5.xScale = 0.5; trainingText5.yScale = 0.5
+		trainingText5.x = trainingText5.width/4 + 10;
+		trainingText5:setTextColor(0, 0, 0)
+		trainingText5.isVisible = false
+		
+		trainingText6 = display.newText(levelGroup, "and dynamite... well... ", 20, 130, "Danube", 24 )
+		trainingText6.xScale = 0.5; trainingText6.yScale = 0.5
+		trainingText6.x = trainingText6.width/4 + 10;
+		trainingText6:setTextColor(0, 0, 0)
+		trainingText6.isVisible = false
+		
+		trainingText6_1 = display.newText(levelGroup, "blows things up ", 20, 142, "Danube", 24 )
+		trainingText6_1.xScale = 0.5; trainingText6_1.yScale = 0.5
+		trainingText6_1.x = trainingText6_1.width/4 + 10;
+		trainingText6_1:setTextColor(0, 0, 0)
+		trainingText6_1.isVisible = false
+		
+		trainingText7 = display.newText(levelGroup, "purple gems give you extra points ", 20, 130, "Danube", 24 )
+		trainingText7.xScale = 0.5; trainingText7.yScale = 0.5
+		trainingText7.x = trainingText7.width/4 + 10;
+		trainingText7:setTextColor(0, 0, 0)
+		trainingText7.isVisible = false
+		
+		trainingText8 = display.newText(levelGroup, "yellowish-orange gems give you extra lives ", 20, 130, "Danube", 24 )
+		trainingText8.xScale = 0.5; trainingText8.yScale = 0.5
+		trainingText8.x = trainingText8.width/4 + 10;
+		trainingText8:setTextColor(0, 0, 0)
+		trainingText8.isVisible = false
+		
+		trainingText9 = display.newText(levelGroup, "launch him towards the red button, inorder to activate the portal ", 20, 170, "Danube", 24 )
+		trainingText9.xScale = 0.5; trainingText9.yScale = 0.5
+		trainingText9.x = trainingText9.width/4 + 10; 
+		trainingText9:setTextColor(0, 0, 0)
+		trainingText9.isVisible = false
+		
+		trainingText10 = display.newText(levelGroup, "now send him through the portal and", 20, 140, "Danube", 24 )
+		trainingText10.xScale = 0.5; trainingText10.yScale = 0.5
+		trainingText10.x = trainingText10.width/4 + 10;
+		trainingText10:setTextColor(0, 0, 0)
+		trainingText10.isVisible = false
+		
+		trainingText10_1 = display.newText(levelGroup, "let the real adventures begin.... ", 20, 152, "Danube", 24 )
+		trainingText10_1.xScale = 0.5; trainingText10_1.yScale = 0.5
+		trainingText10_1.x = trainingText10_1.width/4 + 10;
+		trainingText10_1:setTextColor(0, 0, 0)
+		trainingText10_1.isVisible = false
+		
+		
+		
+		
+		-- intro1_1Text3 = display.newText(levelGroup, "Great! send him through the portal to progress ", 10, 170, "Danube", 24 )
+		-- intro1_1Text3.xScale = 0.5; intro1_1Text3.yScale = 0.5
+		-- intro1_1Text3.x = intro1_1Text3.width/4 + 10;
+		-- intro1_1Text3:setTextColor(0, 0, 0)
+		-- intro1_1Text3.isVisible = false
+		-- 
+		-- intro1_2Text1 = display.newText(levelGroup, "send him through the purple transporter ", 20, 170, "Danube", 24 )
+		-- intro1_2Text1.xScale = 0.5; intro1_2Text1.yScale = 0.5
+		-- intro1_2Text1.x = intro1_2Text1.width/4 + 10;
+		-- intro1_2Text1:setTextColor(0, 0, 0)
+		-- intro1_2Text2 = display.newText(levelGroup, "now launch him into the portal... into the unknown... ", 20, 170, "Danube", 24 )
+		-- intro1_2Text2.xScale = 0.5; intro1_2Text2.yScale = 0.5
+		-- intro1_2Text2.x = intro1_2Text2.width/4 + 10;
+		-- intro1_2Text2:setTextColor(0, 0, 0)
+		-- intro1_2Text2.isVisible = false
+		-- 
+		-- intro1_3Text1 = display.newText(levelGroup, "black holes create gravitational attraction ", 20, 145, "Danube", 24 )
+		-- intro1_3Text1.xScale = 0.5; intro1_3Text1.yScale = 0.5
+		-- intro1_3Text1.x = intro1_3Text1.width/4 + 10;
+		-- intro1_3Text1:setTextColor(0, 0, 0)
+		-- 
+		-- intro1_4Text1 = display.newText(levelGroup, "white holes create magnetostatic repulsion ", 20, 145, "Danube", 24 )
+		-- intro1_4Text1.xScale = 0.5; intro1_4Text1.yScale = 0.5
+		-- intro1_4Text1.x = intro1_4Text1.width/4 + 10;
+		-- intro1_4Text1:setTextColor(0, 0, 0)
+		-- 
+		-- intro1_5Text1 = display.newText(levelGroup, "and dynamite... well... ", 20, 130, "Danube", 24 )
+		-- intro1_5Text1.xScale = 0.5; intro1_5Text1.yScale = 0.5
+		-- intro1_5Text1.x = intro1_5Text1.width/4 + 10;
+		-- intro1_5Text1:setTextColor(0, 0, 0)
+		-- intro1_5Text4 = display.newText(levelGroup, "blows things up ", 20, 142, "Danube", 24 )
+		-- intro1_5Text4.xScale = 0.5; intro1_5Text4.yScale = 0.5
+		-- intro1_5Text4.x = intro1_5Text4.width/4 + 10;
+		-- intro1_5Text4:setTextColor(0, 0, 0)
+		-- intro1_5Text2 = display.newText(levelGroup, "now go through the portal and", 20, 140, "Danube", 24 )
+		-- intro1_5Text2.xScale = 0.5; intro1_5Text2.yScale = 0.5
+		-- intro1_5Text2.x = intro1_5Text2.width/4 + 10;
+		-- intro1_5Text2:setTextColor(0, 0, 0)
+		-- intro1_5Text2.isVisible = false
+		-- intro1_5Text3 = display.newText(levelGroup, "let the real adventures begin.... ", 20, 152, "Danube", 24 )
+		-- intro1_5Text3.xScale = 0.5; intro1_5Text3.yScale = 0.5
+		-- intro1_5Text3.x = intro1_5Text3.width/4 + 10;
+		-- intro1_5Text3:setTextColor(0, 0, 0)
+		-- intro1_5Text3.isVisible = false
+	end
 
 	
 	
 	local gameLoop = function()
 		if gameIsActive then
 			
+			-------------------------------------------------------------------------------------------------------------------- 
+			-- This is the code for the Text of the training level
+			-------------------------------------------------------------------------------------------------------------------- 
+			 
+			if leveldata.restartLevel == "1-1" then
+				
+				
+				
+				if characterObject.isHit == false and characterObject.inAir and characterTrainingDeath == true then
+					-- characterObject.isHit = true
+					print("something is working!")
+					if dotTimer then timer.cancel( dotTimer ); end
+					timer.performWithDelay( 10000, callNewRound( true, "no" ), 0 )
+					characterBoolean = characterBoolean + 1
+				end
+				
+				
+				
+				if trainingStep == 1 then
+					-- bomb.isVisible = false
+					--bomb.isBodyActive = false		
+					
+					
+					if characterObject.inAir == true then
+						
+						local training1 = function()
+							trainingStep = 2
+							trainingText1.isVisible = false
+							trainingText2.isVisible = true
+						end
+						timer.performWithDelay( 3700, training1, 1 )
+					end
+					
+					
+				end
+					
+				
+				
+				
+				
+				if trainingStep == 2 then
+					trainingtelepurple1.isBodyActive = true
+					trainingtelepurple1.isVisible = true
+					trainingtelepurple2.isBodyActive = true
+					trainingtelepurple2.isVisible = true
+						
+					
+					if teletouch == true then
+					
+										
+						teletouch = false
+					
+					
+						local training2 = function()
+							trainingStep = 3
+							trainingText2.isVisible = false
+							trainingText3.isVisible = true
+						end
+						timer.performWithDelay( 3700, training2, 1 )
+					
+					end
+					
+				end
+				
+				if trainingStep == 3 then
+					
+					trainingtelepurple1.isBodyActive = false
+					trainingtelepurple1.isVisible = false
+					trainingtelepurple2.isBodyActive = false
+					trainingtelepurple2.isVisible = false
+					
+					trainingtelewhite1.isBodyActive = true
+					trainingtelewhite1.isVisible = true
+					trainingtelewhite2.isBodyActive = true
+					trainingtelewhite2.isVisible = true
+					
+					trainingteleyellow1.isBodyActive = true
+					trainingteleyellow1.isVisible = true
+					trainingteleyellow2.isBodyActive = true
+					trainingteleyellow2.isVisible = true
+					
+					
+					
+					
+					if teletouch == true then
+					
+					trainingText3.isVisible = false
+					
+					teletouch = false
+					
+					
+					local training3 = function()
+						trainingStep = 4
+					end
+					
+					timer.performWithDelay( 3700, training3, 1 )
+					
+					end
+				end
+				
+				if trainingStep == 4 then
+				--introduce black holes, white holes, and bombs, after characters death	(timer...)
+				--purple jewls give you extra points (timer...)
+				--orangish yellow jewels give you extra lives (timer...)
+				--show then hide ui elements
+					
+					trainingtelewhite1.isBodyActive = false
+					trainingtelewhite1.isVisible = false
+					trainingtelewhite2.isBodyActive = false
+					trainingtelewhite2.isVisible = false
+					
+					trainingteleyellow1.isBodyActive = false
+					trainingteleyellow1.isVisible = false
+					trainingteleyellow2.isBodyActive = false
+					trainingteleyellow2.isVisible = false
+					
+					trainingText4.isVisible = true
+					-- blackhole_obj.isBodyActive = true
+					blackhole_obj.isVisible = true
+				
+									
+					trainingStep = 5
+					
+					
+					 
+				end
+				
+				if trainingStep == 5 then
+					
+					local training5 = function()
+					trainingText4.isVisible = false
+					trainingText5.isVisible = true
+					-- blackhole_obj.isBodyActive = false
+					blackhole_obj.isVisible = false
+					-- whitehole_obj.isBodyActive = true
+					whitehole_obj.isVisible = true
+					trainingStep = 6
+					end
+					
+					timer.performWithDelay( 2000, training5, 1 )
+					
+				end
+				
+				if trainingStep == 6 then
+					
+					local training6 = function()
+					trainingText5.isVisible = false
+					trainingText6.isVisible = true
+					trainingText6_1.isVisible=true
+					-- whitehole_obj.isBodyActive = false
+					whitehole_obj.isVisible = false
+					-- bomb.isBodyActive = true
+					bomb.x = 113
+					bomb.y = 260
+					bomb.isVisible = true
+					trainingStep = 7
+					end
+					
+					timer.performWithDelay( 2000, training6, 1 )
+					
+				end
+				
+				if trainingStep == 7 then
+					
+					local training7 = function()
+					trainingText6.isVisible = false
+					trainingText6_1.isVisible = false
+					trainingText7.isVisible = true
+					-- bomb.isBodyActive = false
+					bomb.isVisible = false
+					-- gem_obj.isBodyActive = true
+					gem_obj.isVisible = true
+					trainingStep = 8
+					end
+					
+					timer.performWithDelay( 2000, training7, 1 )
+					
+				end
+				
+				if trainingStep == 8 then
+					
+					local training8 = function()
+					trainingText7.isVisible = false
+					trainingText8.isVisible = true
+					-- gem_obj.isBodyActive = false
+					gem_obj.isVisible = false
+					-- lifegem_obj.isBodyActive = true
+					lifegem_obj.isVisible = true
+					trainingStep = 9
+					end
+					
+					timer.performWithDelay( 2000, training8, 1 )
+				end
+				
+				if trainingStep == 9 then
+					
+					local training9 = function()
+					trainingText8.isVisible = false
+					trainingText9.isVisible = true
+					switch_obj.isVisible = true
+					switch_obj.isBodyActive = true
+					blackhole_obj.isVisible = true
+					blackhole_obj.isBodyActive = true
+					whitehole_obj.isVisible = true
+					whitehole_obj.isBodyActive = true
+					bomb.isVisible = true
+					gem_obj.isVisible = true
+					gem_obj.isBodyActive = true
+					lifegem_obj.isBodyActive = true
+					wood_obj.isVisible = true
+					wood_obj.isBodyActive = true
+					stone_obj.isVisible = true
+					stone_obj.isBodyActive = true
+					metal_obj.isVisible = true
+					metal_obj.isBodyActive = true
+					trainingStep = 10
+					end
+					
+					timer.performWithDelay( 2000, training9, 1 )
+					
+				end
+			
+				
+							
+								
+				if trainingStep == 10 then
+				--send character through portal to continue	
+				--show all ui elements
+				
+					if portalOpen == true then
+						trainingText9.isVisible = false
+						trainingText10.isVisible = true
+						trainingText10_1.isVisible = true
+					end
+															
+				end
+				
+				
+				
+				
+			
+			end
+			
+			
+		-------------------------------------------------------------------------------------------------------------------- 
+		-- end code for Text of training level
+		--------------------------------------------------------------------------------------------------------------------
+			
 			if waitingForNewRound then
 				
 				waitingForNewRound = false
 				if continueTimer then timer.cancel( continueTimer ); end
-				continueText.isVisible = false
-				if leveldata.restartLevel == "1-1" or leveldata.restartLevel == "1-2" or leveldata.restartLevel == "1-3" or leveldata.restartLevel == "1-4" or leveldata.restartLevel == "1-5" then
+				-- continueText.isVisible = false
+				if leveldata.restartLevel == "1-1" then
 				trainingText.isVisible = true
 				end
 				
@@ -1921,77 +2241,58 @@ function new()
 			end
 			
 			Particles.Update()
-			if leveldata.restartLevel == "1-1" or leveldata.restartLevel == "1-2" or leveldata.restartLevel == "1-4" or leveldata.restartLevel == "1-5" or leveldata.restartLevel == "1-3" then
-				if characterObject.isHit == false and characterObject.inAir then
-					-- characterObject.isHit = true
-					print("something is working!")
-					if dotTimer then timer.cancel( dotTimer ); end
-					timer.performWithDelay( 10000, callNewRound( true, "no" ), 0 )
-					characterBoolean = characterBoolean + 1
-				end
-			end
 			
-				
-			if leveldata.restartLevel == "1-1" then
-				if characterObject.inAir == true then
-					intro1_1Text1.isVisible = false
-					intro1_1Text2.isVisible = true
-				end
-		
-				if portalOpen == true then
-					intro1_1Text2.isVisible = false
-					intro1_1Text3.isVisible = true
-				end
-			end
-			
-			if leveldata.restartLevel == "1-2" then
-					if portalOpen == true then
-					intro1_2Text1.isVisible = false
-					intro1_2Text2.isVisible = true
-				end
-			end
-			
-			if leveldata.restartLevel == "1-5" then
-					if portalOpen == true then
-					intro1_5Text1.isVisible = false
-					intro1_5Text4.isVisible = false
-					intro1_5Text2.isVisible = true
-					intro1_5Text3.isVisible = true
-				end
-			end
 			
 			
 			
 			-- Create Interactions
 			for key,data in pairs(leveldata.blackHoles) do 
 				if(data.myName=="blackhole") then
-
-					dx = data.x - characterObject.x
-					dy = data.y - characterObject.y
-					r = math.sqrt(dx^2 + dy^2)
-					forceFactor = data.forceFactor
-					fx = forceFactor*dx/r; fy = forceFactor*dy/r
-					characterObject:applyForce( fx, fy, characterObject.x, characterObject.y )
-
+					if leveldata.restartLevel == "1-1" then
+						if trainingStep > 8 then
+						dx = data.x - characterObject.x
+						dy = data.y - characterObject.y
+						r = math.sqrt(dx^2 + dy^2)
+						forceFactor = data.forceFactor
+						fx = forceFactor*dx/r; fy = forceFactor*dy/r
+						characterObject:applyForce( fx, fy, characterObject.x, characterObject.y )
+						end
+					else
+						dx = data.x - characterObject.x
+						dy = data.y - characterObject.y
+						r = math.sqrt(dx^2 + dy^2)
+						forceFactor = data.forceFactor
+						fx = forceFactor*dx/r; fy = forceFactor*dy/r
+						characterObject:applyForce( fx, fy, characterObject.x, characterObject.y )
+					end
 				end
 				
 			end
-
 			
 			for key,data in pairs(leveldata.whiteHoles) do 
 				if(data.myName=="whitehole") then
-
-					dx = data.x - characterObject.x
-					dy = data.y - characterObject.y
-					r = math.sqrt(dx^2 + dy^2)
-					forceFactor = -data.forceFactor
-					fx = forceFactor*dx/(r^2); fy = forceFactor*dy/(r^2)
-					characterObject:applyForce( fx, fy, characterObject.x, characterObject.y )
-
+					if leveldata.restartLevel == "1-1" then
+						if trainingStep > 8 then
+							dx = data.x - characterObject.x
+							dy = data.y - characterObject.y
+							r = math.sqrt(dx^2 + dy^2)
+							forceFactor = -data.forceFactor
+							fx = forceFactor*dx/(r^2); fy = forceFactor*dy/(r^2)
+							characterObject:applyForce( fx, fy, characterObject.x, characterObject.y )
+						end
+					else
+						dx = data.x - characterObject.x
+						dy = data.y - characterObject.y
+						r = math.sqrt(dx^2 + dy^2)
+						forceFactor = -data.forceFactor
+						fx = forceFactor*dx/(r^2); fy = forceFactor*dy/(r^2)
+						characterObject:applyForce( fx, fy, characterObject.x, characterObject.y )
+					end
 				end
 				
 			end
-			
+
+							
 			
 			--Teleporter Function
 			if(needToTeleport1 == true and needToTeleport2 ~= true) then
@@ -2172,6 +2473,8 @@ function new()
 					outArrow.isVisible = false
 				end
 			end
+			
+			
 		end
 	end
 	
@@ -2203,42 +2506,187 @@ function new()
 		
 		
 		for key,data in pairs(leveldata.teleporters) do
-			local tele1 = display.newImageRect(data.src, data.width, data.height)
-			tele1.x = data.x1
-			tele1.y = data.y1
-			tele1.rotations = data.rotateAngle1
-			tele1.xo = data.x2
-			tele1.yo = data.y2
-			tele1.rotationo = data.rotateAngle2
-			tele1.myName = data.myName1
-			tele1:rotate(-data.rotateAngle1)
-			physics.addBody(tele1,"static",{isSensor = true})
-			gameGroup:insert(tele1)
-			tele1.collision = onTeleporter1Touch
-			tele1:addEventListener("collision",tele1)
+			
+			if leveldata.restartLevel == "1-1" then
+				
+				if data.id1 == "teleporterpurple-1" then
+					trainingtelepurple1 = display.newImageRect(data.src, data.width, data.height)
+					trainingtelepurple1.id = data.id1
+					trainingtelepurple1.x = data.x1
+					trainingtelepurple1.y = data.y1
+					trainingtelepurple1.rotations = data.rotateAngle1
+					trainingtelepurple1.xo = data.x2
+					trainingtelepurple1.yo = data.y2
+					trainingtelepurple1.rotationo = data.rotateAngle2
+					trainingtelepurple1.myName = data.myName1
+					trainingtelepurple1:rotate(-data.rotateAngle1)
+					physics.addBody(trainingtelepurple1,"static",{isSensor = true})
+					gameGroup:insert(trainingtelepurple1)
+					teletouch = false
+					trainingtelepurple1.collision = onTeleporter1Touch
+					trainingtelepurple1:addEventListener("collision",trainingtelepurple1)	
+					teleWidth = data.width
+					teleHeight = data.height
+					trainingtelepurple1.isBodyActive = false
+					trainingtelepurple1.isVisible = false											
+				
+					trainingtelepurple2 = display.newImageRect(data.src, data.width, data.height)
+					trainingtelepurple2.id = data.id2
+					trainingtelepurple2.x = data.x2
+					trainingtelepurple2.y = data.y2
+					trainingtelepurple2.rotations = data.rotateAngle2
+					trainingtelepurple2.xo = data.x1
+					trainingtelepurple2.yo = data.y1
+					trainingtelepurple2.rotationo = data.rotateAngle1
+					trainingtelepurple2.myName = data.myName2
+					trainingtelepurple2:rotate(-data.rotateAngle2)
+					physics.addBody(trainingtelepurple2,"static",{isSensor = true})
+					gameGroup:insert(trainingtelepurple2)
+					trainingtelepurple2.collision = onTeleporter2Touch
+					trainingtelepurple2:addEventListener("collision",trainingtelepurple2)
+					teleWidth = data.width
+					teleHeight = data.height
+					trainingtelepurple2.isBodyActive = false
+					trainingtelepurple2.isVisible = false							
+				end
+				
+				if data.id1 == "teleporterwhite-1" then
+					trainingtelewhite1 = display.newImageRect(data.src, data.width, data.height)
+					trainingtelewhite1.id = data.id1
+					trainingtelewhite1.x = data.x1
+					trainingtelewhite1.y = data.y1
+					trainingtelewhite1.rotations = data.rotateAngle1
+					trainingtelewhite1.xo = data.x2
+					trainingtelewhite1.yo = data.y2
+					trainingtelewhite1.rotationo = data.rotateAngle2
+					trainingtelewhite1.myName = data.myName1
+					trainingtelewhite1:rotate(-data.rotateAngle1)
+					physics.addBody(trainingtelewhite1,"static",{isSensor = true})
+					gameGroup:insert(trainingtelewhite1)
+					teletouch = false
+					trainingtelewhite1.collision = onTeleporter1Touch
+					trainingtelewhite1:addEventListener("collision",trainingtelewhite1)	
+					teleWidth = data.width
+					teleHeight = data.height
+					trainingtelewhite1.isBodyActive = false
+					trainingtelewhite1.isVisible = false											
+				
+					trainingtelewhite2 = display.newImageRect(data.src, data.width, data.height)
+					trainingtelewhite2.id = data.id2
+					trainingtelewhite2.x = data.x2
+					trainingtelewhite2.y = data.y2
+					trainingtelewhite2.rotations = data.rotateAngle2
+					trainingtelewhite2.xo = data.x1
+					trainingtelewhite2.yo = data.y1
+					trainingtelewhite2.rotationo = data.rotateAngle1
+					trainingtelewhite2.myName = data.myName2
+					trainingtelewhite2:rotate(-data.rotateAngle2)
+					physics.addBody(trainingtelewhite2,"static",{isSensor = true})
+					gameGroup:insert(trainingtelewhite2)
+					trainingtelewhite2.collision = onTeleporter2Touch
+					trainingtelewhite2:addEventListener("collision",trainingtelewhite2)
+					teleWidth = data.width
+					teleHeight = data.height
+					trainingtelewhite2.isBodyActive = false
+					trainingtelewhite2.isVisible = false							
+				end
+				
+				if data.id1 == "teleporteryellow-1" then
+					trainingteleyellow1 = display.newImageRect(data.src, data.width, data.height)
+					trainingteleyellow1.id = data.id1
+					trainingteleyellow1.x = data.x1
+					trainingteleyellow1.y = data.y1
+					trainingteleyellow1.rotations = data.rotateAngle1
+					trainingteleyellow1.xo = data.x2
+					trainingteleyellow1.yo = data.y2
+					trainingteleyellow1.rotationo = data.rotateAngle2
+					trainingteleyellow1.myName = data.myName1
+					trainingteleyellow1:rotate(-data.rotateAngle1)
+					physics.addBody(trainingteleyellow1,"static",{isSensor = true})
+					gameGroup:insert(trainingteleyellow1)
+					teletouch = false
+					trainingteleyellow1.collision = onTeleporter1Touch
+					trainingteleyellow1:addEventListener("collision",trainingteleyellow1)	
+					teleWidth = data.width
+					teleHeight = data.height
+					trainingteleyellow1.isBodyActive = false
+					trainingteleyellow1.isVisible = false											
+				
+					trainingteleyellow2 = display.newImageRect(data.src, data.width, data.height)
+					trainingteleyellow2.id = data.id2
+					trainingteleyellow2.x = data.x2
+					trainingteleyellow2.y = data.y2
+					trainingteleyellow2.rotations = data.rotateAngle2
+					trainingteleyellow2.xo = data.x1
+					trainingteleyellow2.yo = data.y1
+					trainingteleyellow2.rotationo = data.rotateAngle1
+					trainingteleyellow2.myName = data.myName2
+					trainingteleyellow2:rotate(-data.rotateAngle2)
+					physics.addBody(trainingteleyellow2,"static",{isSensor = true})
+					gameGroup:insert(trainingteleyellow2)
+					trainingteleyellow2.collision = onTeleporter2Touch
+					trainingteleyellow2:addEventListener("collision",trainingteleyellow2)
+					teleWidth = data.width
+					teleHeight = data.height
+					trainingteleyellow2.isBodyActive = false
+					trainingteleyellow2.isVisible = false							
+				end
+				
+				
+			else
+				
+				for key,data in pairs(leveldata.teleporters) do
+					local tele1 = display.newImageRect(data.src, data.width, data.height)		
+					tele1.id = data.id1
+					tele1.x = data.x1
+					tele1.y = data.y1
+					tele1.rotations = data.rotateAngle1
+					tele1.xo = data.x2
+					tele1.yo = data.y2
+					tele1.rotationo = data.rotateAngle2
+					tele1.myName = data.myName1
+					tele1:rotate(-data.rotateAngle1)
+					physics.addBody(tele1,"static",{isSensor = true})
+					gameGroup:insert(tele1)
+					teletouch = false
+					tele1.collision = onTeleporter1Touch
+					tele1:addEventListener("collision",tele1)
+
+
+
+					local tele2 = display.newImageRect(data.src, data.width, data.height)
+					tele2.id = data.id2
+					tele2.x = data.x2
+					tele2.y = data.y2
+					tele2.rotations = data.rotateAngle2
+					tele2.xo = data.x1
+					tele2.yo = data.y1
+					tele2.rotationo = data.rotateAngle1
+					tele2.myName = data.myName2
+					tele2:rotate(-data.rotateAngle2)
+					physics.addBody(tele2,"static",{isSensor = true})
+					gameGroup:insert(tele2)
+					tele2.collision = onTeleporter2Touch
+					tele2:addEventListener("collision",tele2)
+
+
+					teleWidth = data.width
+					teleHeight = data.height
+
+
+				end
+				
+				
+					
+			end
 			
 			
-			local tele2 = display.newImageRect(data.src, data.width, data.height)
-			tele2.x = data.x2
-			tele2.y = data.y2
-			tele2.rotations = data.rotateAngle2
-			tele2.xo = data.x1
-			tele2.yo = data.y1
-			tele2.rotationo = data.rotateAngle1
-			tele2.myName = data.myName2
-			tele2:rotate(-data.rotateAngle2)
-			physics.addBody(tele2,"static",{isSensor = true})
-			gameGroup:insert(tele2)
-			tele2.collision = onTeleporter2Touch
-			tele2:addEventListener("collision",tele2)
+					
 			
-			teleWidth = data.width
-			teleHeight = data.height
 			
 		end	
 		
-		bomb = {}
-		bombArmedQ = {}
+
 		for key,data in pairs(leveldata.bombs) do
 			index = data.bombIndex
 			bomb = display.newImageRect(data.src, data.width, data.height)
@@ -2255,35 +2703,51 @@ function new()
 			bomb.collision = onBombTouch
 			bomb:addEventListener("collision",bomb)
 			print("bomb index " .. bomb.x .. " index " .. index .. " bomb is on " .. bomb.bombArmedQ)
+			
+			if leveldata.restartLevel == "1-1" then
+				bomb.isBodyActive = true
+				bomb.isVisible = true
+				
+			end
 		end
 			
 		--Create Stone
 		for key,data in pairs(leveldata.stones) do 
 			
-			local obj = display.newImageRect(data.src, data.width, data.height)
-			obj.x = data.x
-			obj.y = data.y
+			stone_obj = display.newImageRect(data.src, data.width, data.height)
+			stone_obj.x = data.x
+			stone_obj.y = data.y
 			if data.rotate ~= nil then
-			obj:rotate(data.rotate)
+			stone_obj:rotate(data.rotate)
 			end
-			obj.myName = data.myName
-			physics.addBody(obj, data.bodyType, {density=properties[data.density], bounce=data.bounce, friction = data.friction, shape=properties[data.shape]})
-			gameGroup:insert(obj)
+			stone_obj.myName = data.myName
+			physics.addBody(stone_obj, data.bodyType, {density=properties[data.density], bounce=data.bounce, friction = data.friction, shape=properties[data.shape]})
+			gameGroup:insert(stone_obj)
+			
+			if leveldata.restartLevel == "1-1" then
+				stone_obj.isBodyActive = false
+				stone_obj.isVisible = false
+			end
 			
 		end
 		
 		--Create Metal
 		for key,data in pairs(leveldata.metals) do 
 			
-			local obj = display.newImageRect(data.src, data.width, data.height)
-			obj.x = data.x
-			obj.y = data.y
+			metal_obj = display.newImageRect(data.src, data.width, data.height)
+			metal_obj.x = data.x
+			metal_obj.y = data.y
 			if data.rotate ~= nil then
-			obj:rotate(data.rotate)
+			metal_obj:rotate(data.rotate)
 			end
-			obj.myName = data.myName
-			physics.addBody(obj, data.bodyType, {density=properties[data.density], bounce=data.bounce, friction = data.friction, shape=properties[data.shape]})
-			gameGroup:insert(obj)
+			metal_obj.myName = data.myName
+			physics.addBody(metal_obj, data.bodyType, {density=properties[data.density], bounce=data.bounce, friction = data.friction, shape=properties[data.shape]})
+			gameGroup:insert(metal_obj)
+			
+			if leveldata.restartLevel == "1-1" then
+				metal_obj.isBodyActive = false
+				metal_obj.isVisible = false
+			end
 			
 		end
 		
@@ -2300,6 +2764,11 @@ function new()
 				physics.addBody(gem_obj, data.bodyType)
 				gem_obj.isSensor = true
 				gameGroup:insert(gem_obj)
+				
+				if leveldata.restartLevel == "1-1" then
+					gem_obj.isBodyActive = false
+					gem_obj.isVisible = false
+				end
 		end
 		
 		for key,data in pairs(leveldata.lifegems) do 
@@ -2314,6 +2783,11 @@ function new()
 				physics.addBody(lifegem_obj, data.bodyType)
 				lifegem_obj.isSensor = true
 				gameGroup:insert(lifegem_obj)
+				
+				if leveldata.restartLevel == "1-1" then
+					lifegem_obj.isBodyActive = false
+					lifegem_obj.isVisible = false
+				end
 		end
 		
 		--Create Wood
@@ -2329,17 +2803,27 @@ function new()
 				switch_obj.myName = data.myName
 				physics.addBody(switch_obj, data.bodyType, {density=properties[data.density], bounce=data.bounce, friction = data.friction, shape=properties[data.shape]})
 				gameGroup:insert(switch_obj)
+				
+				if leveldata.restartLevel == "1-1" then
+					switch_obj.isBodyActive = false
+					switch_obj.isVisible = false
+				end
 			else
-				local obj = display.newImageRect(data.src, data.width, data.height)
-				obj.x = data.x
-				obj.y = data.y
+				wood_obj = display.newImageRect(data.src, data.width, data.height)
+				wood_obj.x = data.x
+				wood_obj.y = data.y
 				if data.rotate ~= nil then
-				obj:rotate(data.rotate)
+				wood_obj:rotate(data.rotate)
 				end
 			
-				obj.myName = data.myName
-				physics.addBody(obj, data.bodyType, {density=properties[data.density], bounce=data.bounce, friction = data.friction, shape=properties[data.shape]})
-				gameGroup:insert(obj)
+				wood_obj.myName = data.myName
+				physics.addBody(wood_obj, data.bodyType, {density=properties[data.density], bounce=data.bounce, friction = data.friction, shape=properties[data.shape]})
+				gameGroup:insert(wood_obj)
+				
+				if leveldata.restartLevel == "1-1" then
+					wood_obj.isBodyActive = false
+					wood_obj.isVisible = false
+				end
 			end
 			
 		end
@@ -2363,21 +2847,31 @@ function new()
 		
 		for key,data in pairs(leveldata.blackHoles) do 
 		
-			local obj = display.newImageRect(data.src, data.width, data.height)
-			obj.x = data.x
-			obj.y = data.y
-			obj.myName = data.myName
-			levelGroup:insert(obj)
+			blackhole_obj = display.newImageRect(data.src, data.width, data.height)
+			blackhole_obj.x = data.x
+			blackhole_obj.y = data.y
+			blackhole_obj.myName = data.myName
+			levelGroup:insert(blackhole_obj)
+			
+			if leveldata.restartLevel == "1-1" then
+				blackhole_obj.isBodyActive = false
+				blackhole_obj.isVisible = false
+			end
 		
 		end
 		
 		for key,data in pairs(leveldata.whiteHoles) do 
 		
-			local obj = display.newImageRect(data.src, data.width, data.height)
-			obj.x = data.x
-			obj.y = data.y
-			obj.myName = data.myName
-			levelGroup:insert(obj)
+			whitehole_obj = display.newImageRect(data.src, data.width, data.height)
+			whitehole_obj.x = data.x
+			whitehole_obj.y = data.y
+			whitehole_obj.myName = data.myName
+			levelGroup:insert(whitehole_obj)
+			
+			if leveldata.restartLevel == "1-1" then
+				whitehole_obj.isBodyActive = false
+				whitehole_obj.isVisible = false
+			end
 		
 		end
 		

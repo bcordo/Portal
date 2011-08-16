@@ -1494,8 +1494,8 @@ function getData()
 	{
 		teleporter1 = 
 		{
-			id1 = "teleporter1-1",
-			id2 = "teleporter1-2",
+			id1 = "teleporterpurple1-1",
+			id2 = "teleporterpurple1-2",
 			myName1 = "teleporter1",
 			myName2 = "teleporter2",
 			src = "images/teleporterpurple.png",
