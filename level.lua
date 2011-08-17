@@ -200,8 +200,9 @@ function new()
 	-- AUDIO
 	local explosionSound = media.newEventSound( "soundfx/explosion.mp3" )
 	local portalOpenSound = audio.loadSound("soundfx/portalopen.wav")
-	local portalExitSound = audio.loadSound("soundfx/portal.wav")
-	-- local telporterSound = audio.loadSound("soundfx/teleporter.wav")
+	local portalExitSound = audio.loadSound("soundfx/portal_3.wav")
+	local portalExitSound2 = audio.loadSound("soundfx/portal2.wav")
+	local portalOpen2Sound = audio.loadSound("soundfx/portalopen.wav")
 	local tapSound = audio.loadSound( "soundfx/tapsound.wav" )
 	local blastOffSound = audio.loadSound( "soundfx/blastoff.wav" )
 	local characterPoofSound = audio.loadSound( "soundfx/characterpoof.wav" )
@@ -212,6 +213,19 @@ function new()
 	local youWinSound = audio.loadSound( "soundfx/win.wav" )
 	local youLoseSound = audio.loadSound( "soundfx/lose.wav" )
 	local switchSound = audio.loadSound( "soundfx/switch_activate.wav" )
+	local gemSound = audio.loadSound( "soundfx/gem.wav" )
+	local lifegemSound = audio.loadSound( "soundfx/lifegem.wav" )
+	
+	local BackgroundMusicMix = function()
+	
+	levelBackgroundMusicTable = {"SnakesOnTheTake.mp3","ShesWarpedAgain.mp3","LightSpeed.mp3","HurryScurry.mp3"}
+	indexOfLevelBackgroundMusicTable = math.random(#levelBackgroundMusicTable)
+	levelBackgroundMusicName = levelBackgroundMusicTable[indexOfLevelBackgroundMusicTable]
+	levelBackgroundMusic = audio.loadStream("soundfx/backgroundMusic/"..levelBackgroundMusicName)
+	backgroundMusicChannel = audio.play(levelBackgroundMusic, { channel=2, loops=0, onComplete=BackgroundMusicMix }  )
+	audio.setVolume( 0.327, { channel=2 } )
+	end
+	
 	
 	------------------Text Wrapping Functions -----------------------
 	-- Wrap text
@@ -503,6 +517,19 @@ function new()
 		charactertouchdie = false
 		characterTrainingDeath = true
 		
+		if audio.isChannelActive( 2 ) then
+			audio.resume(2)
+		else
+			
+			levelBackgroundMusicTable = {"SnakesOnTheTake.mp3","ShesWarpedAgain.mp3","LightSpeed.mp3","HurryScurry.mp3"}
+			indexOfLevelBackgroundMusicTable = math.random(#levelBackgroundMusicTable)
+			levelBackgroundMusicName = levelBackgroundMusicTable[indexOfLevelBackgroundMusicTable]
+			levelBackgroundMusic = audio.loadStream("soundfx/backgroundMusic/"..levelBackgroundMusicName)
+			backgroundMusicChannel = audio.play(levelBackgroundMusic, { channel=2, loops=0, onComplete=BackgroundMusicMix }  )
+			audio.setVolume( 0.327, { channel=2 } )
+			
+		end
+		
 		if leveldata.restartLevel == "1-1" then
 			bomb.x = -10000
 			bomb.y = 10000
@@ -785,6 +812,9 @@ function new()
 		
 		gameIsActive = false	--> temporarily disable gameplay touches, enterFrame listener, etc.
 		physics.pause()
+		if audio.isChannelActive( 2 ) then
+			audio.pause(2)
+		end
 		
 		-- Make sure pause button is hidden/inactive
 		pauseBtn.isVisible = false
@@ -840,8 +870,8 @@ function new()
 			
 		else
 			gameOverDisplay = display.newImageRect( "images/youlose.png", 390, 154 )
-			loseTextSoundTable = {{"You lose bitch... Hahaha you are a faggot!!","lose.wav"},{"Hahahah you suck. I can't believe you lost. GO kill yourself!!","lose.wav"}}
-
+			loseTextSoundTable = {{"You lose bitch... Hahaha you are a faggot!!","lose.wav"},{"Hahahah you suck. I can't believe you lost. GO kill yourself!!","lose.wav"}} 	
+				
 			indexOfTableLose = math.random(#loseTextSoundTable)
 			loseText = loseTextSoundTable[indexOfTableLose][1]
 			loseSoundText = loseTextSoundTable[indexOfTableLose][2]
@@ -864,10 +894,14 @@ function new()
 		-- MENU BUTTON
 		local onMenuTouch = function( event )
 			if event.phase == "release" then
+				
 				if endScoreText ~= nil then
 				endScoreText.alpha = 0
-				end
+								end
 				audio.play( tapSound )
+				if audio.isChannelActive( 2 ) then
+					audio.stop(2)
+				end
 				for i = result.numChildren,1,-1 do
 					local child = result[i]
 					child.parent:remove( child )
@@ -905,6 +939,9 @@ function new()
 		-- RESTART BUTTON
 		local onRestartTouch = function( event )
 			if event.phase == "release" then
+				if audio.isChannelActive( 2 ) then
+					audio.stop(2)
+				end
 				if endScoreText ~= nil then
 				endScoreText.alpha = 0
 				end
@@ -1425,6 +1462,9 @@ function new()
 				
 					gameIsActive = false
 					physics.pause()
+					if audio.isChannelActive( 2 ) then
+						audio.pause(2)
+					end
 					-- if portalOpen == true then
 					-- 	Particles.StopEmitter("PortalEmitter")
 					-- end
@@ -1484,6 +1524,16 @@ function new()
 					
 					gameIsActive = true
 					physics.start()
+					if audio.isChannelActive( 2 ) then
+						audio.resume(2)
+					else
+						levelBackgroundMusicTable = {"SnakesOnTheTake.mp3","ShesWarpedAgain.mp3","LightSpeed.mp3","HurryScurry.mp3"}
+						indexOfLevelBackgroundMusicTable = math.random(#levelBackgroundMusicTable)
+						levelBackgroundMusicName = levelBackgroundMusicTable[indexOfLevelBackgroundMusicTable]
+						levelBackgroundMusic = audio.loadStream("soundfx/backgroundMusic/"..levelBackgroundMusicName)
+						backgroundMusicChannel = audio.play(levelBackgroundMusic, { channel=2, loops=0, onComplete=BackgroundMusicMix }  )
+						audio.setVolume( 0.327, { channel=2 } )
+					end
 					
 					-- START character animation back up
 					if characterTween then
@@ -1536,9 +1586,10 @@ function new()
 		-- MENU BUTTON (on Pause Display)
 		local onMenuPauseTouch = function( event )
 			if event.phase == "release" and pauseMenuBtn.isActive then
-				
 				audio.play( tapSound )
-				
+				if audio.isChannelActive( 2 ) then
+					audio.stop(2)
+				end
 				local onComplete = function ( event )
 					if "clicked" == event.action then
 						local i = event.index
@@ -1590,7 +1641,6 @@ function new()
 			if event.phase == "release" and pauseRestartBtn.isActive then
 				audio.play( tapSound )
 				--local theModule = "load" .. restartModule
-				
 				_G.loadLevel = restartLevel
 				local theModule = "loadlevel"
 				Particles.WakeUp()
@@ -1673,7 +1723,7 @@ function new()
 						
 
 						event.other:removeSelf()
-						audio.play( switchSound )
+						audio.play( gemSound )
 
 				end
 				
@@ -1784,7 +1834,7 @@ function new()
 						
 
 						event.other:removeSelf()
-						audio.play( switchSound )
+						audio.play( lifegemSound )
 
 				end
 				
@@ -1822,6 +1872,7 @@ function new()
 
 									portalOpen = true
 									audio.play( switchSound )
+									audio.play( portalOpen2Sound)
 									event.other:removeSelf()
 
 									-- PortalSound = audio.loadStream("soundfx/explosion_long.aac")
@@ -2004,6 +2055,7 @@ function new()
 			scoreAnimText1000.y = self.y
 			animScore(scoreAnimText1000)
 			audio.play( portalExitSound )
+			audio.play( portalExitSound2 )
 			self.isHit = true
 			Particles.StopEmitter("PortalEmitter")
 			-- Particles.DeleteEmitter("PortalEmitter")
@@ -2408,6 +2460,8 @@ function new()
 	local gameLoop = function()
 		if gameIsActive then
 			
+			-- levelBackgroundMusic = audio.loadStream("soundfx/backgroundMusic/"..levelBackgroundMusicName)
+			-- backgroundMusicChannel = audio.play(levelBackgroundMusic, { channel=2, loops=0, onComplete=BackgroundMusicMix }  )
 			
 			-------------------------------------------------------------------------------------------------------------------- 
 			-- This is the code for the Text of the training level
@@ -3339,6 +3393,9 @@ function new()
 			if gameIsActive and pauseBtn.isVisible then
 				gameIsActive = false
 				physics.pause()
+				if audio.isChannelActive( 2 ) then
+					audio.pause(2)
+				end
 				
 				-- SHADE
 				if not shadeRect then
@@ -3388,6 +3445,18 @@ function new()
 	local gameInit = function()
 	
 		-- resumeStart() 
+		if audio.isChannelActive( 2 ) then
+			audio.resume(2)
+		else
+			
+			levelBackgroundMusicTable = {"SnakesOnTheTake.mp3","ShesWarpedAgain.mp3","LightSpeed.mp3","HurryScurry.mp3"}
+			indexOfLevelBackgroundMusicTable = math.random(#levelBackgroundMusicTable)
+			levelBackgroundMusicName = levelBackgroundMusicTable[indexOfLevelBackgroundMusicTable]
+			levelBackgroundMusic = audio.loadStream("soundfx/backgroundMusic/"..levelBackgroundMusicName)
+			backgroundMusicChannel = audio.play(levelBackgroundMusic, { channel=2, loops=0, onComplete=BackgroundMusicMix }  )
+			audio.setVolume( 0.327, { channel=2 } )
+			
+		end
 			
 		-- PHYSICS
 		physics.start( true )
@@ -3456,6 +3525,10 @@ function new()
 	clean = function()
 		-- STOP PHYSICS ENGINE
 		physics.stop()
+		if audio.isChannelActive( 2 ) then
+			audio.pause(2)
+		end
+		
 
 
 
