@@ -101,6 +101,7 @@ function new()
 	local whitehole
 	local blackhole
 	local gear
+	local teletouch
 	
 	
 	local life1; local life2; local life3; local life4; local life5; local life6; local life7; local life8;
@@ -124,9 +125,12 @@ function new()
 	local portalOpen = false
 	local characterBoolean = 1
 	local charactertouchdie = false
+	local characterPop = false
+	local characterOut = false
 	local trainingStep = 1 
 	local characterTrainingDeath = true
 	local bombArmedQ 
+	local trainingLevelPause
 
 
 	
@@ -530,10 +534,7 @@ function new()
 			
 		end
 		
-		if leveldata.restartLevel == "1-1" then
-			bomb.x = -10000
-			bomb.y = 10000
-		end
+		
 		createcharacter()
 		if characterObject then
 			
@@ -810,7 +811,7 @@ function new()
 		
 		local callEndOfGame = function()
 		
-		gameIsActive = false	--> temporarily disable gameplay touches, enterFrame listener, etc.
+		--> temporarily disable gameplay touches, enterFrame listener, etc.
 		physics.pause()
 		if audio.isChannelActive( 2 ) then
 			audio.pause(2)
@@ -2148,7 +2149,7 @@ function new()
 	local onScreenTouch = function( event )
 		if charactertouchdie == false then
 		if gameIsActive then
-			if event.phase == "began" and characterObject.inAir == false and event.xStart > 0 and event.xStart < 200 and event.yStart > 200 and event.yStart < 350 and screenPosition == "left" then
+			if event.phase == "began" and characterObject.inAir == false and event.xStart > 0 and event.xStart < 200 and event.yStart > 200 and event.yStart < 350 and screenPosition == "left" and trainingLevelPause ~= true then
 	
 				transition.cancel( characterTween )
 				characterObject.y = 255
@@ -2368,7 +2369,9 @@ function new()
 				characterObject.isHit = true
 				if dotTimer then timer.cancel( dotTimer ); end
 				callNewRound( true, "yes" )
+				outArrow.isVisible = false
 				characterBoolean = characterBoolean + 1
+				characterPop = true
 			end
 			charactertouchdie = false
 		end
@@ -2392,7 +2395,7 @@ function new()
 		trainingText2:setTextColor(0, 0, 0)
 		trainingText2.isVisible = false
 		
-		trainingText3 = display.newText(levelGroup, "transporters of the same color are linked... send through white transporter to continue", 20, 170, "Danube", 24 )
+		trainingText3 = display.newText(levelGroup, "transporters of the same color are linked... send through a transporter to continue", 20, 170, "Danube", 24 )
 		trainingText3.xScale = 0.5; trainingText3.yScale = 0.5
 		trainingText3.x = trainingText3.width/4 + 10;
 		trainingText3:setTextColor(0, 0, 0)
@@ -2466,11 +2469,11 @@ function new()
 			-------------------------------------------------------------------------------------------------------------------- 
 			-- This is the code for the Text of the training level
 			-------------------------------------------------------------------------------------------------------------------- 
-			 
+
 			if leveldata.restartLevel == "1-1" then
-				
-				
-				
+
+				-- print("bomb.x = "..bomb.x.." ; bomb.y = "..bomb.y)
+
 				-- if characterObject.isHit == false and characterObject.inAir and characterTrainingDeath == true then
 				-- 					-- characterObject.isHit = true
 				-- 					print("something is working!")
@@ -2478,121 +2481,161 @@ function new()
 				-- 					timer.performWithDelay( 10000, callNewRound( true, "no" ), 0 )
 				-- 					characterBoolean = characterBoolean + 1
 				-- 				end
-				
-				
-				
+
+
+
 				if trainingStep == 1 then
 					-- bomb.isVisible = false
-					--bomb.isBodyActive = false		
-					
-					
+					--bomb.isBodyActive = false	
+
 					if characterObject.inAir == true then
-						
-						local training1 = function()
+
+						if characterPop == true or characterOut == true then
 							trainingStep = 2
 							trainingText1.isVisible = false
 							trainingText1_1.isVisible = false
 							trainingText2.isVisible = true
+							if characterPop == true then
+							characterPop = false
+							end
+							if characterOut == true then
+							characterOut = false
+							end
 						end
-						timer.performWithDelay( 3700, training1, 1 )
 					end
-					
-					
+
+
 				end
-					
-				
-				
-				
-				
+
+
+
+
+
 				if trainingStep == 2 then
+
+					if characterPop == true and teletouch~=true or characterOut == true and teletouch~=true then
+						if characterPop == true then
+						characterPop = false
+						end
+						if characterOut == true then
+						characterOut = false
+						end
+					end
+
 					trainingtelepurple1.isBodyActive = true
 					trainingtelepurple1.isVisible = true
 					trainingtelepurple2.isBodyActive = true
 					trainingtelepurple2.isVisible = true
-						
-					
+
+
 					if teletouch == true then
-					
-										
-						teletouch = false
-					
-					
-						local training2 = function()
+
+
+						if characterPop == true or characterOut == true then
+							teletouch = false
 							trainingStep = 3
 							trainingText2.isVisible = false
 							trainingText3.isVisible = true
+							if characterPop == true then
+							characterPop = false
+							end
+							if characterOut == true then
+							characterOut = false
+							end
+
+							trainingtelepurple1.isBodyActive = false
+							trainingtelepurple1.isVisible = false
+							trainingtelepurple2.isBodyActive = false
+							trainingtelepurple2.isVisible = false
+
+
+							trainingtelegreen1.isBodyActive = true
+							trainingtelegreen1.isVisible = true
+							trainingtelegreen2.isBodyActive = true
+							trainingtelegreen2.isVisible = true
+
+							trainingteleyellow1.isBodyActive = true
+							trainingteleyellow1.isVisible = true
+							trainingteleyellow2.isBodyActive = true
+							trainingteleyellow2.isVisible = true
 						end
-						timer.performWithDelay( 3700, training2, 1 )
-					
+						-- teletouch = false
 					end
-					
+
 				end
-				
+
 				if trainingStep == 3 then
-					
-					trainingtelepurple1.isBodyActive = false
-					trainingtelepurple1.isVisible = false
-					trainingtelepurple2.isBodyActive = false
-					trainingtelepurple2.isVisible = false
-					
-					trainingtelewhite1.isBodyActive = true
-					trainingtelewhite1.isVisible = true
-					trainingtelewhite2.isBodyActive = true
-					trainingtelewhite2.isVisible = true
-					
-					trainingteleyellow1.isBodyActive = true
-					trainingteleyellow1.isVisible = true
-					trainingteleyellow2.isBodyActive = true
-					trainingteleyellow2.isVisible = true
-					
-					
-					
-					
-					if teletouch == true then
-					
-					trainingText3.isVisible = false
-					
-					teletouch = false
-					
-					
-					local training3 = function()
-						trainingStep = 4
+
+					if characterPop == true and teletouch~=true or characterOut == true and teletouch~=true then
+						if characterPop == true then
+						characterPop = false
+						end
+						if characterOut == true then
+						characterOut = false
+						end
 					end
-					
-					timer.performWithDelay( 3700, training3, 1 )
-					
+
+
+					if teletouch == true then
+
+
+						if characterPop == true or characterOut == true then
+							if characterPop == true then
+							characterPop = false
+							end
+							if characterOut == true then
+							characterOut = false
+							end
+							trainingStep = 4
+							trainingText3.isVisible = false
+						end
+
 					end
 				end
-				
+
 				if trainingStep == 4 then
 				--introduce black holes, white holes, and bombs, after characters death	(timer...)
 				--purple jewls give you extra points (timer...)
 				--orangish yellow jewels give you extra lives (timer...)
 				--show then hide ui elements
-					
-					trainingtelewhite1.isBodyActive = false
-					trainingtelewhite1.isVisible = false
-					trainingtelewhite2.isBodyActive = false
-					trainingtelewhite2.isVisible = false
-					
+
+					trainingtelegreen1.isBodyActive = false
+					trainingtelegreen1.isVisible = false
+					trainingtelegreen2.isBodyActive = false
+					trainingtelegreen2.isVisible = false
+
 					trainingteleyellow1.isBodyActive = false
 					trainingteleyellow1.isVisible = false
 					trainingteleyellow2.isBodyActive = false
 					trainingteleyellow2.isVisible = false
-					
+
 					trainingText4.isVisible = true
 					-- blackhole_obj.isBodyActive = true
 					blackhole_obj.isVisible = true
-				
-									
+					
+					--Pause Training Level
+					
+					physics.pause()
+					canSwipe = false
+
+					-- STOP character ANIMATION
+					if characterTween then
+						transition.cancel( characterTween )
+					end
+					
 					trainingStep = 5
-					
-					
-					 
+
+					teletouch = false
+					trainingLevelPause = true
+
+
+
 				end
-				
+
 				if trainingStep == 5 then
-					
+					if characterTween then
+						transition.cancel( characterTween )
+					end
 					local training5 = function()
 					trainingText4.isVisible = false
 					trainingText5.isVisible = true
@@ -2602,13 +2645,16 @@ function new()
 					whitehole_obj.isVisible = true
 					trainingStep = 6
 					end
-					
+
 					timer.performWithDelay( 2000, training5, 1 )
-					
+
 				end
-				
+
 				if trainingStep == 6 then
-					
+					if characterTween then
+						transition.cancel( characterTween )
+					end
+
 					local training6 = function()
 					trainingText5.isVisible = false
 					trainingText6.isVisible = true
@@ -2621,13 +2667,15 @@ function new()
 					bomb.isVisible = true
 					trainingStep = 7
 					end
-					
+
 					timer.performWithDelay( 2000, training6, 1 )
-					
+
 				end
-				
+
 				if trainingStep == 7 then
-					
+					if characterTween then
+						transition.cancel( characterTween )
+					end
 					local training7 = function()
 					trainingText6.isVisible = false
 					trainingText6_1.isVisible = false
@@ -2638,13 +2686,16 @@ function new()
 					gem_obj.isVisible = true
 					trainingStep = 8
 					end
-					
+
 					timer.performWithDelay( 2000, training7, 1 )
-					
+
 				end
-				
+
 				if trainingStep == 8 then
-					
+					if characterTween then
+						transition.cancel( characterTween )
+					end
+
 					local training8 = function()
 					trainingText7.isVisible = false
 					trainingText8.isVisible = true
@@ -2654,12 +2705,12 @@ function new()
 					lifegem_obj.isVisible = true
 					trainingStep = 9
 					end
-					
+
 					timer.performWithDelay( 2000, training8, 1 )
 				end
-				
+
 				if trainingStep == 9 then
-					
+
 					local training9 = function()
 					trainingText8.isVisible = false
 					trainingText9.isVisible = true
@@ -2680,37 +2731,73 @@ function new()
 					metal_obj.isVisible = true
 					metal_obj.isBodyActive = true
 					trainingStep = 10
+					
+					--Resume Training Level
+					
+					physics.start()
+					canSwipe = true
+
+					-- STOP character ANIMATION
+					if characterTween then
+						transition.cancel( characterTween )
 					end
 					
-					timer.performWithDelay( 2000, training9, 1 )
-					
-				end
-			
+					if characterTween then
+						transition.cancel( characterTween )
+					end
+
+					local function characterAnimation()
+						local animUp = function()
+							if characterObject.inAir or shotOrb.isVisible then
+								transition.cancel( characterTween )
+							else
+								characterTween = transition.to( characterObject, { time=375, y=250, onComplete=characterAnimation })
+							end
+						end
+
+						if characterObject.inAir or shotOrb.isVisible then
+							transition.cancel( characterTween )
+						else
+							characterTween = transition.to( characterObject, { time=375, y=260, onComplete=animUp })
+						end
+					end
+
+					characterTween = transition.to( characterObject, { time=375, y=250, onComplete=characterAnimation })
 				
-							
-								
+				
+					trainingLevelPause = false
+					
+					end
+
+					timer.performWithDelay( 2000, training9, 1 )
+
+				end
+
+
+
+
 				if trainingStep == 10 then
 				--send character through portal to continue	
 				--show all ui elements
-				
+
 					if portalOpen == true then
 						trainingText9.isVisible = false
 						trainingText10.isVisible = true
 						trainingText10_1.isVisible = true
 					end
-															
+
 				end
-				
-				
-				
-				
-			
+
+
+
+
+
 			end
-			
-			
-		-------------------------------------------------------------------------------------------------------------------- 
-		-- end code for Text of training level
-		--------------------------------------------------------------------------------------------------------------------
+
+
+			-------------------------------------------------------------------------------------------------------------------- 
+			-- end code for Text of training level
+			--------------------------------------------------------------------------------------------------------------------
 			
 			if waitingForNewRound then
 				
@@ -2931,6 +3018,7 @@ function new()
 			
 			-- CHECK IF character GOES PAST SCREEN
 			if characterObject.isHit == false and characterObject.x >= 1800 then
+				characterOut = true
 				characterObject.isHit = true
 				if dotTimer then timer.cancel( dotTimer ); end
 				callNewRound( false, "no" )
@@ -2941,6 +3029,7 @@ function new()
 			end
 			
 			if characterObject.isHit == false and characterObject.x < -800 then
+				characterOut = true
 				characterObject.isHit = true
 				if dotTimer then timer.cancel( dotTimer ); end
 				callNewRound( false, "no" )
@@ -2951,6 +3040,7 @@ function new()
 			end
 			
 			if characterObject.isHit == false and characterObject.y >= 1200 then
+				characterOut = true
 				characterObject.isHit = true
 				if dotTimer then timer.cancel( dotTimer ); end
 				callNewRound( false, "no" )
@@ -2961,6 +3051,7 @@ function new()
 			end
 			
 			if characterObject.isHit == false and characterObject.y < -800 then
+				characterOut = true
 				characterObject.isHit = true
 				if dotTimer then timer.cancel( dotTimer ); end
 				callNewRound( false, "no" )
@@ -3046,45 +3137,45 @@ function new()
 					trainingtelepurple2.isVisible = false							
 				end
 				
-				if data.id1 == "teleporterwhite-1" then
-					trainingtelewhite1 = display.newImageRect(data.src, data.width, data.height)
-					trainingtelewhite1.id = data.id1
-					trainingtelewhite1.x = data.x1
-					trainingtelewhite1.y = data.y1
-					trainingtelewhite1.rotations = data.rotateAngle1
-					trainingtelewhite1.xo = data.x2
-					trainingtelewhite1.yo = data.y2
-					trainingtelewhite1.rotationo = data.rotateAngle2
-					trainingtelewhite1.myName = data.myName1
-					trainingtelewhite1:rotate(-data.rotateAngle1)
-					physics.addBody(trainingtelewhite1,"static",{isSensor = true})
-					gameGroup:insert(trainingtelewhite1)
+				if data.id1 == "teleportergreen-1" then
+					trainingtelegreen1 = display.newImageRect(data.src, data.width, data.height)
+					trainingtelegreen1.id = data.id1
+					trainingtelegreen1.x = data.x1
+					trainingtelegreen1.y = data.y1
+					trainingtelegreen1.rotations = data.rotateAngle1
+					trainingtelegreen1.xo = data.x2
+					trainingtelegreen1.yo = data.y2
+					trainingtelegreen1.rotationo = data.rotateAngle2
+					trainingtelegreen1.myName = data.myName1
+					trainingtelegreen1:rotate(-data.rotateAngle1)
+					physics.addBody(trainingtelegreen1,"static",{isSensor = true})
+					gameGroup:insert(trainingtelegreen1)
 					teletouch = false
-					trainingtelewhite1.collision = onTeleporter1Touch
-					trainingtelewhite1:addEventListener("collision",trainingtelewhite1)	
+					trainingtelegreen1.collision = onTeleporter1Touch
+					trainingtelegreen1:addEventListener("collision",trainingtelegreen1)	
 					teleWidth = data.width
 					teleHeight = data.height
-					trainingtelewhite1.isBodyActive = false
-					trainingtelewhite1.isVisible = false											
+					trainingtelegreen1.isBodyActive = false
+					trainingtelegreen1.isVisible = false											
 				
-					trainingtelewhite2 = display.newImageRect(data.src, data.width, data.height)
-					trainingtelewhite2.id = data.id2
-					trainingtelewhite2.x = data.x2
-					trainingtelewhite2.y = data.y2
-					trainingtelewhite2.rotations = data.rotateAngle2
-					trainingtelewhite2.xo = data.x1
-					trainingtelewhite2.yo = data.y1
-					trainingtelewhite2.rotationo = data.rotateAngle1
-					trainingtelewhite2.myName = data.myName2
-					trainingtelewhite2:rotate(-data.rotateAngle2)
-					physics.addBody(trainingtelewhite2,"static",{isSensor = true})
-					gameGroup:insert(trainingtelewhite2)
-					trainingtelewhite2.collision = onTeleporter2Touch
-					trainingtelewhite2:addEventListener("collision",trainingtelewhite2)
+					trainingtelegreen2 = display.newImageRect(data.src, data.width, data.height)
+					trainingtelegreen2.id = data.id2
+					trainingtelegreen2.x = data.x2
+					trainingtelegreen2.y = data.y2
+					trainingtelegreen2.rotations = data.rotateAngle2
+					trainingtelegreen2.xo = data.x1
+					trainingtelegreen2.yo = data.y1
+					trainingtelegreen2.rotationo = data.rotateAngle1
+					trainingtelegreen2.myName = data.myName2
+					trainingtelegreen2:rotate(-data.rotateAngle2)
+					physics.addBody(trainingtelegreen2,"static",{isSensor = true})
+					gameGroup:insert(trainingtelegreen2)
+					trainingtelegreen2.collision = onTeleporter2Touch
+					trainingtelegreen2:addEventListener("collision",trainingtelegreen2)
 					teleWidth = data.width
 					teleHeight = data.height
-					trainingtelewhite2.isBodyActive = false
-					trainingtelewhite2.isVisible = false							
+					trainingtelegreen2.isBodyActive = false
+					trainingtelegreen2.isVisible = false							
 				end
 				
 				if data.id1 == "teleporteryellow-1" then
@@ -3205,7 +3296,9 @@ function new()
 			if leveldata.restartLevel == "1-1" then
 				bomb.isBodyActive = true
 				bomb.isVisible = true
-				
+				bomb.x = -10000
+				bomb.y = 10000
+								
 			end
 		end
 			

@@ -152,26 +152,26 @@ function newMain ()
 	this:insert(lifegem_1)
 	this.lifegem_1 = lifegem_1
 	
-	local teleporterwhite_1 = display.newImageRect(imagelookup.table["Teleporterwhite"],imagelookup.table["TeleporterwhiteWidth"],imagelookup.table["TeleporterwhiteHeight"])
-	teleporterwhite_1.x = 217
-	teleporterwhite_1.y = 170
-	teleporterwhite_1.xScale = 1
-	teleporterwhite_1.yScale = 1
-	teleporterwhite_1.rotation = -32.914065932417046
-	teleporterwhite_1.isVisible = false
+	local teleportergreen_1 = display.newImageRect(imagelookup.table["Teleportergreen"],imagelookup.table["TeleportergreenWidth"],imagelookup.table["TeleportergreenHeight"])
+	teleportergreen_1.x = 217
+	teleportergreen_1.y = 170
+	teleportergreen_1.xScale = 1
+	teleportergreen_1.yScale = 1
+	teleportergreen_1.rotation = -32.914065932417046
+	teleportergreen_1.isVisible = false
 	
-	this:insert(teleporterwhite_1)
-	this.teleporterwhite_1 = teleporterwhite_1
+	this:insert(teleportergreen_1)
+	this.teleportergreen_1 = teleportergreen_1
 	
-	local teleporterwhite_2 = display.newImageRect(imagelookup.table["Teleporterwhite"],imagelookup.table["TeleporterwhiteWidth"],imagelookup.table["TeleporterwhiteHeight"])
-	teleporterwhite_2.x = 357.7727272727273
-	teleporterwhite_2.y = 70.03636363636365
-	teleporterwhite_2.xScale = 1
-	teleporterwhite_2.yScale = 1
-	teleporterwhite_2.isVisible = false
+	local teleportergreen_2 = display.newImageRect(imagelookup.table["Teleportergreen"],imagelookup.table["TeleportergreenWidth"],imagelookup.table["TeleportergreenHeight"])
+	teleportergreen_2.x = 357.7727272727273
+	teleportergreen_2.y = 70.03636363636365
+	teleportergreen_2.xScale = 1
+	teleportergreen_2.yScale = 1
+	teleportergreen_2.isVisible = false
 	
-	this:insert(teleporterwhite_2)
-	this.teleporterwhite_2 = teleporterwhite_2
+	this:insert(teleportergreen_2)
+	this.teleportergreen_2 = teleportergreen_2
 	
 	local teleporteryellow_1 = display.newImageRect(imagelookup.table["Teleporteryellow"],imagelookup.table["TeleporteryellowWidth"],imagelookup.table["TeleporteryellowHeight"])
 	teleporteryellow_1.x = 193.6909090909091

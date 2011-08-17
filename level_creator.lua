@@ -979,7 +979,7 @@ function getData()
 		}
 	end
 	
-	if lvl.tegreeneporterpurple_1 and lvl.teleporterpurple_2 and lvl.teleportergreen_1 and lvl.teleportergreen_2 and lvl.teleporteryellow_1 and lvl.teleporteryellow_2 and lvl.teleporterblue_1 and lvl.teleporterblue_2 and lvl.teleporterred_1 and lvl.teleporterred_2 and lvl.teleporterorange_1 and lvl.teleporterorange_2 then
+	if lvl.teleporterpurple_1 and lvl.teleporterpurple_2 and lvl.teleportergreen_1 and lvl.teleportergreen_2 and lvl.teleporteryellow_1 and lvl.teleporteryellow_2 and lvl.teleporterblue_1 and lvl.teleporterblue_2 and lvl.teleporterred_1 and lvl.teleporterred_2 and lvl.teleporterorange_1 and lvl.teleporterorange_2 then
 	leveldata.teleporters = 
 	{
 		teleporterpurple = 
