@@ -521,17 +521,19 @@ function new()
 		charactertouchdie = false
 		characterTrainingDeath = true
 		
-		if audio.isChannelActive( 2 ) then
-			audio.resume(2)
-		else
+		if leveldata.restartLevel ~= "1-1" then
+			if audio.isChannelActive( 2 ) then
+				audio.resume(2)
+			else
 			
-			levelBackgroundMusicTable = {"SnakesOnTheTake.mp3","ShesWarpedAgain.mp3","LightSpeed.mp3","HurryScurry.mp3"}
-			indexOfLevelBackgroundMusicTable = math.random(#levelBackgroundMusicTable)
-			levelBackgroundMusicName = levelBackgroundMusicTable[indexOfLevelBackgroundMusicTable]
-			levelBackgroundMusic = audio.loadStream("soundfx/backgroundMusic/"..levelBackgroundMusicName)
-			backgroundMusicChannel = audio.play(levelBackgroundMusic, { channel=2, loops=0, onComplete=BackgroundMusicMix }  )
-			audio.setVolume( 0.327, { channel=2 } )
+				levelBackgroundMusicTable = {"SnakesOnTheTake.mp3","ShesWarpedAgain.mp3","LightSpeed.mp3","HurryScurry.mp3"}
+				indexOfLevelBackgroundMusicTable = math.random(#levelBackgroundMusicTable)
+				levelBackgroundMusicName = levelBackgroundMusicTable[indexOfLevelBackgroundMusicTable]
+				levelBackgroundMusic = audio.loadStream("soundfx/backgroundMusic/"..levelBackgroundMusicName)
+				backgroundMusicChannel = audio.play(levelBackgroundMusic, { channel=2, loops=0, onComplete=BackgroundMusicMix }  )
+				audio.setVolume( 0.327, { channel=2 } )
 			
+			end
 		end
 		
 		
@@ -650,7 +652,11 @@ function new()
 			endScoreText:setReferencePoint(display.TopLeftReferencePoint)
 			endScoreText.xScale = .5
 			endScoreText.yScale = .5
-			endScoreText:setTextColor(255, 255, 255)
+			if leveldata.restartLevel == "1-1" then
+				endScoreText:setTextColor(0, 0, 0)
+			else
+				endScoreText:setTextColor(255, 255, 255)
+			end
 			endScoreText.alpha = 0
 			delayOfEndScore = 400
 			
@@ -850,7 +856,7 @@ function new()
 		if isWin == "yes" then
 			
 			gameOverDisplay = display.newImageRect( "images/youwin.png", 390, 154 )
-			winTextSoundTable = {{"a nigga gonna hate on foods with lettuce, if I do say so myself son...","win.wav"},{"biotches aren't shit so aren't hoes, if I do say my self son","win.wav"}}
+			winTextSoundTable = {{"Yaa you're a winner. Megan Smiles. ","win.wav"},{"Wow that's some sexy curly hair you have there. ","win.wav"}}
 
 			indexOfTableWin = math.random(#winTextSoundTable)
 			winText = winTextSoundTable[indexOfTableWin][1]
@@ -871,7 +877,7 @@ function new()
 			
 		else
 			gameOverDisplay = display.newImageRect( "images/youlose.png", 390, 154 )
-			loseTextSoundTable = {{"You lose bitch... Hahaha you are a faggot!!","lose.wav"},{"Hahahah you suck. I can't believe you lost. GO kill yourself!!","lose.wav"}} 	
+			loseTextSoundTable = {{"Sorry you lost. I still like you though. :)","lose.wav"},{"You're good... on the inside. ;)","lose.wav"}} 	
 				
 			indexOfTableLose = math.random(#loseTextSoundTable)
 			loseText = loseTextSoundTable[indexOfTableLose][1]
@@ -940,6 +946,38 @@ function new()
 		-- RESTART BUTTON
 		local onRestartTouch = function( event )
 			if event.phase == "release" then
+				
+				if leveldata.restartLevel == "1-1" or leveldata.restartLevel == "1-2" then
+					trainingStep = 1
+					trainingText1.isVisible = false
+					trainingText1_1.isVisible = false
+					trainingText2.isVisible = false
+					trainingText3.isVisible = false
+					trainingText4.isVisible = false
+					trainingText5.isVisible = false
+					trainingText6.isVisible = false
+					trainingText6_1.isVisible = false
+					trainingText7.isVisible = false
+					trainingText8.isVisible = false
+					trainingText9.isVisible = false
+					trainingText9_1.isVisible = false
+					trainingText10.isVisible = false
+					trainingText10_1.isVisible = false
+				
+					switch_obj.isVisible = false
+					blackhole_obj.isVisible = false
+					whitehole_obj.isVisible = false
+					bomb.isVisible = false
+					gem_obj.isVisible = false
+					lifegem_obj.isVisible = false
+					wood_obj.isVisible = false
+					stone_obj.isVisible = false
+					metal_obj.isVisible = false
+				end
+				
+				
+								
+				
 				if audio.isChannelActive( 2 ) then
 					audio.stop(2)
 				end
@@ -1056,6 +1094,7 @@ function new()
 			scoreText.text = "Score: " .. oldScoreText
 			scoreText.xScale = 0.5; scoreText.yScale = 0.5	--> for clear retina display text
 			scoreText.x = (480 - (scoreText.contentWidth * 0.5)) - 30
+			scoreText:setTextColor( 255, 255, 255, 255 )
 			scoreText.y = 30
 			scoreText:toFront()
 			timer.performWithDelay( 1000, function() scoreText.isVisible = true; end, 1 )
@@ -1425,7 +1464,11 @@ function new()
 		
 		-- SCORE DISPLAY
 		scoreText = display.newText( "0", 470, 22, "Helvetica Neue", 52 )
-		scoreText:setTextColor( 255, 255, 255, 255 )	--> white
+		if leveldata.restartLevel == "1-1" then
+			scoreText:setTextColor( 0, 0, 0)	--> white
+		else
+			scoreText:setTextColor( 255, 255, 255, 255 )
+		end
 		scoreText.text = gameScore
 		scoreText.xScale = 0.5; scoreText.yScale = 0.5	--> for clear retina display text
 		scoreText.x = (480 - (scoreText.contentWidth * 0.5)) - 15
@@ -1525,17 +1568,18 @@ function new()
 					
 					gameIsActive = true
 					physics.start()
-					if audio.isChannelActive( 2 ) then
-						audio.resume(2)
-					else
-						levelBackgroundMusicTable = {"SnakesOnTheTake.mp3","ShesWarpedAgain.mp3","LightSpeed.mp3","HurryScurry.mp3"}
-						indexOfLevelBackgroundMusicTable = math.random(#levelBackgroundMusicTable)
-						levelBackgroundMusicName = levelBackgroundMusicTable[indexOfLevelBackgroundMusicTable]
-						levelBackgroundMusic = audio.loadStream("soundfx/backgroundMusic/"..levelBackgroundMusicName)
-						backgroundMusicChannel = audio.play(levelBackgroundMusic, { channel=2, loops=0, onComplete=BackgroundMusicMix }  )
-						audio.setVolume( 0.327, { channel=2 } )
+					if leveldata.restartLevel ~= "1-1" then
+						if audio.isChannelActive( 2 ) then
+							audio.resume(2)
+						else
+							levelBackgroundMusicTable = {"SnakesOnTheTake.mp3","ShesWarpedAgain.mp3","LightSpeed.mp3","HurryScurry.mp3"}
+							indexOfLevelBackgroundMusicTable = math.random(#levelBackgroundMusicTable)
+							levelBackgroundMusicName = levelBackgroundMusicTable[indexOfLevelBackgroundMusicTable]
+							levelBackgroundMusic = audio.loadStream("soundfx/backgroundMusic/"..levelBackgroundMusicName)
+							backgroundMusicChannel = audio.play(levelBackgroundMusic, { channel=2, loops=0, onComplete=BackgroundMusicMix }  )
+							audio.setVolume( 0.327, { channel=2 } )
+						end
 					end
-					
 					-- START character animation back up
 					if characterTween then
 						transition.cancel( characterTween )
@@ -1640,6 +1684,33 @@ function new()
 		-- RESTART BUTTON (on Pause Display)
 		local onRestartPauseTouch = function( event )
 			if event.phase == "release" and pauseRestartBtn.isActive then
+				
+				if leveldata.restartLevel == "1-1" or leveldata.restartLevel == "1-2" then
+					trainingStep = 1
+					trainingText1.isVisible = false
+					trainingText1_1.isVisible = false
+					trainingText2.isVisible = false
+					trainingText3.isVisible = false
+					trainingText4.isVisible = false
+					trainingText5.isVisible = false
+					trainingText6.isVisible = false
+					trainingText6_1.isVisible = false
+					trainingText7.isVisible = false
+					trainingText8.isVisible = false
+					trainingText9.isVisible = false
+					trainingText9_1.isVisible = false
+					trainingText10.isVisible = false
+					trainingText10_1.isVisible = false
+				
+					switch_obj.isVisible = false
+					blackhole_obj.isVisible = false
+					whitehole_obj.isVisible = false
+					bomb.isVisible = false
+					gem_obj.isVisible = false
+					wood_obj.isVisible = false
+					stone_obj.isVisible = false
+					metal_obj.isVisible = false
+				end
 				audio.play( tapSound )
 				--local theModule = "load" .. restartModule
 				_G.loadLevel = restartLevel
@@ -2378,24 +2449,36 @@ function new()
 	end
 	
 	if leveldata.restartLevel == "1-1" then
-		trainingText1 = display.newText(levelGroup, "drag the character in any direction to lauch him ", 20, 170, "Danube", 24 )
+		trainingText1 = display.newText(levelGroup, "drag the character in any direction to lauch him ", 20, 120, "Danube", 24 )
 		trainingText1.xScale = 0.5; trainingText1.yScale = 0.5
 		trainingText1.x = trainingText1.width/4 + 10; 
 		trainingText1:setTextColor(0, 0, 0)
+		trainingText1.isVisible = true
 		
-		trainingText1_1 = display.newText(levelGroup, "tap screen again to vaporize him ", 20, 198, "Danube", 24 )
+		trainingText1_1 = display.newText(levelGroup, "tap screen again to vaporize him while in air ", display.viewableContentWidth/2, 47, "Danube", 22 )
 		trainingText1_1.xScale = 0.5; trainingText1_1.yScale = 0.5
-		trainingText1_1.x = trainingText1_1.width/4 + 10; 
-		trainingText1_1:setTextColor(0, 0, 0)
-		-- introText1.isVisible = false
+		trainingText1_1.x = trainingText1_1.width/4 + 65; 
+		trainingText1_1:setTextColor( 254, 113, 2, 255 )
+		trainingText1_1.isVisible = false
 		
-		trainingText2 = display.newText(levelGroup, "send him through the purple transporter to continue", 20, 170, "Danube", 24 )
+		trainingText2 = display.newText(levelGroup, "send him through the purple transporter", 20, 90, "Danube", 24 )
 		trainingText2.xScale = 0.5; trainingText2.yScale = 0.5
 		trainingText2.x = trainingText2.width/4 + 10;
 		trainingText2:setTextColor(0, 0, 0)
 		trainingText2.isVisible = false
 		
-		trainingText3 = display.newText(levelGroup, "transporters of the same color are linked... send through a transporter to continue", 20, 170, "Danube", 24 )
+		trainingText2_1 = display.newText(levelGroup, "Drag the screen to see more of the level", display.viewableContentWidth/2, 30, "Danube", 22 )
+		trainingText2_1.xScale = 0.5; trainingText2_1.yScale = 0.5
+		trainingText2_1.x = trainingText2_1.width/4 + 75;
+		trainingText2_1:setTextColor( 254, 113, 2, 255 )
+		trainingText2_1.isVisible = false
+		
+		trainingText2_2 = display.newText(levelGroup, "Hi! You are cool", display.viewableContentWidth/2 + 250, display.viewableContentHeight/2-50, "Danube", 44 )
+		trainingText2_2.xScale = 0.5; trainingText2_2.yScale = 0.5
+		trainingText2_2:setTextColor(0, 0, 0)
+		trainingText2_2.isVisible = false
+		
+		trainingText3 = display.newText(levelGroup, "transporters of the same color are linked", 20, 162, "Danube", 24 )
 		trainingText3.xScale = 0.5; trainingText3.yScale = 0.5
 		trainingText3.x = trainingText3.width/4 + 10;
 		trainingText3:setTextColor(0, 0, 0)
@@ -2407,13 +2490,13 @@ function new()
 		trainingText4:setTextColor(0, 0, 0)
 		trainingText4.isVisible = false
 		
-		trainingText5 = display.newText(levelGroup, "white holes create magnetostatic repulsion ", 20, 145, "Danube", 24 )
+		trainingText5 = display.newText(levelGroup, "white holes create magnetostatic repulsion ", 20, 128, "Danube", 24 )
 		trainingText5.xScale = 0.5; trainingText5.yScale = 0.5
 		trainingText5.x = trainingText5.width/4 + 10;
 		trainingText5:setTextColor(0, 0, 0)
 		trainingText5.isVisible = false
 		
-		trainingText6 = display.newText(levelGroup, "and dynamite... well... ", 20, 130, "Danube", 24 )
+		trainingText6 = display.newText(levelGroup, "dynamite... well... ", 20, 130, "Danube", 24 )
 		trainingText6.xScale = 0.5; trainingText6.yScale = 0.5
 		trainingText6.x = trainingText6.width/4 + 10;
 		trainingText6:setTextColor(0, 0, 0)
@@ -2425,23 +2508,29 @@ function new()
 		trainingText6_1:setTextColor(0, 0, 0)
 		trainingText6_1.isVisible = false
 		
-		trainingText7 = display.newText(levelGroup, "purple gems give you extra points ", 20, 130, "Danube", 24 )
+		trainingText7 = display.newText(levelGroup, "purple gems give you extra points ", 20, 170, "Danube", 24 )
 		trainingText7.xScale = 0.5; trainingText7.yScale = 0.5
 		trainingText7.x = trainingText7.width/4 + 10;
 		trainingText7:setTextColor(0, 0, 0)
 		trainingText7.isVisible = false
 		
-		trainingText8 = display.newText(levelGroup, "yellowish-orange gems give you extra lives ", 20, 130, "Danube", 24 )
+		trainingText8 = display.newText(levelGroup, "yellowish gems give you extra lives ", 20, 75, "Danube", 24 )
 		trainingText8.xScale = 0.5; trainingText8.yScale = 0.5
 		trainingText8.x = trainingText8.width/4 + 10;
 		trainingText8:setTextColor(0, 0, 0)
 		trainingText8.isVisible = false
 		
-		trainingText9 = display.newText(levelGroup, "launch him towards the red button, inorder to activate the portal ", 20, 170, "Danube", 24 )
+		trainingText9 = display.newText(levelGroup, "launch him towards the red button... ", 20, 50, "Danube", 24 )
 		trainingText9.xScale = 0.5; trainingText9.yScale = 0.5
 		trainingText9.x = trainingText9.width/4 + 10; 
 		trainingText9:setTextColor(0, 0, 0)
 		trainingText9.isVisible = false
+		
+		trainingText9_1 = display.newText(levelGroup, "to open the portal ", 20, 70, "Danube", 24 )
+		trainingText9_1.xScale = 0.5; trainingText9_1.yScale = 0.5
+		trainingText9_1.x = trainingText9_1.width/4 + 10; 
+		trainingText9_1:setTextColor(0, 0, 0)
+		trainingText9_1.isVisible = false
 		
 		trainingText10 = display.newText(levelGroup, "now send him through the portal and", 20, 140, "Danube", 24 )
 		trainingText10.xScale = 0.5; trainingText10.yScale = 0.5
@@ -2471,29 +2560,50 @@ function new()
 			-------------------------------------------------------------------------------------------------------------------- 
 
 			if leveldata.restartLevel == "1-1" then
-
-				-- print("bomb.x = "..bomb.x.." ; bomb.y = "..bomb.y)
-
-				-- if characterObject.isHit == false and characterObject.inAir and characterTrainingDeath == true then
-				-- 					-- characterObject.isHit = true
-				-- 					print("something is working!")
-				-- 					if dotTimer then timer.cancel( dotTimer ); end
-				-- 					timer.performWithDelay( 10000, callNewRound( true, "no" ), 0 )
-				-- 					characterBoolean = characterBoolean + 1
-				-- 				end
-
-
+							
+				
 
 				if trainingStep == 1 then
-					-- bomb.isVisible = false
-					--bomb.isBodyActive = false	
+					
+					if audio.isChannelActive( 2 ) then
+						audio.pause(2)
+					end
+					
 
+					trainingText2.isVisible = false
+					trainingText3.isVisible = false
+					trainingText4.isVisible = false
+					trainingText5.isVisible = false
+					trainingText6.isVisible = false
+					trainingText6_1.isVisible = false
+					trainingText7.isVisible = false
+					trainingText8.isVisible = false
+					trainingText9.isVisible = false
+					trainingText9_1.isVisible = false
+					trainingText10.isVisible = false
+					trainingText10_1.isVisible = false
+
+					switch_obj.isVisible = false
+					blackhole_obj.isVisible = false
+					whitehole_obj.isVisible = false
+					bomb.isVisible = false
+					gem_obj.isVisible = false
+					lifegem_obj.isVisible = false
+					wood_obj.isVisible = false
+					stone_obj.isVisible = false
+					
+					
+					trainingText2_1.isVisible = true
+					trainingText2_2.isVisible = true
+					trainingText1_1.isVisible = true
+
+					
+					
 					if characterObject.inAir == true then
 
 						if characterPop == true or characterOut == true then
 							trainingStep = 2
 							trainingText1.isVisible = false
-							trainingText1_1.isVisible = false
 							trainingText2.isVisible = true
 							if characterPop == true then
 							characterPop = false
@@ -2512,6 +2622,9 @@ function new()
 
 
 				if trainingStep == 2 then
+					if audio.isChannelActive( 2 ) then
+						audio.pause(2)
+					end
 
 					if characterPop == true and teletouch~=true or characterOut == true and teletouch~=true then
 						if characterPop == true then
@@ -2565,6 +2678,9 @@ function new()
 				end
 
 				if trainingStep == 3 then
+					if audio.isChannelActive( 2 ) then
+						audio.pause(2)
+					end
 
 					if characterPop == true and teletouch~=true or characterOut == true and teletouch~=true then
 						if characterPop == true then
@@ -2588,12 +2704,18 @@ function new()
 							end
 							trainingStep = 4
 							trainingText3.isVisible = false
+							trainingText2_1.isVisible = false
+							trainingText2_2.isVisible = false
+							trainingText1_1.isVisible = false
 						end
 
 					end
 				end
 
 				if trainingStep == 4 then
+					if audio.isChannelActive( 2 ) then
+						audio.pause(2)
+					end
 				--introduce black holes, white holes, and bombs, after characters death	(timer...)
 				--purple jewls give you extra points (timer...)
 				--orangish yellow jewels give you extra lives (timer...)
@@ -2617,7 +2739,7 @@ function new()
 					
 					physics.pause()
 					canSwipe = false
-
+					
 					-- STOP character ANIMATION
 					if characterTween then
 						transition.cancel( characterTween )
@@ -2633,6 +2755,10 @@ function new()
 				end
 
 				if trainingStep == 5 then
+					if audio.isChannelActive( 2 ) then
+						audio.pause(2)
+					end
+					canSwipe = false
 					if characterTween then
 						transition.cancel( characterTween )
 					end
@@ -2646,11 +2772,15 @@ function new()
 					trainingStep = 6
 					end
 
-					timer.performWithDelay( 2000, training5, 1 )
+					timer.performWithDelay( 3500, training5, 1 )
 
 				end
 
 				if trainingStep == 6 then
+					if audio.isChannelActive( 2 ) then
+						audio.pause(2)
+					end
+					canSwipe = false
 					if characterTween then
 						transition.cancel( characterTween )
 					end
@@ -2662,17 +2792,20 @@ function new()
 					-- whitehole_obj.isBodyActive = false
 					whitehole_obj.isVisible = false
 					-- bomb.isBodyActive = true
-					bomb.x = 113
-					bomb.y = 260
+					bomb.x = 145
+					bomb.y = 230
 					bomb.isVisible = true
 					trainingStep = 7
 					end
 
-					timer.performWithDelay( 2000, training6, 1 )
+					timer.performWithDelay( 3500, training6, 1 )
 
 				end
 
 				if trainingStep == 7 then
+					if audio.isChannelActive( 2 ) then
+						audio.pause(2)
+					end
 					if characterTween then
 						transition.cancel( characterTween )
 					end
@@ -2687,11 +2820,14 @@ function new()
 					trainingStep = 8
 					end
 
-					timer.performWithDelay( 2000, training7, 1 )
+					timer.performWithDelay( 3500, training7, 1 )
 
 				end
 
 				if trainingStep == 8 then
+					if audio.isChannelActive( 2 ) then
+						audio.pause(2)
+					end
 					if characterTween then
 						transition.cancel( characterTween )
 					end
@@ -2706,14 +2842,20 @@ function new()
 					trainingStep = 9
 					end
 
-					timer.performWithDelay( 2000, training8, 1 )
+					timer.performWithDelay( 3500, training8, 1 )
 				end
 
 				if trainingStep == 9 then
+					
+					
 
 					local training9 = function()
+					if audio.isChannelActive( 2 ) then
+						audio.resume(2)
+					end
 					trainingText8.isVisible = false
 					trainingText9.isVisible = true
+					trainingText9_1.isVisible = true
 					switch_obj.isVisible = true
 					switch_obj.isBodyActive = true
 					blackhole_obj.isVisible = true
@@ -2769,7 +2911,7 @@ function new()
 					
 					end
 
-					timer.performWithDelay( 2000, training9, 1 )
+					timer.performWithDelay( 3500, training9, 1 )
 
 				end
 
@@ -2779,9 +2921,11 @@ function new()
 				if trainingStep == 10 then
 				--send character through portal to continue	
 				--show all ui elements
+					canSwipe = true
 
 					if portalOpen == true then
 						trainingText9.isVisible = false
+						trainingText9_1.isVisible = false
 						trainingText10.isVisible = true
 						trainingText10_1.isVisible = true
 					end
@@ -3471,6 +3615,7 @@ function new()
 	
 		-- SET PROPER DRAW ORDER:
 		reorderLayers()
+		
 	
 	end
 	
@@ -3536,18 +3681,34 @@ function new()
 	end
 	
 	local gameInit = function()
+		
+		
 	
 		-- resumeStart() 
+		
 		if audio.isChannelActive( 2 ) then
-			audio.resume(2)
+			if leveldata.restartLevel ~= "1-1" then
+				audio.pause(2)
+			else
+				audio.resume(2)
+			end
 		else
 			
 			levelBackgroundMusicTable = {"SnakesOnTheTake.mp3","ShesWarpedAgain.mp3","LightSpeed.mp3","HurryScurry.mp3"}
 			indexOfLevelBackgroundMusicTable = math.random(#levelBackgroundMusicTable)
-			levelBackgroundMusicName = levelBackgroundMusicTable[indexOfLevelBackgroundMusicTable]
+			if leveldata.restartLevel == "1-1" then
+				levelBackgroundMusicName = levelBackgroundMusicTable[2]
+			else
+				levelBackgroundMusicName = levelBackgroundMusicTable[indexOfLevelBackgroundMusicTable]
+			end
 			levelBackgroundMusic = audio.loadStream("soundfx/backgroundMusic/"..levelBackgroundMusicName)
 			backgroundMusicChannel = audio.play(levelBackgroundMusic, { channel=2, loops=0, onComplete=BackgroundMusicMix }  )
 			audio.setVolume( 0.327, { channel=2 } )
+			if leveldata.restartLevel == "1-1" then
+				if audio.isChannelActive( 2 ) then
+					audio.pause(2)
+				end
+			end
 			
 		end
 			
