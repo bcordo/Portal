@@ -947,7 +947,7 @@ function new()
 		local onRestartTouch = function( event )
 			if event.phase == "release" then
 				
-				if leveldata.restartLevel == "1-1" or leveldata.restartLevel == "1-2" then
+				if leveldata.restartLevel == "1-1" then
 					trainingStep = 1
 					trainingText1.isVisible = false
 					trainingText1_1.isVisible = false
@@ -1685,7 +1685,7 @@ function new()
 		local onRestartPauseTouch = function( event )
 			if event.phase == "release" and pauseRestartBtn.isActive then
 				
-				if leveldata.restartLevel == "1-1" or leveldata.restartLevel == "1-2" then
+				if leveldata.restartLevel == "1-1" then
 					trainingStep = 1
 					trainingText1.isVisible = false
 					trainingText1_1.isVisible = false

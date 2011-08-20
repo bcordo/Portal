@@ -130,7 +130,7 @@ function newMain ()
 	
 	local metal_2 = display.newImageRect(imagelookup.table["Metal"],imagelookup.table["MetalWidth"],imagelookup.table["MetalHeight"])
 	metal_2.x = 394
-	metal_2.y = 128
+	metal_2.y = 131
 	metal_2.xScale = 1
 	metal_2.yScale = 1
 	metal_2.rotation = 90
