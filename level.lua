@@ -2170,6 +2170,15 @@ function new()
 			scoreAnimText100.y = self.y
 			animScore(scoreAnimText100)
 			-- audio.play( telporterSound )
+			
+			local emmiterTele1 = Particles.GetEmitter("Teleporter1Emitter")
+			local emmiterTele2 = Particles.GetEmitter("Teleporter2Emitter")
+			
+			emmiterTele1.x = self.x
+			emmiterTele1.y = self.y
+			
+			emmiterTele2.x = self.xo
+			emmiterTele2.y = self.yo
 
 			Particles.StartEmitter("Teleporter1Emitter")
 			Particles.StartEmitter("Teleporter2Emitter")
@@ -2197,6 +2206,14 @@ function new()
 			scoreAnimText100.y = self.y
 			animScore(scoreAnimText100)
 			-- audio.play( telporterSound )
+			local emmiterTele1 = Particles.GetEmitter("Teleporter1Emitter")
+			local emmiterTele2 = Particles.GetEmitter("Teleporter2Emitter")
+			
+			emmiterTele1.x = self.xo
+			emmiterTele1.y = self.yo
+			
+			emmiterTele2.x = self.x
+			emmiterTele2.y = self.y
 
 			Particles.StartEmitter("Teleporter1Emitter")
 			Particles.StartEmitter("Teleporter2Emitter")
