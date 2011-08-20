@@ -70,8 +70,8 @@ function newMain ()
 	this.teleporterpurple_2 = teleporterpurple_2
 	
 	local blackhole_1 = display.newImageRect(imagelookup.table["Blackhole"],imagelookup.table["BlackholeWidth"],imagelookup.table["BlackholeHeight"])
-	blackhole_1.x = 115
-	blackhole_1.y = 120
+	blackhole_1.x = 300
+	blackhole_1.y = 200
 	blackhole_1.xScale = 1
 	blackhole_1.yScale = 1
 	blackhole_1.isVisible = false
@@ -80,8 +80,8 @@ function newMain ()
 	this.blackhole_1 = blackhole_1
 	
 	local whitehole_1 = display.newImageRect(imagelookup.table["Whitehole"],imagelookup.table["WhiteholeWidth"],imagelookup.table["WhiteholeHeight"])
-	whitehole_1.x = 300
-	whitehole_1.y = 200
+	whitehole_1.x = 115
+	whitehole_1.y = 120 
 	whitehole_1.xScale = 1
 	whitehole_1.yScale = 1
 	whitehole_1.isVisible = false
